@@ -205,7 +205,6 @@ namespace CardOrganizerWPF
                 newCategory.AddImageFirst(thumb);
                 Categories.Add(newCategoryName, newCategory);
                 dataManager.AddCategory(newCategoryName);
-
             }
 
             dataManager.AddImage(thumb, newCategoryName);
