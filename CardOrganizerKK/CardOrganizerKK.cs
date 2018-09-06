@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace CardOrganizerKK
 {
-    [BepInPlugin("com.keelhauled.cardorganizerkk", "CardOrganizerKK", "1.0.0")]
+    [BepInPlugin("keelhauled.cardorganizerkk", "CardOrganizerKK", "1.0.0")]
     class CardOrganizerKK : BaseUnityPlugin
     {
         void Awake()

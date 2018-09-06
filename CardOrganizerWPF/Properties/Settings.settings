@@ -33,7 +33,7 @@
       <Value Profile="(Default)">-1</Value>
     </Setting>
     <Setting Name="HSPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">H:\Games\HoneySelectParty\UserData</Value>
+      <Value Profile="(Default)">G:\Games\HoneySelect\UserData</Value>
     </Setting>
     <Setting Name="KKPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">G:\Games\Koikatu\UserData</Value>

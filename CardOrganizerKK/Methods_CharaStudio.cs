@@ -26,11 +26,11 @@ namespace CardOrganizerKK
         public override void Scene_Load(MsgObject message)
         {
             StartCoroutine(Studio.Studio.Instance.LoadSceneCoroutine(message.path));
-            //Studio.Studio.Instance.LoadScene(message.path);
         }
 
         public override void Scene_LoadResolver(MsgObject message)
         {
+            // this is very bad, map doesn't load sometimes
             ResolverWrap(() => Studio.Studio.Instance.LoadScene(message.path));
         }
 

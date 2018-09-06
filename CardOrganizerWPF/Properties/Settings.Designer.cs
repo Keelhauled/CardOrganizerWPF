@@ -145,7 +145,7 @@ namespace CardOrganizerWPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("H:\\Games\\HoneySelectParty\\UserData")]
+        [global::System.Configuration.DefaultSettingValueAttribute("G:\\Games\\HoneySelect\\UserData")]
         public string HSPath {
             get {
                 return ((string)(this["HSPath"]));

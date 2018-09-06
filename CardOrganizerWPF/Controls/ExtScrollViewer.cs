@@ -30,7 +30,6 @@ namespace CardOrganizerWPF
                     if(e.Delta < 0)
                     {
                         ScrollToVerticalOffset(VerticalOffset + scrollSpeed);
-
                     }
                     else
                     {
