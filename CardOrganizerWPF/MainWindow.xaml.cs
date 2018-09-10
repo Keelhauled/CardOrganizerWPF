@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Diagnostics;
 
 namespace CardOrganizerWPF
 {
@@ -244,6 +245,22 @@ namespace CardOrganizerWPF
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
             SelectedTab.RemoveImage(thumb);
+        }
+
+        private void MenuItem_Click_Explorer(object sender, RoutedEventArgs e)
+        {
+            var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
+
+            if(!File.Exists(thumb.Path))
+            {
+                Console.WriteLine($"File does not exist ({thumb.Path})");
+                return;
+            }
+
+            // combine the arguments together
+            // it doesn't matter if there is a space after ','
+            string argument = "/select, \"" + thumb.Path + "\"";
+            Process.Start("explorer.exe", argument);
         }
         #endregion
 
