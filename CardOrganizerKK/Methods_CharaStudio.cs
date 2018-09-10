@@ -21,45 +21,45 @@ namespace CardOrganizerKK
             Studio.Studio.Instance.dicObjectCtrl.Values.ToList().ForEach(x => x.OnSavePreprocessing());
             Studio.Studio.Instance.sceneInfo.cameraSaveData = Studio.Studio.Instance.cameraCtrl.Export();
             string path = Path.Combine(message.path, GetTimeNow() + ".png");
-            Log(LogLevel.Message, $"Save scene\n({Path.GetFileName(path)})");
+            Log(LogLevel.Message, $"Save scene ({Path.GetFileName(path)})");
             Studio.Studio.Instance.sceneInfo.Save(path);
             TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
         }
 
         public override void Scene_Load(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load scene\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Load scene ({Path.GetFileName(message.path)})");
             StartCoroutine(Studio.Studio.Instance.LoadSceneCoroutine(message.path));
         }
 
         public override void Scene_LoadResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load scene (resolver)\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Load scene (resolver) ({Path.GetFileName(message.path)})");
             // this is very bad, map doesn't load sometimes
             ResolverWrap(() => Studio.Studio.Instance.LoadScene(message.path));
         }
 
         public override void Scene_ImportAll(MsgObject message)
         {
-            Log(LogLevel.Message, $"Import scene\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Import scene ({Path.GetFileName(message.path)})");
             Studio.Studio.Instance.ImportScene(message.path);
         }
 
         public override void Scene_ImportAllResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Import scene (resolver)\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Import scene (resolver) ({Path.GetFileName(message.path)})");
             ResolverWrap(() => Studio.Studio.Instance.ImportScene(message.path));
         }
 
         public override void Scene_ImportChara(MsgObject message)
         {
-            Log(LogLevel.Message, $"Import scene characters\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Import scene characters ({Path.GetFileName(message.path)})");
             ImportSceneChara(message.path);
         }
 
         public override void Scene_ImportCharaResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Import scene characters (resolver)\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Import scene characters (resolver) ({Path.GetFileName(message.path)})");
             ResolverWrap(() => ImportSceneChara(message.path));
         }
 
@@ -176,7 +176,7 @@ namespace CardOrganizerKK
                     var param = item.charInfo.fileParam;
                     var charFile = item.oiCharInfo.charFile;
                     var path = Path.Combine(message.path, $"{param.lastname}_{param.firstname}_{date}.png");
-                    Log(LogLevel.Message, $"Save character\n({Path.GetFileName(path)})");
+                    Log(LogLevel.Message, $"Save character ({Path.GetFileName(path)})");
 
                     Traverse.Create(charFile).Property("charaFileName").SetValue(Path.GetFileNameWithoutExtension(path));
                     CustomCapture.CreatePng(ref charFile.pngData, 252, 352, null, null, Camera.main, null);
@@ -197,25 +197,25 @@ namespace CardOrganizerKK
 
         public override void Character_LoadFemale(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load female\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Load female ({Path.GetFileName(message.path)})");
             Studio.Studio.Instance.AddFemale(message.path);
         }
 
         public override void Character_LoadFemaleResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load female (resolver)\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Load female (resolver) ({Path.GetFileName(message.path)})");
             ResolverWrap(() => Studio.Studio.Instance.AddFemale(message.path));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load male\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Load male ({Path.GetFileName(message.path)})");
             Studio.Studio.Instance.AddMale(message.path);
         }
 
         public override void Character_LoadMaleResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load male (resolver)\n({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Load male (resolver) ({Path.GetFileName(message.path)})");
             ResolverWrap(() => Studio.Studio.Instance.AddMale(message.path));
         }
 
@@ -224,7 +224,7 @@ namespace CardOrganizerKK
             var characters = GetSelectedCharacters();
             if(characters.Count > 0)
             {
-                Log(LogLevel.Message, $"Replace character(s)\n({Path.GetFileName(message.path)})");
+                Log(LogLevel.Message, $"Replace character(s) ({Path.GetFileName(message.path)})");
                 foreach(var x in characters) x.ChangeChara(message.path);
             }
             else
@@ -238,7 +238,7 @@ namespace CardOrganizerKK
             var characters = GetSelectedCharacters();
             if(characters.Count > 0)
             {
-                Log(LogLevel.Message, $"Replace character(s) (resolver)\n({Path.GetFileName(message.path)})");
+                Log(LogLevel.Message, $"Replace character(s) (resolver) ({Path.GetFileName(message.path)})");
                 ResolverWrap(() => { foreach(var x in characters) x.ChangeChara(message.path); });
             }
             else
@@ -285,7 +285,7 @@ namespace CardOrganizerKK
                 {
                     string prefix = chara.sex == 0 ? "coordM" : "coordF";
                     string path = Path.Combine(message.path, $"{prefix}_{date}.png");
-                    Log(LogLevel.Message, $"Save outfit\n({Path.GetFileName(path)})");
+                    Log(LogLevel.Message, $"Save outfit ({Path.GetFileName(path)})");
 
                     var chaFile = chara.charInfo.chaFile;
                     var outfit = chaFile.coordinate[chaFile.status.coordinateType];
@@ -303,11 +303,11 @@ namespace CardOrganizerKK
 
         public override void Outfit_Load(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load outfit\n({Path.GetFileName(message.path)})");
             var characters = GetSelectedCharacters();
 
             if(characters.Count > 0)
             {
+                Log(LogLevel.Message, $"Load outfit ({Path.GetFileName(message.path)})");
                 foreach(var chara in characters) chara.LoadClothesFile(message.path);
 
                 var mpCharCtrl = FindObjectOfType<MPCharCtrl>();

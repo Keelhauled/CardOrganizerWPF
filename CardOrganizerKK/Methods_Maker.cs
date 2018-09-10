@@ -5,6 +5,8 @@ using MessagePack;
 using ChaCustom;
 using Illusion.Game;
 using Manager;
+using static BepInEx.Logger;
+using BepInEx.Logging;
 
 namespace CardOrganizerKK
 {
@@ -28,11 +30,12 @@ namespace CardOrganizerKK
             customCtrl.customCap.UpdateCardImage(customBase.chaCtrl.chaFile.pngData);
 
             var param = customBase.chaCtrl.fileParam;
-            //string prefix = customBase.chaCtrl.sex == 0 ? "Koikatu_M" : "Koikatu_F";
             string filename = $"{param.lastname}_{param.firstname}_{GetTimeNow()}";
-            string path = Path.Combine(message.path, filename + ".png");
+            string filenameext = filename + ".png";
+            string path = Path.Combine(message.path, filenameext);
             customBase.chaCtrl.chaFile.SaveCharaFile(filename, byte.MaxValue, false);
 
+            Log(LogLevel.Message, $"Save character ({filenameext})");
             TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
 
             if(customCtrl.saveFileListCtrl)
@@ -59,31 +62,37 @@ namespace CardOrganizerKK
 
         public override void Character_LoadFemale(MsgObject message)
         {
+            Log(LogLevel.Message, $"Load female ({Path.GetFileName(message.path)})");
             LoadCharacter(message.path);
         }
 
         public override void Character_LoadFemaleResolver(MsgObject message)
         {
+            Log(LogLevel.Message, $"Load female (resolver) ({Path.GetFileName(message.path)})");
             ResolverWrap(() => LoadCharacter(message.path));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
+            Log(LogLevel.Message, $"Load male ({Path.GetFileName(message.path)})");
             LoadCharacter(message.path);
         }
 
         public override void Character_LoadMaleResolver(MsgObject message)
         {
+            Log(LogLevel.Message, $"Load male (resolver) ({Path.GetFileName(message.path)})");
             ResolverWrap(() => LoadCharacter(message.path));
         }
 
         public override void Character_ReplaceAll(MsgObject message)
         {
+            Log(LogLevel.Message, $"Replace character(s) ({Path.GetFileName(message.path)})");
             LoadCharacter(message.path);
         }
 
         public override void Character_ReplaceAllResolver(MsgObject message)
         {
+            Log(LogLevel.Message, $"Replace character(s) (resolver) ({Path.GetFileName(message.path)})");
             ResolverWrap(() => LoadCharacter(message.path));
         }
 
@@ -109,11 +118,14 @@ namespace CardOrganizerKK
 
         public override void Outfit_Save(MsgObject message)
         {
-            FindObjectOfType<CustomCoordinateFile>().CreateCoordinateFile("coordinateName");
+            string name = "coordinateName";
+            Log(LogLevel.Message, $"Save outfit ({name})");
+            FindObjectOfType<CustomCoordinateFile>().CreateCoordinateFile(name);
         }
 
         public override void Outfit_Load(MsgObject message)
         {
+            Log(LogLevel.Message, $"Load outfit ({Path.GetFileName(message.path)})");
             Utils.Sound.Play(SystemSE.ok_s);
             var chaCtrl = CustomBase.Instance.chaCtrl;
 
