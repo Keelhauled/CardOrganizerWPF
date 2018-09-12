@@ -38,6 +38,13 @@ namespace CardOrganizerWPF
             Playhome
         }
 
+        private Dictionary<string, Game> games = new Dictionary<string, Game>
+        {
+            {"HS", Game.HoneySelect},
+            {"KK", Game.Koikatu},
+            {"PH", Game.Playhome},
+        };
+
         public MainWindow()
         {
             //settings.Reset();
@@ -51,22 +58,9 @@ namespace CardOrganizerWPF
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
 
             var args = Environment.GetCommandLineArgs();
-            if(args.Length > 1)
+            if(args.Length > 1 && games.TryGetValue(args[1], out Game game))
             {
-                switch(args[1])
-                {
-                    case "HS":
-                        CreateTabs(Game.HoneySelect);
-                        break;
-
-                    case "KK":
-                        CreateTabs(Game.Koikatu);
-                        break;
-
-                    case "PH":
-                        CreateTabs(Game.Playhome);
-                        break;
-                }
+                CreateTabs(game);
             }
             else
             {
