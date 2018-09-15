@@ -11,26 +11,26 @@ namespace CardOrganizerKK
     {
         public override void Character_LoadFemale(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load female ({Path.GetFileName(message.path)})");
-            SetupCharacter(message.path, ResultType.Heroine);
+            Log(LogLevel.Message, $"Load female [{Path.GetFileName(message.path)}]");
+            DelayAction(() => SetupCharacter(message.path, ResultType.Heroine));
         }
 
         public override void Character_LoadFemaleResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load female (resolver) ({Path.GetFileName(message.path)})");
-            ResolverWrap(() => SetupCharacter(message.path, ResultType.Heroine));
+            Log(LogLevel.Message, $"Load female (resolver) [{Path.GetFileName(message.path)}]");
+            ResolverDelay(() => SetupCharacter(message.path, ResultType.Heroine));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load male ({Path.GetFileName(message.path)})");
-            SetupCharacter(message.path, ResultType.Player);
+            Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
+            DelayAction(() => SetupCharacter(message.path, ResultType.Player));
         }
 
         public override void Character_LoadMaleResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load male (resolver) ({Path.GetFileName(message.path)})");
-            ResolverWrap(() => SetupCharacter(message.path, ResultType.Player));
+            Log(LogLevel.Message, $"Load male (resolver) [{Path.GetFileName(message.path)}]");
+            ResolverDelay(() => SetupCharacter(message.path, ResultType.Player));
         }
 
         void SetupCharacter(string path, ResultType type)
