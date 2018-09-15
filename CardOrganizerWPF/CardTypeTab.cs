@@ -163,20 +163,28 @@ namespace CardOrganizerWPF
         {
             if(Path.GetExtension(path) == ".png")
             {
-                try
-                {
-                    var newPath = Path.Combine(FolderPath, Path.GetFileName(path));
+                string newPath = Path.Combine(FolderPath, Path.GetFileName(path));
+                bool exists = File.Exists(newPath);
 
+                if(!exists && FindAndMoveThumb(newPath))
+                {
+                    if(move)
+                        File.Move(path, newPath);
+                    else
+                        File.Copy(path, newPath);
+                }
+                else if(exists)
+                {
+                    FindAndMoveThumb(newPath);
+                }
+                else
+                {
                     if(move)
                         File.Move(path, newPath);
                     else
                         File.Copy(path, newPath);
 
                     AddImage(newPath);
-                }
-                catch(IOException ex)
-                {
-                    Console.WriteLine(ex);
                 }
             }
         }
@@ -187,6 +195,55 @@ namespace CardOrganizerWPF
             var category = GetSelectedCategory();
             category.RemoveImage(thumb);
             dataManager.RemoveImage(thumb, category.Title);
+        }
+
+        public bool FindAndMoveThumb(string path)
+        {
+            foreach(var category in Categories.Values)
+            {
+                foreach(var image in category.Images)
+                {
+                    if(image.Path == path)
+                    {
+                        MoveImageFrom(image, category, GetSelectedCategory());
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public void MoveImageFrom(Thumbnail thumb, Category from, Category to)
+        {
+            from.RemoveImage(thumb);
+            dataManager.RemoveImage(thumb, from.Title);
+
+            to.AddImageFirst(thumb);
+            dataManager.AddImage(thumb, to.Title);
+        }
+
+        public void MoveImageFrom(Thumbnail thumb, string fromCategory, string toCategory)
+        {
+            if(Categories.TryGetValue(fromCategory, out Category from))
+            {
+                from.RemoveImage(thumb);
+                dataManager.RemoveImage(thumb, from.Title);
+
+                if(Categories.TryGetValue(toCategory, out Category to))
+                {
+                    to.AddImageFirst(thumb);
+                }
+                else
+                {
+                    var newCategory = new Category(toCategory, Template);
+                    newCategory.AddImageFirst(thumb);
+                    Categories.Add(toCategory, newCategory);
+                    dataManager.AddCategory(toCategory);
+                }
+
+                dataManager.AddImage(thumb, toCategory);
+            }
         }
 
         public void MoveImage(Thumbnail thumb, string newCategoryName)
