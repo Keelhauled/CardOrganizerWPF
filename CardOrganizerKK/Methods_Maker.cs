@@ -18,8 +18,13 @@ namespace CardOrganizerKK
             var customCtrl = Singleton<CustomControl>.Instance;
             var customBase = CustomBase.Instance;
 
-            //customCtrl.saveMode = true;
+            var param = customBase.chaCtrl.fileParam;
+            string filename = $"{param.lastname}_{param.firstname}_{GetTimeNow()}";
+            string filenameext = filename + ".png";
+            string path = Path.Combine(message.path, filenameext);
+            Log(LogLevel.Message, $"Save character [{filenameext}]");
             Utils.Sound.Play(SystemSE.ok_s);
+            //customCtrl.saveMode = true;
 
             byte[] facePngData = customCtrl.customCap.CapCharaFace(true);
             customBase.chaCtrl.chaFile.facePngData = facePngData;
@@ -29,77 +34,62 @@ namespace CardOrganizerKK
             customBase.chaCtrl.chaFile.pngData = pngData;
             customCtrl.customCap.UpdateCardImage(customBase.chaCtrl.chaFile.pngData);
 
-            var param = customBase.chaCtrl.fileParam;
-            string filename = $"{param.lastname}_{param.firstname}_{GetTimeNow()}";
-            string filenameext = filename + ".png";
-            string path = Path.Combine(message.path, filenameext);
-            customBase.chaCtrl.chaFile.SaveCharaFile(filename, byte.MaxValue, false);
-
-            Log(LogLevel.Message, $"Save character ({filenameext})");
-            TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
-
-            if(customCtrl.saveFileListCtrl)
+            DelayAction(() =>
             {
-                string club = "";
-                string personality = "";
-                if(customBase.chaCtrl.sex != 0)
+                customBase.chaCtrl.chaFile.SaveCharaFile(filename, byte.MaxValue, false);
+                TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
+
+                if(customCtrl.saveFileListCtrl)
                 {
-                    club = Voice.Instance.voiceInfoDic.TryGetValue(customBase.chaCtrl.fileParam.personality, out VoiceInfo.Param param1) ? param1.Personality : "不明";
-                    personality = Game.ClubInfos.TryGetValue(customBase.chaCtrl.fileParam.clubActivities, out ClubInfo.Param param2) ? param2.Name : "不明";
-                }
-                else
-                {
-                    customCtrl.saveFileListCtrl.DisableAddInfo();
+                    string club = "";
+                    string personality = "";
+                    if(customBase.chaCtrl.sex != 0)
+                    {
+                        club = Voice.Instance.voiceInfoDic.TryGetValue(param.personality, out VoiceInfo.Param param1) ? param1.Personality : "不明";
+                        personality = Game.ClubInfos.TryGetValue(param.clubActivities, out ClubInfo.Param param2) ? param2.Name : "不明";
+                    }
+                    else
+                    {
+                        customCtrl.saveFileListCtrl.DisableAddInfo();
+                    }
+
+                    int noUseIndex = customCtrl.saveFileListCtrl.GetNoUseIndex();
+                    customCtrl.saveFileListCtrl.AddList(noUseIndex, customBase.chaCtrl.chaFile.parameter.fullname, club, personality, path, filename, DateTime.Now, false);
+                    customCtrl.saveFileListCtrl.ReCreate();
                 }
 
-                int noUseIndex = customCtrl.saveFileListCtrl.GetNoUseIndex();
-                customCtrl.saveFileListCtrl.AddList(noUseIndex, customBase.chaCtrl.chaFile.parameter.fullname, club, personality, path, filename, DateTime.Now, false);
-                customCtrl.saveFileListCtrl.ReCreate();
-            }
-
-            customCtrl.saveMode = false;
+                customCtrl.saveMode = false;
+            });
         }
 
         public override void Character_LoadFemale(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load female ({Path.GetFileName(message.path)})");
-            LoadCharacter(message.path);
+            Log(LogLevel.Message, $"Load female [{Path.GetFileName(message.path)}]");
+            DelayAction(() => LoadCharacter(message.path));
         }
 
         public override void Character_LoadFemaleResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load female (resolver) ({Path.GetFileName(message.path)})");
-            ResolverWrap(() => LoadCharacter(message.path));
+            Log(LogLevel.Message, $"Load female (resolver) [{Path.GetFileName(message.path)}]");
+            ResolverDelay(() => LoadCharacter(message.path));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load male ({Path.GetFileName(message.path)})");
-            LoadCharacter(message.path);
+            Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
+            DelayAction(() => LoadCharacter(message.path));
         }
 
         public override void Character_LoadMaleResolver(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load male (resolver) ({Path.GetFileName(message.path)})");
-            ResolverWrap(() => LoadCharacter(message.path));
-        }
-
-        public override void Character_ReplaceAll(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Replace character(s) ({Path.GetFileName(message.path)})");
-            LoadCharacter(message.path);
-        }
-
-        public override void Character_ReplaceAllResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Replace character(s) (resolver) ({Path.GetFileName(message.path)})");
-            ResolverWrap(() => LoadCharacter(message.path));
+            Log(LogLevel.Message, $"Load male (resolver) [{Path.GetFileName(message.path)}]");
+            ResolverDelay(() => LoadCharacter(message.path));
         }
 
         // Copied from CustomCharaFile.Start
         void LoadCharacter(string path)
         {
-            ForceDisableOneFrame();
+            KKKiyase_ForceDisableOneFrame();
             Utils.Sound.Play(SystemSE.ok_s);
 
             bool loadFace = true;
@@ -113,39 +103,64 @@ namespace CardOrganizerKK
             chaCtrl.ChangeCoordinateType(true);
             chaCtrl.Reload(!loadCoord, !loadFace && !loadCoord, !loadHair, !loadBody);
             CustomBase.Instance.updateCustomUI = true;
-            CustomHistory.Instance.Add5(chaCtrl, new Func<bool, bool, bool, bool, bool>(chaCtrl.Reload), !loadCoord, !loadFace && !loadCoord, !loadHair, !loadBody);
+            CustomHistory.Instance.Add5(chaCtrl, chaCtrl.Reload, !loadCoord, !loadFace && !loadCoord, !loadHair, !loadBody);
         }
 
+        // Copied from CustomCoordinateFile.CreateCoordinateFileCoroutine
         public override void Outfit_Save(MsgObject message)
         {
-            string name = "coordinateName";
-            Log(LogLevel.Message, $"Save outfit ({name})");
-            FindObjectOfType<CustomCoordinateFile>().CreateCoordinateFile(name);
+            string coordName = "coordinateName";
+            var chaCtrl = CustomBase.Instance.chaCtrl;
+            var customCtrl = Singleton<CustomControl>.Instance;
+
+            string date = GetTimeNow();
+            string prefix = chaCtrl.sex == 0 ? "KKCoordeM" : "KKCoordeF";
+            string filename = $"{prefix}_{date}";
+            string filenameext = filename + ".png";
+            string path = Path.Combine(message.path, filenameext);
+            Log(LogLevel.Message, $"Save outfit [{Path.GetFileName(path)}]");
+
+            var outfit = chaCtrl.chaFile.coordinate[chaCtrl.chaFile.status.coordinateType];
+            CustomCapture.CreatePng(ref outfit.pngData, 252, 352, null, null, Camera.main, null);
+            outfit.coordinateName = coordName;
+
+            DelayAction(() =>
+            {
+                outfit.SaveFile(path);
+                TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
+
+                int noUseIndex = customCtrl.saveFileListCtrl.GetNoUseIndex();
+                customCtrl.saveFileListCtrl.AddList(noUseIndex, coordName, "", "", path, filename, DateTime.Now, false);
+                customCtrl.saveFileListCtrl.ReCreate();
+            });
         }
 
         public override void Outfit_Load(MsgObject message)
         {
-            Log(LogLevel.Message, $"Load outfit ({Path.GetFileName(message.path)})");
+            Log(LogLevel.Message, $"Load outfit [{Path.GetFileName(message.path)}]");
             Utils.Sound.Play(SystemSE.ok_s);
-            var chaCtrl = CustomBase.Instance.chaCtrl;
 
-            bool loadClothes = true;
-            bool loadAcs = true;
+            DelayAction(() =>
+            {
+                var chaCtrl = CustomBase.Instance.chaCtrl;
+                bool loadClothes = true;
+                bool loadAcs = true;
 
-            byte[] bytes = MessagePackSerializer.Serialize(chaCtrl.nowCoordinate.clothes);
-            byte[] bytes2 = MessagePackSerializer.Serialize(chaCtrl.nowCoordinate.accessory);
-            chaCtrl.nowCoordinate.LoadFile(message.path);
+                byte[] bytes = MessagePackSerializer.Serialize(chaCtrl.nowCoordinate.clothes);
+                byte[] bytes2 = MessagePackSerializer.Serialize(chaCtrl.nowCoordinate.accessory);
+                chaCtrl.nowCoordinate.LoadFile(message.path);
 
-            if(!loadClothes)
-                chaCtrl.nowCoordinate.clothes = MessagePackSerializer.Deserialize<ChaFileClothes>(bytes);
+                if(!loadClothes)
+                    chaCtrl.nowCoordinate.clothes = MessagePackSerializer.Deserialize<ChaFileClothes>(bytes);
 
-            if(!loadAcs)
-                chaCtrl.nowCoordinate.accessory = MessagePackSerializer.Deserialize<ChaFileAccessory>(bytes2);
+                if(!loadAcs)
+                    chaCtrl.nowCoordinate.accessory = MessagePackSerializer.Deserialize<ChaFileAccessory>(bytes2);
 
-            chaCtrl.Reload(false, true, true, true);
-            chaCtrl.AssignCoordinate((ChaFileDefine.CoordinateType)chaCtrl.chaFile.status.coordinateType);
-            CustomBase.Instance.updateCustomUI = true;
-            CustomHistory.Instance.Add5(chaCtrl, new Func<bool, bool, bool, bool, bool>(chaCtrl.Reload), false, true, true, true);
+                chaCtrl.Reload(false, true, true, true);
+                chaCtrl.AssignCoordinate((ChaFileDefine.CoordinateType)chaCtrl.chaFile.status.coordinateType);
+                CustomBase.Instance.updateCustomUI = true;
+                CustomHistory.Instance.Add5(chaCtrl, new Func<bool, bool, bool, bool, bool>(chaCtrl.Reload), false, true, true, true);
+            });
         }
     }
 }

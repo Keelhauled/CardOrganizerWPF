@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace PluginLibrary
 {
@@ -8,6 +10,23 @@ namespace PluginLibrary
         void Awake()
         {
             DontDestroyOnLoad(this);
+        }
+
+        public string GetTimeNow()
+        {
+            return DateTime.Now.ToString("yyyy_MMdd_HHmm_ss_fff");
+        }
+
+        public void DelayAction(UnityAction action, int wait = 1)
+        {
+            if(wait < 0) wait = 0;
+            StartCoroutine(Coroutine());
+
+            IEnumerator Coroutine()
+            {
+                for(int i = 0; i < wait; i++) yield return null;
+                action();
+            }
         }
 
         public void UseCard(MsgObject message)
@@ -127,10 +146,5 @@ namespace PluginLibrary
 
         public virtual void Pose_Save(MsgObject message){}
         public virtual void Pose_Load(MsgObject message){}
-
-        public string GetTimeNow()
-        {
-            return DateTime.Now.ToString("yyyy_MMdd_HHmm_ss_fff");
-        }
     }
 }

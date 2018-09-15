@@ -2,22 +2,32 @@
 using UnityEngine;
 using Harmony;
 using PluginLibrary;
+using static BepInEx.Logger;
+using BepInEx.Logging;
 
 namespace CardOrganizerKK
 {
     class Methods_Common : CardHandler
     {
-        public void ForceDisableOneFrame()
+        UnityEngine.Object kiyaseObject;
+        Traverse ForceDisableOneFrame;
+
+        public void KKKiyase_ForceDisableOneFrame()
         {
             try
             {
-                var kiyaseType = PluginUtils.FindType("KK_Kiyase.KK_Kiyase");
-                var kiyaseObject = FindObjectOfType(kiyaseType);
-                Traverse.Create(kiyaseObject).Field("someScenesBtnExpantion").Method("ForceDisableOneFrame").GetValue();
+                if(ForceDisableOneFrame == null)
+                {
+                    var kiyaseType = PluginUtils.FindType("KK_Kiyase.KK_Kiyase");
+                    kiyaseObject = FindObjectOfType(kiyaseType);
+                    ForceDisableOneFrame = Traverse.Create(kiyaseObject).Field("someScenesBtnExpantion").Method("ForceDisableOneFrame");
+                }
+
+                ForceDisableOneFrame.GetValue();
             }
             catch(Exception)
             {
-                Console.WriteLine("KK_Kiyase not found");
+                Log(LogLevel.Debug, "KK_Kiyase not found");
             }
         }
 
@@ -27,6 +37,11 @@ namespace CardOrganizerKK
             Event.current.alt = true;
             action();
             Event.current.alt = save;
+        }
+
+        public void ResolverDelay(Action action, int wait = 1)
+        {
+            DelayAction(() => ResolverWrap(action), wait);
         }
     }
 }
