@@ -25,6 +25,8 @@ namespace PluginLibrary
             IEnumerator Coroutine()
             {
                 for(int i = 0; i < wait; i++) yield return null;
+                yield return new WaitForEndOfFrame();
+
                 action();
             }
         }

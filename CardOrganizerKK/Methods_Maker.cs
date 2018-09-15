@@ -26,16 +26,16 @@ namespace CardOrganizerKK
             Utils.Sound.Play(SystemSE.ok_s);
             //customCtrl.saveMode = true;
 
-            byte[] facePngData = customCtrl.customCap.CapCharaFace(true);
-            customBase.chaCtrl.chaFile.facePngData = facePngData;
-            customCtrl.customCap.UpdateFaceImage(customBase.chaCtrl.chaFile.facePngData);
-
-            byte[] pngData = customCtrl.customCap.CapCharaCard(true, customBase.saveFrameAssist);
-            customBase.chaCtrl.chaFile.pngData = pngData;
-            customCtrl.customCap.UpdateCardImage(customBase.chaCtrl.chaFile.pngData);
-
             DelayAction(() =>
             {
+                byte[] facePngData = customCtrl.customCap.CapCharaFace(true);
+                customBase.chaCtrl.chaFile.facePngData = facePngData;
+                customCtrl.customCap.UpdateFaceImage(customBase.chaCtrl.chaFile.facePngData);
+
+                byte[] pngData = customCtrl.customCap.CapCharaCard(true, customBase.saveFrameAssist);
+                customBase.chaCtrl.chaFile.pngData = pngData;
+                customCtrl.customCap.UpdateCardImage(customBase.chaCtrl.chaFile.pngData);
+
                 customBase.chaCtrl.chaFile.SaveCharaFile(filename, byte.MaxValue, false);
                 TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
 
@@ -120,12 +120,11 @@ namespace CardOrganizerKK
             string path = Path.Combine(message.path, filenameext);
             Log(LogLevel.Message, $"Save outfit [{Path.GetFileName(path)}]");
 
-            var outfit = chaCtrl.chaFile.coordinate[chaCtrl.chaFile.status.coordinateType];
-            CustomCapture.CreatePng(ref outfit.pngData, 252, 352, null, null, Camera.main, null);
-            outfit.coordinateName = coordName;
-
             DelayAction(() =>
             {
+                var outfit = chaCtrl.chaFile.coordinate[chaCtrl.chaFile.status.coordinateType];
+                CustomCapture.CreatePng(ref outfit.pngData, 252, 352, null, null, Camera.main, null);
+                outfit.coordinateName = coordName;
                 outfit.SaveFile(path);
                 TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
 
