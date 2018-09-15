@@ -77,11 +77,11 @@ namespace CardOrganizerWPF
                     string mainPath = settings.HSPath;
                     Tabs = new List<CardTypeTab>
                     {
-                        new CardTypeTab("Scenes", Path.Combine(mainPath, @"studioneo\scene"), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
-                        new CardTypeTab("Females", Path.Combine(mainPath, @"chara\female"), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Males", Path.Combine(mainPath, @"chara\male"), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Outfits (F)", Path.Combine(mainPath, @"coordinate\female"), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
-                        new CardTypeTab("Outfits (M)", Path.Combine(mainPath, @"coordinate\male"), settings.SavedOutfitsMCategory, tabControlOutfitsM, MsgObject.Action.OutfitSave),
+                        new CardTypeTab("Scene", Path.Combine(mainPath, @"studioneo\scene"), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
+                        new CardTypeTab("Female", Path.Combine(mainPath, @"chara\female"), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
+                        new CardTypeTab("Male", Path.Combine(mainPath, @"chara\male"), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
+                        new CardTypeTab("Outfit (F)", Path.Combine(mainPath, @"coordinate\female"), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
+                        new CardTypeTab("Outfit (M)", Path.Combine(mainPath, @"coordinate\male"), settings.SavedOutfitsMCategory, tabControlOutfitsM, MsgObject.Action.OutfitSave),
                     };
                     break;
                 }
@@ -91,10 +91,10 @@ namespace CardOrganizerWPF
                     string mainPath = settings.KKPath;
                     Tabs = new List<CardTypeTab>
                     {
-                        new CardTypeTab("Scenes", Path.Combine(mainPath, @"studio\scene"), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
-                        new CardTypeTab("Females", Path.Combine(mainPath, @"chara\female"), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Males", Path.Combine(mainPath, @"chara\male"), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Outfits", Path.Combine(mainPath, @"coordinate"), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
+                        new CardTypeTab("Scene", Path.Combine(mainPath, @"studio\scene"), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
+                        new CardTypeTab("Female", Path.Combine(mainPath, @"chara\female"), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
+                        new CardTypeTab("Male", Path.Combine(mainPath, @"chara\male"), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
+                        new CardTypeTab("Outfit", Path.Combine(mainPath, @"coordinate"), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
                         new CardTypeTab("Disabled"),
                     };
                     break;
@@ -104,11 +104,11 @@ namespace CardOrganizerWPF
                 {
                     Tabs = new List<CardTypeTab>
                     {
-                        new CardTypeTab("Scenes"),
-                        new CardTypeTab("Females"),
-                        new CardTypeTab("Males"),
-                        new CardTypeTab("Outfits (F)"),
-                        new CardTypeTab("Outfits (M)"),
+                        new CardTypeTab("Scene"),
+                        new CardTypeTab("Female"),
+                        new CardTypeTab("Male"),
+                        new CardTypeTab("Outfit (F)"),
+                        new CardTypeTab("Outfit (M)"),
                     };
                     break;
                 }
