@@ -179,12 +179,12 @@ namespace CardOrganizerKK
                     var path = Path.Combine(message.path, $"{param.lastname}_{param.firstname}_{date}.png");
                     Log(LogLevel.Message, $"Save character [{Path.GetFileName(path)}]");
 
-                    Traverse.Create(charFile).Property("charaFileName").SetValue(Path.GetFileNameWithoutExtension(path));
-                    CustomCapture.CreatePng(ref charFile.pngData, 252, 352, null, null, Camera.main, null);
-                    CustomCapture.CreatePng(ref charFile.facePngData, 240, 320, null, null, Camera.main, null);
-
                     DelayAction(() =>
                     {
+                        Traverse.Create(charFile).Property("charaFileName").SetValue(Path.GetFileNameWithoutExtension(path));
+                        CustomCapture.CreatePng(ref charFile.pngData, 252, 352, null, null, Camera.main, null);
+                        CustomCapture.CreatePng(ref charFile.facePngData, 240, 320, null, null, Camera.main, null);
+
                         using(var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
                         {
                             charFile.SaveCharaFile(fileStream, true);
