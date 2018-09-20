@@ -28,6 +28,8 @@ namespace CardOrganizerKK
 
             DelayAction(() =>
             {
+                //KKKiyase.ForceDisableOneFrame();
+
                 byte[] facePngData = customCtrl.customCap.CapCharaFace(true);
                 customBase.chaCtrl.chaFile.facePngData = facePngData;
                 customCtrl.customCap.UpdateFaceImage(customBase.chaCtrl.chaFile.facePngData);
@@ -89,7 +91,7 @@ namespace CardOrganizerKK
         // Copied from CustomCharaFile.Start
         void LoadCharacter(string path)
         {
-            KKKiyase_ForceDisableOneFrame();
+            //KKKiyase.ForceDisableOneFrame();
             Utils.Sound.Play(SystemSE.ok_s);
 
             bool loadFace = true;

@@ -25,6 +25,9 @@ namespace CardOrganizerKK
                 Studio.Studio.Instance.sceneInfo.Save(path);
                 TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
             });
+
+            // use this after FileSystemWatcher is in place
+            //Studio.Studio.Instance.systemButtonCtrl.OnClickSave();
         }
 
         public override void Scene_Load(MsgObject message)
@@ -171,6 +174,7 @@ namespace CardOrganizerKK
             if(characters.Count > 0)
             {
                 string date = GetTimeNow();
+                //KKKiyase.ForceDisableOneFrame();
 
                 foreach(var item in characters)
                 {

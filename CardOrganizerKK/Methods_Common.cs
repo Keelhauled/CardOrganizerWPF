@@ -9,25 +9,32 @@ namespace CardOrganizerKK
 {
     class Methods_Common : CardHandler
     {
-        UnityEngine.Object kiyaseObject;
-        Traverse ForceDisableOneFrame;
-
-        public void KKKiyase_ForceDisableOneFrame()
+        public static class KKKiyase
         {
-            try
-            {
-                if(ForceDisableOneFrame == null)
-                {
-                    var kiyaseType = PluginUtils.FindType("KK_Kiyase.KK_Kiyase");
-                    kiyaseObject = FindObjectOfType(kiyaseType);
-                    ForceDisableOneFrame = Traverse.Create(kiyaseObject).Field("someScenesBtnExpantion").Method("ForceDisableOneFrame");
-                }
+            static bool tryKiyase = true;
+            static UnityEngine.Object kiyaseObject;
+            static Traverse ForceDisableOneFrameTraverse;
 
-                ForceDisableOneFrame.GetValue();
-            }
-            catch(Exception)
+            public static void ForceDisableOneFrame()
             {
-                Log(LogLevel.Debug, "KK_Kiyase not found");
+                if(!tryKiyase) return;
+
+                try
+                {
+                    if(ForceDisableOneFrameTraverse == null)
+                    {
+                        var kiyaseType = PluginUtils.FindType("KK_Kiyase.KK_Kiyase");
+                        kiyaseObject = FindObjectOfType(kiyaseType);
+                        ForceDisableOneFrameTraverse = Traverse.Create(kiyaseObject).Field("someScenesBtnExpantion").Method("ForceDisableOneFrame");
+                    }
+
+                    ForceDisableOneFrameTraverse.GetValue();
+                }
+                catch(Exception)
+                {
+                    Log(LogLevel.Debug, "KK_Kiyase not found");
+                    tryKiyase = false;
+                }
             }
         }
 
