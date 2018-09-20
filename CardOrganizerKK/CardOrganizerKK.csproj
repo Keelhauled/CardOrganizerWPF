@@ -31,34 +31,36 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>DLL\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\Games\Koikatu\BepInEx\core\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>DLL\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\Games\Koikatu\CharaStudio_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>DLL\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\..\..\Games\Koikatu\CharaStudio_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>DLL\BepInEx.dll</HintPath>
+      <HintPath>..\..\..\Games\Koikatu\BepInEx\core\BepInEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ConfigurationManager, Version=1.0.6832.18883, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Games\Koikatu\BepInEx\ConfigurationManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>DLL\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\Games\Koikatu\CharaStudio_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardOrganizerKK.cs" />
+    <Compile Include="DisableCharaList.cs" />
     <Compile Include="Methods_Common.cs" />
     <Compile Include="Methods_FreeHSelect.cs" />
     <Compile Include="Methods_Maker.cs" />
