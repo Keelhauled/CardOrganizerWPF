@@ -34,31 +34,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>DLL\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="IllusionInjector">
-      <HintPath>DLL\IllusionInjector.dll</HintPath>
+      <HintPath>..\..\..\Games\HoneySelect\StudioNEO_64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="IllusionPlugin">
-      <HintPath>DLL\IllusionPlugin.dll</HintPath>
+      <HintPath>..\..\..\Games\HoneySelect\StudioNEO_64_Data\Managed\IllusionPlugin.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MessagePackKK">
-      <HintPath>DLL\MessagePackKK.dll</HintPath>
+      <HintPath>..\DLL\MessagePackKK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization">
-      <HintPath>DLL\System.Runtime.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    	<HintPath>..\DLL\System.Runtime.Serialization.dll</HintPath>
+  	</Reference>
     <Reference Include="UnityEngine">
-      <HintPath>DLL\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\Games\HoneySelect\StudioNEO_64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
