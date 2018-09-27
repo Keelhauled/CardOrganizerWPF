@@ -9,8 +9,9 @@ namespace CardOrganizerKK
     [BepInPlugin("keelhauled.cardorganizerkk", "CardOrganizerKK", "1.0.0")]
     class CardOrganizerKK : BaseUnityPlugin
     {
+        [Advanced(true)]
         [DisplayName("Disable ingame card lists")]
-        [Description("These lists drain a lot of performance and are useless with this plugin so they should be disabled (restart required)")]
+        [Description("These lists drain a lot of performance and are useless with this plugin so they should be disabled.\nChanges take effect after game restart.")]
         ConfigWrapper<bool> DisableLists { get; }
 
         CardOrganizerKK()
