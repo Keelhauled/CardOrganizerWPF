@@ -23,11 +23,7 @@ namespace CardOrganizerKK
                 Studio.Studio.Instance.dicObjectCtrl.Values.ToList().ForEach(x => x.OnSavePreprocessing());
                 Studio.Studio.Instance.sceneInfo.cameraSaveData = Studio.Studio.Instance.cameraCtrl.Export();
                 Studio.Studio.Instance.sceneInfo.Save(path);
-                TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
             });
-
-            // use this after FileSystemWatcher is in place
-            //Studio.Studio.Instance.systemButtonCtrl.OnClickSave();
         }
 
         public override void Scene_Load(MsgObject message)
@@ -39,8 +35,7 @@ namespace CardOrganizerKK
         public override void Scene_LoadResolver(MsgObject message)
         {
             Log(LogLevel.Message, $"Load scene (resolver) [{Path.GetFileName(message.path)}]");
-            // this is very bad, map doesn't load sometimes
-            ResolverDelay(() => Studio.Studio.Instance.LoadScene(message.path));
+            ResolverDelay(() => Studio.Studio.Instance.LoadScene(message.path)); // this is very bad, map doesn't load sometimes
         }
 
         public override void Scene_ImportAll(MsgObject message)
@@ -192,7 +187,6 @@ namespace CardOrganizerKK
                         using(var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
                         {
                             charFile.SaveCharaFile(fileStream, true);
-                            TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
                         }
                     });
                 }
@@ -233,7 +227,11 @@ namespace CardOrganizerKK
             if(characters.Count > 0)
             {
                 Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} [{Path.GetFileName(message.path)}]");
-                DelayAction(() => { foreach(var x in characters) x.ChangeChara(message.path); });
+                DelayAction(() =>
+                {
+                    foreach(var x in characters) x.ChangeChara(message.path);
+                    UpdateStateInfo();
+                });
             }
             else
             {
@@ -247,7 +245,11 @@ namespace CardOrganizerKK
             if(characters.Count > 0)
             {
                 Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} (resolver) [{Path.GetFileName(message.path)}]");
-                ResolverDelay(() => { foreach(var x in characters) x.ChangeChara(message.path); });
+                ResolverDelay(() =>
+                {
+                    foreach(var x in characters) x.ChangeChara(message.path);
+                    UpdateStateInfo();
+                });
             }
             else
             {
@@ -302,7 +304,6 @@ namespace CardOrganizerKK
                         CustomCapture.CreatePng(ref outfit.pngData, 252, 352, null, null, Camera.main, null);
                         outfit.coordinateName = "coordinateName";
                         outfit.SaveFile(path);
-                        TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
                     });
                 }
             }
@@ -322,13 +323,7 @@ namespace CardOrganizerKK
                 DelayAction(() =>
                 {
                     foreach(var chara in characters) chara.LoadClothesFile(message.path);
-
-                    var mpCharCtrl = FindObjectOfType<MPCharCtrl>();
-                    if(mpCharCtrl)
-                    {
-                        int select = Traverse.Create(mpCharCtrl).Field("select").GetValue<int>();
-                        if(select == 0) mpCharCtrl.OnClickRoot(0);
-                    }
+                    UpdateStateInfo();
                 });
             }
             else
@@ -340,6 +335,16 @@ namespace CardOrganizerKK
         List<OCIChar> GetSelectedCharacters()
         {
             return GuideObjectManager.Instance.selectObjectKey.Select(x => Studio.Studio.GetCtrlInfo(x) as OCIChar).Where(x => x != null).ToList();
+        }
+
+        void UpdateStateInfo()
+        {
+            var mpCharCtrl = FindObjectOfType<MPCharCtrl>();
+            if(mpCharCtrl)
+            {
+                int select = Traverse.Create(mpCharCtrl).Field("select").GetValue<int>();
+                if(select == 0) mpCharCtrl.OnClickRoot(0);
+            }
         }
     }
 }

@@ -15,8 +15,7 @@ namespace CardOrganizerWPF
         public TCPClientManager(Action<MsgObject> action)
         {
             MessageAction = action;
-            clientReceiveThread = new Thread(ListenForData);
-            clientReceiveThread.IsBackground = true;
+            clientReceiveThread = new Thread(ListenForData){ IsBackground = true };
             clientReceiveThread.Start();
         }
         

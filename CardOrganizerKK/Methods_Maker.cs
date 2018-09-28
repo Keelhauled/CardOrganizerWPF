@@ -24,10 +24,10 @@ namespace CardOrganizerKK
             string path = Path.Combine(message.path, filenameext);
             Log(LogLevel.Message, $"Save character [{filenameext}]");
             Utils.Sound.Play(SystemSE.ok_s);
-            //customCtrl.saveMode = true;
 
             DelayAction(() =>
             {
+                //customCtrl.saveMode = true;
                 //KKKiyase.ForceDisableOneFrame();
 
                 byte[] facePngData = customCtrl.customCap.CapCharaFace(true);
@@ -39,7 +39,6 @@ namespace CardOrganizerKK
                 customCtrl.customCap.UpdateCardImage(customBase.chaCtrl.chaFile.pngData);
 
                 customBase.chaCtrl.chaFile.SaveCharaFile(filename, byte.MaxValue, false);
-                TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
 
                 if(customCtrl.saveFileListCtrl)
                 {
@@ -128,7 +127,6 @@ namespace CardOrganizerKK
                 CustomCapture.CreatePng(ref outfit.pngData, 252, 352, null, null, Camera.main, null);
                 outfit.coordinateName = coordName;
                 outfit.SaveFile(path);
-                TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
 
                 int noUseIndex = customCtrl.saveFileListCtrl.GetNoUseIndex();
                 customCtrl.saveFileListCtrl.AddList(noUseIndex, coordName, "", "", path, filename, DateTime.Now, false);

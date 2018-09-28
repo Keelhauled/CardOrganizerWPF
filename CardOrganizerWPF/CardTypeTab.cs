@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using DrWPF.Windows.Data;
@@ -23,6 +24,9 @@ namespace CardOrganizerWPF
         private TabControl tabControl;
         public MsgObject.Action saveMsg;
 
+        FileSystemWatcher watcher;
+        SynchronizationContext context = SynchronizationContext.Current;
+
         public CardTypeTab(string header, string folderPath, int savedCategory, TabControl tabControl, MsgObject.Action saveMsg)
         {
             IsEnabled = true;
@@ -33,6 +37,10 @@ namespace CardOrganizerWPF
             SavedCategory = savedCategory != -1 ? savedCategory : 0;
             this.tabControl = tabControl;
             this.saveMsg = saveMsg;
+
+            watcher = new FileSystemWatcher(folderPath);
+            watcher.Created += FileCreated;
+            watcher.EnableRaisingEvents = true;
         }
 
         public CardTypeTab(string header)
@@ -41,6 +49,26 @@ namespace CardOrganizerWPF
             Header = header;
             Categories = new ObservableSortedDictionary<string, Category>();
             SavedCategory = -1;
+        }
+
+        void FileCreated(object sender, FileSystemEventArgs e)
+        {
+            bool fileIsBusy = true;
+            while(fileIsBusy)
+            {
+                try
+                {
+                    using(var file = File.Open(e.FullPath, FileMode.Open, FileAccess.Read, FileShare.Read)) { }
+                    fileIsBusy = false;
+                }
+                catch(IOException)
+                {
+                    //The file is still arriving, give it time to finish copying and check again
+                    Thread.Sleep(100);
+                }
+            }
+
+            context.Post((x) => AddImage(e.FullPath), null);
         }
 
         private ObservableSortedDictionary<string, Category> GetCategoriesFromData()
@@ -183,8 +211,6 @@ namespace CardOrganizerWPF
                         File.Move(path, newPath);
                     else
                         File.Copy(path, newPath);
-
-                    AddImage(newPath);
                 }
             }
         }

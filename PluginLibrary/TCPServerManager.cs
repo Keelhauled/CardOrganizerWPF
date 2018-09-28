@@ -19,8 +19,7 @@ public class TCPServerManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this);
 
-        tcpListenerThread = new Thread(ListenForIncomingRequests);
-        tcpListenerThread.IsBackground = true;
+        tcpListenerThread = new Thread(ListenForIncomingRequests){ IsBackground = true };
         tcpListenerThread.Start();
     }
 
