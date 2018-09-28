@@ -1,10 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using PluginLibrary;
 
 namespace CardOrganizerHS
 {
@@ -12,10 +7,11 @@ namespace CardOrganizerHS
     {
         public override void Character_Save(MsgObject message)
         {
-            var chara = Singleton<CustomControl>.Instance.chainfo;
-            string path = Path.Combine(message.path, $"{chara.customInfo.name}_{GetTimeNow()}.png");
-            SaveChara(chara, path);
-            TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
+            var customCtrl = Singleton<CustomControl>.Instance;
+            string path = Path.Combine(message.path, $"{customCtrl.chainfo.customInfo.name}_{GetTimeNow()}.png");
+            customCtrl.chainfo.chaFile.charaFileName = Path.GetFileNameWithoutExtension(path);
+            CreatePng(ref customCtrl.chainfo.chaFile.charaFilePNG);
+            customCtrl.CustomSaveCharaAssist(path);
         }
 
         public override void Character_LoadFemale(MsgObject message)
@@ -30,7 +26,9 @@ namespace CardOrganizerHS
 
         public override void Character_ReplaceAll(MsgObject message)
         {
-            var chara = Singleton<CustomControl>.Instance.chainfo;
+            var customCtrl = Singleton<CustomControl>.Instance;
+            var chara = customCtrl.chainfo;
+
             chara.chaFile.Load(message.path);
             chara.Reload(false, false, false);
 
@@ -39,7 +37,6 @@ namespace CardOrganizerHS
             else
                 (chara as CharFemale).UpdateBustSoftnessAndGravity();
 
-            var customCtrl = Singleton<CustomControl>.Instance;
             customCtrl.subMenuCtrl.UpdateLimitMainMenu();
             customCtrl.SetSameSetting();
             customCtrl.noChangeSubMenu = true;
@@ -51,16 +48,18 @@ namespace CardOrganizerHS
 
         public override void Outfit_Save(MsgObject message)
         {
-            var chara = Singleton<CustomControl>.Instance.chainfo;
-            string prefix = chara.Sex == 0 ? "coordM" : "coordF";
+            var customCtrl = Singleton<CustomControl>.Instance;
+            string prefix = customCtrl.chainfo.Sex == 0 ? "coordM" : "coordF";
             string path = Path.Combine(message.path, $"{prefix}_{GetTimeNow()}.png");
-            SaveOutfit(chara, path);
-            TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
+            CreatePng(ref customCtrl.chainfo.clothesInfo.clothesPNG);
+            customCtrl.CustomSaveClothesAssist(path);
         }
 
         public override void Outfit_Load(MsgObject message)
         {
-            var chara = Singleton<CustomControl>.Instance.chainfo;
+            var customCtrl = Singleton<CustomControl>.Instance;
+            var chara = customCtrl.chainfo;
+
             chara.clothesInfo.Load(message.path);
             chara.chaFile.SetCoordinateInfo(chara.statusInfo.coordinateType);
             chara.Reload(false, false, false);
@@ -70,7 +69,6 @@ namespace CardOrganizerHS
             else
                 (chara as CharFemale).UpdateBustSoftnessAndGravity();
 
-            var customCtrl = Singleton<CustomControl>.Instance;
             customCtrl.subMenuCtrl.UpdateLimitMainMenu();
             customCtrl.ChangeSwimTypeFromLoad();
             customCtrl.UpdateAcsName();

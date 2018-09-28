@@ -18,7 +18,6 @@ namespace CardOrganizerHS
             string path = Path.Combine(message.path, GetTimeNow() + ".png");
             Studio.Studio.Instance.sceneInfo.Save(path);
             PluginUtils.InvokePluginMethod("HSStudioNEOExtSave.StudioNEOExtendSaveMgr", "SaveExtData", path);
-            TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
         }
 
         public override void Scene_Load(MsgObject message)
@@ -109,7 +108,6 @@ namespace CardOrganizerHS
                 {
                     string path = Path.Combine(message.path, $"{chara.charInfo.customInfo.name}_{date}.png");
                     SaveChara(chara.charInfo, path);
-                    TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
                 }
             }
             else
@@ -142,6 +140,8 @@ namespace CardOrganizerHS
                         var female = chara as OCICharFemale;
                         female.SetTuyaRate(female.oiCharInfo.skinRate);
                     }
+
+                    UpdateStateInfo();
                 }
             }
             else
@@ -203,7 +203,6 @@ namespace CardOrganizerHS
                     string prefix = chara.oiCharInfo.sex == 0 ? "coordM" : "coordF";
                     string path = Path.Combine(message.path, $"{prefix}_{date}.png");
                     SaveOutfit(chara.charInfo, path);
-                    TCPServerManager.Instance.SendMessage(MsgObject.AddMsg(path));
                 }
             }
             else
@@ -227,13 +226,8 @@ namespace CardOrganizerHS
                         female.SetTuyaRate(female.oiCharInfo.skinRate);
                     }
                 }
-                
-                var mpCharCtrl = FindObjectOfType<MPCharCtrl>();
-                if(mpCharCtrl)
-                {
-                    int select = Traverse.Create(mpCharCtrl).Field("select").GetValue<int>();
-                    if(select == 0) mpCharCtrl.OnClickRoot(0);
-                }
+
+                UpdateStateInfo();
             }
             else
             {
@@ -274,6 +268,16 @@ namespace CardOrganizerHS
         List<OCIChar> GetSelectedCharacters()
         {
             return GuideObjectManager.Instance.selectObjectKey.Select(x => Studio.Studio.GetCtrlInfo(x) as OCIChar).Where(x => x != null).ToList();
+        }
+
+        void UpdateStateInfo()
+        {
+            var mpCharCtrl = FindObjectOfType<MPCharCtrl>();
+            if(mpCharCtrl)
+            {
+                int select = Traverse.Create(mpCharCtrl).Field("select").GetValue<int>();
+                if(select == 0) mpCharCtrl.OnClickRoot(0);
+            }
         }
     }
 }
