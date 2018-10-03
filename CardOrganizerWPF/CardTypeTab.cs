@@ -41,6 +41,27 @@ namespace CardOrganizerWPF
             watcher = new FileSystemWatcher(folderPath);
             watcher.Created += FileCreated;
             watcher.EnableRaisingEvents = true;
+
+            //Console.WriteLine($"Tab '{header}' has {FindDuplicatesInData().Count} duplicates in data.");
+        }
+
+        public List<string> FindDuplicatesInData()
+        {
+            var list = new List<string>();
+
+            foreach(var category in Categories.Values)
+            {
+                foreach(var image in category.Images)
+                {
+                    list.Add(image.Path);
+                }
+            }
+
+            var duplicateKeys = list.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key);
+
+            return duplicateKeys.ToList();
         }
 
         public CardTypeTab(string header)
@@ -192,21 +213,30 @@ namespace CardOrganizerWPF
             if(Path.GetExtension(path) == ".png")
             {
                 string newPath = Path.Combine(FolderPath, Path.GetFileName(path));
-                bool exists = File.Exists(newPath);
+                bool inAnyCategory = FindThumb(newPath, out Category category, out Thumbnail thumb);
+                bool inSelectedCategory = inAnyCategory && category == GetSelectedCategory();
+                bool inNotSelectedCategory = inAnyCategory && !inSelectedCategory;
 
-                if(!exists && FindAndMoveThumb(newPath))
+                if(File.Exists(newPath))
                 {
-                    if(move)
-                        File.Move(path, newPath);
-                    else
-                        File.Copy(path, newPath);
-                }
-                else if(exists)
-                {
-                    FindAndMoveThumb(newPath);
+                    if(inSelectedCategory)
+                    {
+                        // do nothing
+                    }
+                    else if(inNotSelectedCategory)
+                    {
+                        // ask user if should move the file to the selected category
+                        MoveImageFrom(thumb, category, GetSelectedCategory());
+                    }
                 }
                 else
                 {
+                    if(inAnyCategory)
+                    {
+                        // remove image from data and then let FileSystemWatcher handle the rest
+                        RemoveImageData(category, thumb);
+                    }
+
                     if(move)
                         File.Move(path, newPath);
                     else
@@ -221,6 +251,32 @@ namespace CardOrganizerWPF
             var category = GetSelectedCategory();
             category.RemoveImage(thumb);
             dataManager.RemoveImage(thumb, category.Title);
+        }
+
+        public void RemoveImageData(Category category, Thumbnail thumb)
+        {
+            category.RemoveImage(thumb);
+            dataManager.RemoveImage(thumb, category.Title);
+        }
+
+        public bool FindThumb(string path, out Category outCategory, out Thumbnail outThumb)
+        {
+            foreach(var category in Categories.Values)
+            {
+                foreach(var image in category.Images)
+                {
+                    if(image.Path == path)
+                    {
+                        outCategory = category;
+                        outThumb = image;
+                        return true;
+                    }
+                }
+            }
+
+            outCategory = null;
+            outThumb = null;
+            return false;
         }
 
         public bool FindAndMoveThumb(string path)
