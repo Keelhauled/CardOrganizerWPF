@@ -293,7 +293,7 @@ namespace CardOrganizerWPF
 
         private void MenuItem_Click_AddCategory(object sender, RoutedEventArgs e)
         {
-            string text = new InputBox("Category Name").ShowDialog();
+            string text = new InputBox(this, "Create new category", "Category name", "").ShowDialog();
             if(text != "") SelectedTab.AddCategory(text);
         }
 
