@@ -25,7 +25,7 @@ namespace CardOrganizerWPF
         public MsgObject.Action saveMsg;
 
         FileSystemWatcher watcher;
-        SynchronizationContext context = SynchronizationContext.Current;
+        SynchronizationContext uiContext = SynchronizationContext.Current;
 
         public CardTypeTab(string header, string folderPath, int savedCategory, TabControl tabControl, MsgObject.Action saveMsg)
         {
@@ -89,7 +89,7 @@ namespace CardOrganizerWPF
                 }
             }
 
-            context.Post((x) => AddImage(e.FullPath), null);
+            uiContext.Post((x) => AddImage(e.FullPath), null);
         }
 
         private ObservableSortedDictionary<string, Category> GetCategoriesFromData()
@@ -208,11 +208,12 @@ namespace CardOrganizerWPF
             dataManager.AddImage(thumb, category.Title);
         }
 
-        public void AddImageFromOutside(string path, bool move)
+        public void AddImageFromOutside(string path, bool move, bool reorganize)
         {
             if(Path.GetExtension(path) == ".png")
             {
-                string newPath = Path.Combine(FolderPath, Path.GetFileName(path));
+                string fileName = Path.GetFileName(path);
+                string newPath = Path.Combine(FolderPath, fileName);
                 bool inAnyCategory = FindThumb(newPath, out Category category, out Thumbnail thumb);
                 bool inSelectedCategory = inAnyCategory && category == GetSelectedCategory();
                 bool inNotSelectedCategory = inAnyCategory && !inSelectedCategory;
@@ -226,7 +227,7 @@ namespace CardOrganizerWPF
                     else if(inNotSelectedCategory)
                     {
                         // ask user if should move the file to the selected category
-                        MoveImageFrom(thumb, category, GetSelectedCategory());
+                        if(reorganize) MoveImageFrom(thumb, category, GetSelectedCategory());
                     }
                 }
                 else

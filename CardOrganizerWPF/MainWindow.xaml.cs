@@ -358,10 +358,16 @@ namespace CardOrganizerWPF
         private void TabControl_Drop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach(var file in files)
+            if(files.Length > 0)
             {
                 bool move = Keyboard.Modifiers == ModifierKeys.Shift;
-                SelectedTab.AddImageFromOutside(file, move);
+                string process = move ? "Move" : "Copy";
+                bool reorganize = new ConfirmBox(this, $"{process} file", $"{process} existing files to current category (if any)", "").ShowDialog();
+
+                foreach(var file in files)
+                {
+                    SelectedTab.AddImageFromOutside(file, move, reorganize);
+                } 
             }
         }
         #endregion
