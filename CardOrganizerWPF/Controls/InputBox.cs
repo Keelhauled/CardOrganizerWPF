@@ -15,17 +15,12 @@ namespace CardOrganizerWPF
         bool clickedOK = false;
         bool inputReset = false;
 
-        public InputBox(Window parent, string titleText, string headerText, string exampleText)
+        public InputBox(Window parent, string titleText, string headerText, string exampletext)
         {
-            if(titleText == null) titleText = "";
-            if(headerText == null) headerText = "";
-            if(exampleText == null) exampleText = "";
-
             var font = new FontFamily("Tahoma");
             var elements = new StackPanel();
             double fontSize = 25;
-            string okButtonText = "OK";
-            this.exampleText = exampleText;
+            exampleText = exampletext;
             double windowHeight = 150;
             double windowWidth = 300;
 
@@ -55,7 +50,7 @@ namespace CardOrganizerWPF
                 FontFamily = font,
                 FontSize = fontSize,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                Text = this.exampleText,
+                Text = exampleText,
                 MinWidth = 200,
             };
 
@@ -63,7 +58,7 @@ namespace CardOrganizerWPF
             {
                 Width = 70,
                 Height = 30,
-                Content = okButtonText,
+                Content = "OK",
                 HorizontalAlignment = HorizontalAlignment.Center,
             };
 
