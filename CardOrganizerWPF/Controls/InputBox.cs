@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,148 +9,98 @@ namespace CardOrganizerWPF
 {
     public class InputBox
     {
-        Window Box = new Window();//window for the inputbox
-        FontFamily font = new FontFamily("Tahoma");//font for the whole inputbox
-        int FontSize = 30;//fontsize for the input
-        StackPanel sp1 = new StackPanel();// items container
-        string title = "InputBox";//title as heading
-        string boxcontent;//title
-        string defaulttext = "";//default textbox content
-        //string errormessage = "errormessage";//error messagebox content
-        //string errortitle = "Error";//error messagebox heading title
-        string okbuttontext = "OK";//Ok button content
-        //Brush BoxBackgroundColor = Brushes.GreenYellow;// Window Background
-        //Brush InputBackgroundColor = Brushes.Ivory;// Textbox Background
-        //bool clicked = false;
-        TextBox input = new TextBox();
-        Button ok = new Button();
-        bool inputreset = false;
+        Window window;
+        TextBox input;
+        string exampleText;
+        bool clickedOK = false;
+        bool inputReset = false;
 
-        public InputBox(string content)
+        public InputBox(Window parent, string titleText, string headerText, string exampleText)
         {
-            try
+            if(titleText == null) titleText = "";
+            if(headerText == null) headerText = "";
+            if(exampleText == null) exampleText = "";
+
+            var font = new FontFamily("Tahoma");
+            var elements = new StackPanel();
+            double fontSize = 25;
+            string okButtonText = "OK";
+            this.exampleText = exampleText;
+            double windowHeight = 150;
+            double windowWidth = 300;
+
+            window = new Window
             {
-                boxcontent = content;
-            }
-            catch { boxcontent = "Error!"; }
-            Windowdef();
+                Top = parent.Top + 100,
+                Left = parent.Left + 100,
+                Height = windowHeight,
+                Width = windowWidth,
+                Title = titleText,
+                Content = elements,
+                ResizeMode = ResizeMode.CanMinimize,
+            };
+
+            var content = new TextBlock
+            {
+                TextWrapping = TextWrapping.Wrap,
+                Background = null,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Text = headerText,
+                FontFamily = font,
+                FontSize = fontSize,
+            };
+
+            input = new TextBox
+            {
+                FontFamily = font,
+                FontSize = fontSize,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Text = this.exampleText,
+                MinWidth = 200,
+            };
+
+            var okButton = new Button
+            {
+                Width = 70,
+                Height = 30,
+                Content = okButtonText,
+                HorizontalAlignment = HorizontalAlignment.Center,
+            };
+
+            window.Closing += Box_Closing;
+            if(exampleText != "") input.MouseEnter += Input_MouseEnter;
+            okButton.Click += Ok_Click;
+
+            elements.Children.Add(content);
+            elements.Children.Add(input);
+            elements.Children.Add(okButton);
         }
 
-        public InputBox(string content, string Htitle, string DefaultText)
+        void Box_Closing(object sender, CancelEventArgs e)
         {
-            try
-            {
-                boxcontent = content;
-            }
-            catch { boxcontent = "Error!"; }
-            try
-            {
-                title = Htitle;
-            }
-            catch
-            {
-                title = "Error!";
-            }
-            try
-            {
-                defaulttext = DefaultText;
-            }
-            catch
-            {
-                DefaultText = "Error!";
-            }
-            Windowdef();
+            if(!clickedOK)
+                input.Text = "";
         }
 
-        public InputBox(string content, string Htitle, string Font, int Fontsize)
+        void Input_MouseEnter(object sender, MouseEventArgs e)
         {
-            try
+            if(input.Text == exampleText && !inputReset)
             {
-                boxcontent = content;
-            }
-            catch { boxcontent = "Error!"; }
-            try
-            {
-                font = new FontFamily(Font);
-            }
-            catch { font = new FontFamily("Tahoma"); }
-            try
-            {
-                title = Htitle;
-            }
-            catch
-            {
-                title = "Error!";
-            }
-            if(Fontsize >= 1)
-                FontSize = Fontsize;
-            Windowdef();
-        }
-
-        private void Windowdef()// window building - check only for window size
-        {
-            Box.Height = 150;// Box Height
-            Box.Width = 300;// Box Width
-            //Box.Background = BoxBackgroundColor;
-            Box.Title = title;
-            Box.Content = sp1;
-            Box.Closing += Box_Closing;
-            TextBlock content = new TextBlock();
-            content.TextWrapping = TextWrapping.Wrap;
-            content.Background = null;
-            content.HorizontalAlignment = HorizontalAlignment.Center;
-            content.Text = boxcontent;
-            content.FontFamily = font;
-            content.FontSize = FontSize;
-            sp1.Children.Add(content);
-
-            //input.Background = InputBackgroundColor;
-            //input.FontFamily = font;
-            //input.FontSize = FontSize;
-            input.HorizontalAlignment = HorizontalAlignment.Center;
-            //input.Text = defaulttext;
-            input.MinWidth = 200;
-            input.MouseEnter += Input_MouseDown;
-            sp1.Children.Add(input);
-            ok.Width = 70;
-            ok.Height = 30;
-            ok.Click += Ok_Click;
-            ok.Content = okbuttontext;
-            ok.HorizontalAlignment = HorizontalAlignment.Center;
-            sp1.Children.Add(ok);
-
-        }
-
-        void Box_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //if(!clicked)
-            //    e.Cancel = true;
-        }
-
-        private void Input_MouseDown(object sender, MouseEventArgs e)
-        {
-            if((sender as TextBox).Text == defaulttext && inputreset == false)
-            {
-                (sender as TextBox).Text = null;
-                inputreset = true;
+                input.Text = "";
+                inputReset = true;
             }
         }
 
         void Ok_Click(object sender, RoutedEventArgs e)
         {
-            //clicked = true;
-            //if(input.Text == defaulttext || input.Text == "")
-            //    MessageBox.Show(errormessage, errortitle);
-            //else
-            //{
-                Box.Close();
-            //}
-            //clicked = false;
+            clickedOK = true;
+            window.Close();
+            clickedOK = false;
         }
 
         public string ShowDialog()
         {
-            Box.ShowDialog();
+            window.ShowDialog();
             return input.Text;
         }
     }
