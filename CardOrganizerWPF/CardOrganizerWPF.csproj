@@ -60,6 +60,7 @@
     <Compile Include="CardDataManager.cs" />
     <Compile Include="Controls\ImgConverter.cs" />
     <None Include="Testing\UISettings.cs" />
+    <Compile Include="Controls\ConfirmBox.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <None Include="Testing\ExtTabControl.cs" />
     <Compile Include="Utils\SortableObservableCollection.cs" />
