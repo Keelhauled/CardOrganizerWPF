@@ -28,20 +28,25 @@ namespace CardOrganizerKK
             var studio = gameobject.AddComponent<Methods_CharaStudio>();
             var freeh = gameobject.AddComponent<Methods_FreeHSelect>();
             var maker = gameobject.AddComponent<Methods_Maker>();
+            var hscene = gameobject.AddComponent<Methods_HScene>();
 
-            gameobject.AddComponent<TCPServerManager>().MessageAction = (x) =>
+            gameobject.AddComponent<TCPServerManager>().MessageAction = (message) =>
             {
                 if(FindObjectOfType<StudioScene>())
                 {
-                    studio.UseCard(x);
+                    studio.UseCard(message);
                 }
                 else if(FindObjectOfType<FreeHScene>() && !FindObjectOfType<FreeHCharaSelect>())
                 {
-                    freeh.UseCard(x);
+                    freeh.UseCard(message);
                 }
-                else if(SceneManager.GetActiveScene().name == "CustomScene")
+                else if(FindObjectOfType<CustomScene>())
                 {
-                    maker.UseCard(x);
+                    maker.UseCard(message);
+                }
+                else if(FindObjectOfType<HSceneProc>())
+                {
+                    hscene.UseCard(message);
                 }
             };
         }
