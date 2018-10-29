@@ -69,22 +69,10 @@ namespace CardOrganizerKK
             DelayAction(() => LoadCharacter(message.path));
         }
 
-        public override void Character_LoadFemaleResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Load female (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => LoadCharacter(message.path));
-        }
-
         public override void Character_LoadMale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
             DelayAction(() => LoadCharacter(message.path));
-        }
-
-        public override void Character_LoadMaleResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Load male (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => LoadCharacter(message.path));
         }
 
         // Copied from CustomCharaFile.Start

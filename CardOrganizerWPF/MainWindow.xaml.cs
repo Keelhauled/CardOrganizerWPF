@@ -184,44 +184,37 @@ namespace CardOrganizerWPF
 
         private void Scenes_MenuItem_Click_Load(object sender, RoutedEventArgs e)
         {
-            bool resolve = Keyboard.Modifiers == ModifierKeys.Shift;
-            UseCard(e, resolve ? MsgObject.Action.SceneLoadResolver : MsgObject.Action.SceneLoad);
+            UseCard(e, MsgObject.Action.SceneLoad);
         }
 
         private void Scenes_MenuItem_Click_Import(object sender, RoutedEventArgs e)
         {
-            bool resolve = Keyboard.Modifiers == ModifierKeys.Shift;
-            UseCard(e, resolve ? MsgObject.Action.SceneImportAllResolver : MsgObject.Action.SceneImportAll);
+            UseCard(e, MsgObject.Action.SceneImportAll);
         }
 
         private void Scenes_MenuItem_Click_ImportCharaOnly(object sender, RoutedEventArgs e)
         {
-            bool resolve = Keyboard.Modifiers == ModifierKeys.Shift;
-            UseCard(e, resolve ? MsgObject.Action.SceneImportCharaResolver : MsgObject.Action.SceneImportChara);
+            UseCard(e, MsgObject.Action.SceneImportChara);
         }
 
         private void Characters_MenuItem_Click_LoadF(object sender, RoutedEventArgs e)
         {
-            bool resolve = Keyboard.Modifiers == ModifierKeys.Shift;
-            UseCard(e, resolve ? MsgObject.Action.CharaLoadFemaleResolver : MsgObject.Action.CharaLoadFemale);
+            UseCard(e, MsgObject.Action.CharaLoadFemale);
         }
 
         private void Characters_MenuItem_Click_LoadM(object sender, RoutedEventArgs e)
         {
-            bool resolve = Keyboard.Modifiers == ModifierKeys.Shift;
-            UseCard(e, resolve ? MsgObject.Action.CharaLoadMaleResolver : MsgObject.Action.CharaLoadMale);
+            UseCard(e, MsgObject.Action.CharaLoadMale);
         }
 
         private void Characters_MenuItem_Click_Replace(object sender, RoutedEventArgs e)
         {
-            bool resolve = Keyboard.Modifiers == ModifierKeys.Shift;
-            UseCard(e, resolve ? MsgObject.Action.CharaReplaceAllResolver : MsgObject.Action.CharaReplaceAll);
+            UseCard(e, MsgObject.Action.CharaReplaceAll);
         }
 
         private void Characters_MenuItem_Click_ReplaceBody(object sender, RoutedEventArgs e)
         {
-            bool resolve = Keyboard.Modifiers == ModifierKeys.Shift;
-            UseCard(e, resolve ? MsgObject.Action.CharaReplaceBodyResolver : MsgObject.Action.CharaReplaceBody);
+            UseCard(e, MsgObject.Action.CharaReplaceBody);
         }
 
         private void Outfits_MenuItem_Click_Load(object sender, RoutedEventArgs e)

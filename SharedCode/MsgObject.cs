@@ -45,21 +45,14 @@ public class MsgObject
     {
         SceneSave,
         SceneLoad,
-        SceneLoadResolver,
         SceneImportAll,
-        SceneImportAllResolver,
         SceneImportChara,
-        SceneImportCharaResolver,
 
         CharaSave,
         CharaLoadFemale,
-        CharaLoadFemaleResolver,
         CharaLoadMale,
-        CharaLoadMaleResolver,
         CharaReplaceAll,
-        CharaReplaceAllResolver,
         CharaReplaceBody,
-        CharaReplaceBodyResolver,
 
         OutfitSave,
         OutfitLoad,
