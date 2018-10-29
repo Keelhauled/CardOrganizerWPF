@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using BepInEx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CardOrganizerKK
 {

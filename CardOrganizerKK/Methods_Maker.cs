@@ -138,28 +138,41 @@ namespace CardOrganizerKK
         {
             Log(LogLevel.Message, $"Load outfit [{Path.GetFileName(message.path)}]");
             Utils.Sound.Play(SystemSE.ok_s);
+            DelayAction(() => LoadOutfit(message.path, true, true));
+        }
 
-            DelayAction(() =>
-            {
-                var chaCtrl = CustomBase.Instance.chaCtrl;
-                bool loadClothes = true;
-                bool loadAcs = true;
+        public override void Outfit_LoadAccOnly(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Load outfit accessories [{Path.GetFileName(message.path)}]");
+            Utils.Sound.Play(SystemSE.ok_s);
+            DelayAction(() => LoadOutfit(message.path, false, true));
+        }
 
-                byte[] bytes = MessagePackSerializer.Serialize(chaCtrl.nowCoordinate.clothes);
-                byte[] bytes2 = MessagePackSerializer.Serialize(chaCtrl.nowCoordinate.accessory);
-                chaCtrl.nowCoordinate.LoadFile(message.path);
+        public override void Outfit_LoadClothOnly(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Load outfit clothing [{Path.GetFileName(message.path)}]");
+            Utils.Sound.Play(SystemSE.ok_s);
+            DelayAction(() => LoadOutfit(message.path, true, false));
+        }
 
-                if(!loadClothes)
-                    chaCtrl.nowCoordinate.clothes = MessagePackSerializer.Deserialize<ChaFileClothes>(bytes);
+        void LoadOutfit(string path, bool loadClothes, bool loadAcs)
+        {
+            var chaCtrl = CustomBase.Instance.chaCtrl;
 
-                if(!loadAcs)
-                    chaCtrl.nowCoordinate.accessory = MessagePackSerializer.Deserialize<ChaFileAccessory>(bytes2);
+            byte[] bytes = MessagePackSerializer.Serialize(chaCtrl.nowCoordinate.clothes);
+            byte[] bytes2 = MessagePackSerializer.Serialize(chaCtrl.nowCoordinate.accessory);
+            chaCtrl.nowCoordinate.LoadFile(path);
 
-                chaCtrl.Reload(false, true, true, true);
-                chaCtrl.AssignCoordinate((ChaFileDefine.CoordinateType)chaCtrl.chaFile.status.coordinateType);
-                CustomBase.Instance.updateCustomUI = true;
-                CustomHistory.Instance.Add5(chaCtrl, new Func<bool, bool, bool, bool, bool>(chaCtrl.Reload), false, true, true, true);
-            });
+            if(!loadClothes)
+                chaCtrl.nowCoordinate.clothes = MessagePackSerializer.Deserialize<ChaFileClothes>(bytes);
+
+            if(!loadAcs)
+                chaCtrl.nowCoordinate.accessory = MessagePackSerializer.Deserialize<ChaFileAccessory>(bytes2);
+
+            chaCtrl.Reload(false, true, true, true);
+            chaCtrl.AssignCoordinate((ChaFileDefine.CoordinateType)chaCtrl.chaFile.status.coordinateType);
+            CustomBase.Instance.updateCustomUI = true;
+            CustomHistory.Instance.Add5(chaCtrl, new Func<bool, bool, bool, bool, bool>(chaCtrl.Reload), false, true, true, true);
         }
     }
 }

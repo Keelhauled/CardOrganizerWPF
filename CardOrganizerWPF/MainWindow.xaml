@@ -153,6 +153,8 @@
                                                 <Image.ContextMenu>
                                                     <ContextMenu>
                                                         <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
+                                                        <MenuItem Header="Load Accessories" Click="Outfits_MenuItem_Click_LoadAccOnly"/>
+                                                        <MenuItem Header="Load Clothing" Click="Outfits_MenuItem_Click_LoadClothOnly"/>
                                                         <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
                                                         <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
                                                     </ContextMenu>

@@ -63,6 +63,8 @@ public class MsgObject
 
         OutfitSave,
         OutfitLoad,
+        OutfitLoadAccOnly,
+        OutfitLoadClothOnly,
         OutfitReplace,
 
         PoseSave,
