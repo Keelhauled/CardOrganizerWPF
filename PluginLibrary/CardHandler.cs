@@ -109,6 +109,14 @@ namespace PluginLibrary
                     Outfit_Load(message);
                     break;
 
+                case MsgObject.Action.OutfitLoadAccOnly:
+                    Outfit_LoadAccOnly(message);
+                    break;
+
+                case MsgObject.Action.OutfitLoadClothOnly:
+                    Outfit_LoadClothOnly(message);
+                    break;
+
                 case MsgObject.Action.OutfitReplace:
                     Outfit_Replace(message);
                     break;
@@ -144,6 +152,8 @@ namespace PluginLibrary
 
         public virtual void Outfit_Save(MsgObject message){}
         public virtual void Outfit_Load(MsgObject message){}
+        public virtual void Outfit_LoadAccOnly(MsgObject message){}
+        public virtual void Outfit_LoadClothOnly(MsgObject message){}
         public virtual void Outfit_Replace(MsgObject message){}
 
         public virtual void Pose_Save(MsgObject message){}

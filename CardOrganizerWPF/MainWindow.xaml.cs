@@ -229,6 +229,16 @@ namespace CardOrganizerWPF
             UseCard(e, MsgObject.Action.OutfitLoad);
         }
 
+        private void Outfits_MenuItem_Click_LoadAccOnly(object sender, RoutedEventArgs e)
+        {
+            UseCard(e, MsgObject.Action.OutfitLoadAccOnly);
+        }
+
+        private void Outfits_MenuItem_Click_LoadClothOnly(object sender, RoutedEventArgs e)
+        {
+            UseCard(e, MsgObject.Action.OutfitLoadClothOnly);
+        }
+
         private void UseCard(RoutedEventArgs e, MsgObject.Action action)
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
