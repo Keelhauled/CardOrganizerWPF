@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using PluginLibrary;
 using Harmony;
 using static BepInEx.Logger;
 using BepInEx.Logging;
@@ -15,22 +14,10 @@ namespace CardOrganizerKK
             DelayAction(() => SetupCharacter(message.path, ResultType.Heroine));
         }
 
-        public override void Character_LoadFemaleResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Load female (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => SetupCharacter(message.path, ResultType.Heroine));
-        }
-
         public override void Character_LoadMale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
             DelayAction(() => SetupCharacter(message.path, ResultType.Player));
-        }
-
-        public override void Character_LoadMaleResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Load male (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => SetupCharacter(message.path, ResultType.Player));
         }
 
         void SetupCharacter(string path, ResultType type)

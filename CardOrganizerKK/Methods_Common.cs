@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using Harmony;
 using PluginLibrary;
 using static BepInEx.Logger;
@@ -36,19 +35,6 @@ namespace CardOrganizerKK
                     tryKiyase = false;
                 }
             }
-        }
-
-        public void ResolverWrap(Action action)
-        {
-            bool save = Event.current.alt;
-            Event.current.alt = true;
-            action();
-            Event.current.alt = save;
-        }
-
-        public void ResolverDelay(Action action, int wait = 1)
-        {
-            DelayAction(() => ResolverWrap(action), wait);
         }
     }
 }

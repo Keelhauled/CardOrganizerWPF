@@ -43,24 +43,12 @@ namespace PluginLibrary
                     Scene_Load(message);
                     break;
 
-                case MsgObject.Action.SceneLoadResolver:
-                    Scene_LoadResolver(message);
-                    break;
-
                 case MsgObject.Action.SceneImportAll:
                     Scene_ImportAll(message);
                     break;
 
-                case MsgObject.Action.SceneImportAllResolver:
-                    Scene_ImportAllResolver(message);
-                    break;
-
                 case MsgObject.Action.SceneImportChara:
                     Scene_ImportChara(message);
-                    break;
-
-                case MsgObject.Action.SceneImportCharaResolver:
-                    Scene_ImportCharaResolver(message);
                     break;
 
 
@@ -72,32 +60,16 @@ namespace PluginLibrary
                     Character_LoadFemale(message);
                     break;
 
-                case MsgObject.Action.CharaLoadFemaleResolver:
-                    Character_LoadFemaleResolver(message);
-                    break;
-
                 case MsgObject.Action.CharaLoadMale:
                     Character_LoadMale(message);
-                    break;
-
-                case MsgObject.Action.CharaLoadMaleResolver:
-                    Character_LoadMaleResolver(message);
                     break;
 
                 case MsgObject.Action.CharaReplaceAll:
                     Character_ReplaceAll(message);
                     break;
 
-                case MsgObject.Action.CharaReplaceAllResolver:
-                    Character_ReplaceAllResolver(message);
-                    break;
-
                 case MsgObject.Action.CharaReplaceBody:
                     Character_ReplaceBody(message);
-                    break;
-
-                case MsgObject.Action.CharaReplaceBodyResolver:
-                    Character_ReplaceBodyResolver(message);
                     break;
 
 
@@ -134,21 +106,14 @@ namespace PluginLibrary
         
         public virtual void Scene_Save(MsgObject message){}
         public virtual void Scene_Load(MsgObject message){}
-        public virtual void Scene_LoadResolver(MsgObject message){}
         public virtual void Scene_ImportAll(MsgObject message){}
-        public virtual void Scene_ImportAllResolver(MsgObject message){}
         public virtual void Scene_ImportChara(MsgObject message){}
-        public virtual void Scene_ImportCharaResolver(MsgObject message){}
 
         public virtual void Character_Save(MsgObject message){}
         public virtual void Character_LoadFemale(MsgObject message){}
-        public virtual void Character_LoadFemaleResolver(MsgObject message){}
         public virtual void Character_LoadMale(MsgObject message){}
-        public virtual void Character_LoadMaleResolver(MsgObject message){}
         public virtual void Character_ReplaceAll(MsgObject message){}
-        public virtual void Character_ReplaceAllResolver(MsgObject message){}
         public virtual void Character_ReplaceBody(MsgObject message){}
-        public virtual void Character_ReplaceBodyResolver(MsgObject message){}
 
         public virtual void Outfit_Save(MsgObject message){}
         public virtual void Outfit_Load(MsgObject message){}

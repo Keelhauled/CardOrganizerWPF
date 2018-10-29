@@ -32,34 +32,16 @@ namespace CardOrganizerKK
             StartCoroutine(Studio.Studio.Instance.LoadSceneCoroutine(message.path));
         }
 
-        public override void Scene_LoadResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Load scene (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => Studio.Studio.Instance.LoadScene(message.path)); // this is very bad, map doesn't load sometimes
-        }
-
         public override void Scene_ImportAll(MsgObject message)
         {
             Log(LogLevel.Message, $"Import scene [{Path.GetFileName(message.path)}]");
             DelayAction(() => Studio.Studio.Instance.ImportScene(message.path));
         }
 
-        public override void Scene_ImportAllResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Import scene (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => Studio.Studio.Instance.ImportScene(message.path));
-        }
-
         public override void Scene_ImportChara(MsgObject message)
         {
             Log(LogLevel.Message, $"Import scene characters [{Path.GetFileName(message.path)}]");
             DelayAction(() => ImportSceneChara(message.path));
-        }
-
-        public override void Scene_ImportCharaResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Import scene characters (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => ImportSceneChara(message.path));
         }
 
         void ImportSceneChara(string path)
@@ -203,22 +185,10 @@ namespace CardOrganizerKK
             DelayAction(() => Studio.Studio.Instance.AddFemale(message.path));
         }
 
-        public override void Character_LoadFemaleResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Load female (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => Studio.Studio.Instance.AddFemale(message.path));
-        }
-
         public override void Character_LoadMale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
             DelayAction(() => Studio.Studio.Instance.AddMale(message.path));
-        }
-
-        public override void Character_LoadMaleResolver(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Load male (resolver) [{Path.GetFileName(message.path)}]");
-            ResolverDelay(() => Studio.Studio.Instance.AddMale(message.path));
         }
 
         public override void Character_ReplaceAll(MsgObject message)
@@ -228,24 +198,6 @@ namespace CardOrganizerKK
             {
                 Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} [{Path.GetFileName(message.path)}]");
                 DelayAction(() =>
-                {
-                    foreach(var x in characters) x.ChangeChara(message.path);
-                    UpdateStateInfo();
-                });
-            }
-            else
-            {
-                Log(LogLevel.Message, "Select characters to replace");
-            }
-        }
-
-        public override void Character_ReplaceAllResolver(MsgObject message)
-        {
-            var characters = GetSelectedCharacters();
-            if(characters.Count > 0)
-            {
-                Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} (resolver) [{Path.GetFileName(message.path)}]");
-                ResolverDelay(() =>
                 {
                     foreach(var x in characters) x.ChangeChara(message.path);
                     UpdateStateInfo();
