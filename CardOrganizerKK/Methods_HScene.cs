@@ -3,6 +3,7 @@ using System.Linq;
 using static BepInEx.Logger;
 using BepInEx.Logging;
 using Illusion.Game;
+using MessagePack;
 
 namespace CardOrganizerKK
 {
@@ -12,16 +13,41 @@ namespace CardOrganizerKK
         {
             Log(LogLevel.Message, $"Load outfit [{Path.GetFileName(message.path)}]");
             Utils.Sound.Play(SystemSE.sel);
+            DelayAction(() => LoadOutfit(message.path, true, true));
+        }
 
-            DelayAction(() =>
+        public override void Outfit_LoadAccOnly(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Load outfit accessories [{Path.GetFileName(message.path)}]");
+            Utils.Sound.Play(SystemSE.sel);
+            DelayAction(() => LoadOutfit(message.path, false, true));
+        }
+
+        public override void Outfit_LoadClothOnly(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Load outfit clothing [{Path.GetFileName(message.path)}]");
+            Utils.Sound.Play(SystemSE.sel);
+            DelayAction(() => LoadOutfit(message.path, true, false));
+        }
+
+        void LoadOutfit(string path, bool loadClothes, bool loadAcs)
+        {
+            var chara = FindObjectsOfType<ChaControl>().Where((x) => x.sex == 1).First();
+            if(chara)
             {
-                var chara = FindObjectsOfType<ChaControl>().Where((x) => x.sex == 1).ToList();
-                if(chara.Count > 0 && chara[0])
-                {
-                    chara[0].nowCoordinate.LoadFile(message.path);
-                    chara[0].Reload(false, true, true, true);
-                }
-            });
+                byte[] bytes = MessagePackSerializer.Serialize(chara.nowCoordinate.clothes);
+                byte[] bytes2 = MessagePackSerializer.Serialize(chara.nowCoordinate.accessory);
+                chara.nowCoordinate.LoadFile(path);
+
+                if(!loadClothes)
+                    chara.nowCoordinate.clothes = MessagePackSerializer.Deserialize<ChaFileClothes>(bytes);
+
+                if(!loadAcs)
+                    chara.nowCoordinate.accessory = MessagePackSerializer.Deserialize<ChaFileAccessory>(bytes2);
+
+                chara.Reload(false, true, true, true);
+                chara.AssignCoordinate((ChaFileDefine.CoordinateType)chara.chaFile.status.coordinateType);
+            }
         }
     }
 }
