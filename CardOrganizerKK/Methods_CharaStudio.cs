@@ -8,6 +8,7 @@ using ChaCustom;
 using Harmony;
 using static BepInEx.Logger;
 using BepInEx.Logging;
+using MessagePack;
 
 namespace CardOrganizerKK
 {
@@ -267,14 +268,44 @@ namespace CardOrganizerKK
 
         public override void Outfit_Load(MsgObject message)
         {
+            LoadOutfit(message.path, true, true, $"Load outfit [{Path.GetFileName(message.path)}]");
+        }
+
+        public override void Outfit_LoadAccOnly(MsgObject message)
+        {
+            LoadOutfit(message.path, false, true, $"Load outfit accessories [{Path.GetFileName(message.path)}]");
+        }
+
+        public override void Outfit_LoadClothOnly(MsgObject message)
+        {
+            LoadOutfit(message.path, true, false, $"Load outfit clothing [{Path.GetFileName(message.path)}]");
+        }
+
+        void LoadOutfit(string path, bool loadClothes, bool loadAcs, string logMsg)
+        {
             var characters = GetSelectedCharacters();
 
             if(characters.Count > 0)
             {
-                Log(LogLevel.Message, $"Load outfit [{Path.GetFileName(message.path)}]");
+                Log(LogLevel.Message, logMsg);
                 DelayAction(() =>
                 {
-                    foreach(var chara in characters) chara.LoadClothesFile(message.path);
+                    foreach(var chara in characters)
+                    {
+                        byte[] bytes = MessagePackSerializer.Serialize(chara.charInfo.nowCoordinate.clothes);
+                        byte[] bytes2 = MessagePackSerializer.Serialize(chara.charInfo.nowCoordinate.accessory);
+                        chara.charInfo.nowCoordinate.LoadFile(path);
+
+                        if(!loadClothes)
+                            chara.charInfo.nowCoordinate.clothes = MessagePackSerializer.Deserialize<ChaFileClothes>(bytes);
+
+                        if(!loadAcs)
+                            chara.charInfo.nowCoordinate.accessory = MessagePackSerializer.Deserialize<ChaFileAccessory>(bytes2);
+
+                        chara.charInfo.Reload(false, true, true, true);
+                        chara.charInfo.AssignCoordinate((ChaFileDefine.CoordinateType)chara.charInfo.chaFile.status.coordinateType);
+                    }
+
                     UpdateStateInfo();
                 });
             }
