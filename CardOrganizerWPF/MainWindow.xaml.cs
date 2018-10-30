@@ -52,9 +52,6 @@ namespace CardOrganizerWPF
             {
                 CreateTabs(GameInfo.Game.Koikatu);
             }
-
-            new ConfirmBox($"Copy file", $"Move already existing cards\nto the current category (if any)?").ShowDialog();
-            Close();
         }
 
         private void CreateTabs(GameInfo.Game game)
