@@ -52,6 +52,9 @@ namespace CardOrganizerWPF
             {
                 CreateTabs(GameInfo.Game.Koikatu);
             }
+
+            new ConfirmBox($"Copy file", $"Move already existing cards\nto the current category (if any)?").ShowDialog();
+            Close();
         }
 
         private void CreateTabs(GameInfo.Game game)
@@ -82,19 +85,6 @@ namespace CardOrganizerWPF
                         new CardTypeTab("Male", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Chara2]), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
                         new CardTypeTab("Outfit", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Outfit1]), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
                         new CardTypeTab("Disabled"),
-                    };
-                    break;
-                }
-
-                case GameInfo.Game.Playhome:
-                {
-                    Tabs = new List<CardTypeTab>
-                    {
-                        new CardTypeTab("Scene"),
-                        new CardTypeTab("Female"),
-                        new CardTypeTab("Male"),
-                        new CardTypeTab("Outfit (F)"),
-                        new CardTypeTab("Outfit (M)"),
                     };
                     break;
                 }
@@ -282,8 +272,9 @@ namespace CardOrganizerWPF
 
         private void MenuItem_Click_AddCategory(object sender, RoutedEventArgs e)
         {
-            string text = new InputBox(this, "Create new category", "Category name", "").ShowDialog();
-            if(text != "") SelectedTab.AddCategory(text);
+            var inputBox = new InputBox("New category", "Name the new category");
+            if(inputBox.ShowDialog() == true)
+                SelectedTab.AddCategory(inputBox.ResponseText);
         }
 
         private void MenuItem_Click_RemoveCategory(object sender, RoutedEventArgs e)
@@ -351,12 +342,13 @@ namespace CardOrganizerWPF
             {
                 bool move = Keyboard.Modifiers == ModifierKeys.Shift;
                 string process = move ? "Move" : "Copy";
-                bool reorganize = new ConfirmBox(this, $"{process} file", $"{process} existing files to current category (if any)", "").ShowDialog();
+                var confirmBox = new ConfirmBox($"{process} file", $"Move already existing cards\nto the current category (if any)?");
+                var reorganize = confirmBox.ShowDialog().Value;
 
                 foreach(var file in files)
                 {
                     SelectedTab.AddImageFromOutside(file, move, reorganize);
-                } 
+                }
             }
         }
         #endregion
