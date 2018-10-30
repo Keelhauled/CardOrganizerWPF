@@ -1,0 +1,38 @@
+﻿<Window x:Class="CardOrganizerWPF.InputBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CardOrganizerWPF"
+        mc:Ignorable="d"
+        Title="{Binding TitleText}" Height="150" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        FocusManager.FocusedElement="{Binding ElementName=ResponseTextBox}">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="ButtonBG" Color="#E8E8E8" />
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding EscKeyCommand}"/>
+    </Window.InputBindings>
+
+    <DockPanel>
+        <Grid Background="White" DockPanel.Dock="Top" Height="75">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="{Binding InfoText}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                <TextBox x:Name="ResponseTextBox" Margin="8">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding EnterKeyCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+            </DockPanel>
+        </Grid>
+
+        <Grid Background="{StaticResource ButtonBG}" DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+                <Button Content="OK" Click="OKButton_Click" Width="70"/>
+                <Button Content="Cancel" Click="CancelButton_Click"  Margin="10,0,0,0" Width="70"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

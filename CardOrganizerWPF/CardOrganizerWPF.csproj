@@ -58,21 +58,30 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CardDataManager.cs" />
+    <Compile Include="Controls\ConfirmBox.xaml.cs">
+      <DependentUpon>ConfirmBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ImgConverter.cs" />
+    <Compile Include="Controls\InputBox.xaml.cs">
+      <DependentUpon>InputBox.xaml</DependentUpon>
+    </Compile>
     <None Include="Testing\UISettings.cs" />
-    <Compile Include="Controls\ConfirmBox.cs" />
+    <Compile Include="GameInfo.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <None Include="Testing\ExtTabControl.cs" />
     <Compile Include="Utils\SortableObservableCollection.cs" />
     <Compile Include="Controls\DelegateCommand.cs" />
     <Compile Include="Controls\ExtScrollViewer.cs" />
-    <Compile Include="Controls\InputBox.cs" />
     <Compile Include="Utils\ObservableDictionary\ObservableDictionary.cs" />
     <Compile Include="Utils\ObservableDictionary\ObservableSortedDictionary.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="TCPClientManager.cs" />
     <None Include="Testing\TabControlEx.cs" />
     <None Include="Testing\TabContent.cs" />
+    <Page Include="Controls\ConfirmBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -88,6 +97,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Controls\InputBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -118,9 +131,14 @@
   <ItemGroup>
     <Resource Include="Resources\MHW-Odogaron_Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\houtengeki_odogaron.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MHW-Odogaron_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\houtengeki_odogaron_small.jpg" />
   </ItemGroup>
   <Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
