@@ -31,20 +31,6 @@ namespace CardOrganizerWPF
         private string markedTab = "";
         private CardTypeTab SelectedTab => Tabs[tabControlMain.SelectedIndex == -1 ? 0 : tabControlMain.SelectedIndex];
 
-        private enum Game
-        {
-            HoneySelect,
-            Koikatu,
-            Playhome
-        }
-
-        private Dictionary<string, Game> games = new Dictionary<string, Game>
-        {
-            {"HS", Game.HoneySelect},
-            {"KK", Game.Koikatu},
-            {"PH", Game.Playhome},
-        };
-
         public MainWindow()
         {
             //settings.Reset();
@@ -58,49 +44,49 @@ namespace CardOrganizerWPF
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
 
             var args = Environment.GetCommandLineArgs();
-            if(args.Length > 1 && games.TryGetValue(args[1], out Game game))
+            if(args.Length > 1 && GameInfo.games.TryGetValue(args[1], out GameInfo.Game game))
             {
                 CreateTabs(game);
             }
             else
             {
-                CreateTabs(Game.Koikatu);
+                CreateTabs(GameInfo.Game.Koikatu);
             }
         }
 
-        private void CreateTabs(Game game)
+        private void CreateTabs(GameInfo.Game game)
         {
             switch(game)
             {
-                case Game.HoneySelect:
+                case GameInfo.Game.HoneySelect:
                 {
                     string mainPath = settings.HSPath;
                     Tabs = new List<CardTypeTab>
                     {
-                        new CardTypeTab("Scene", Path.Combine(mainPath, @"studioneo\scene"), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
-                        new CardTypeTab("Female", Path.Combine(mainPath, @"chara\female"), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Male", Path.Combine(mainPath, @"chara\male"), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Outfit (F)", Path.Combine(mainPath, @"coordinate\female"), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
-                        new CardTypeTab("Outfit (M)", Path.Combine(mainPath, @"coordinate\male"), settings.SavedOutfitsMCategory, tabControlOutfitsM, MsgObject.Action.OutfitSave),
+                        new CardTypeTab("Scene", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Scene]), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
+                        new CardTypeTab("Female", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Chara1]), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
+                        new CardTypeTab("Male", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Chara2]), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
+                        new CardTypeTab("Outfit (F)", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Outfit1]), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
+                        new CardTypeTab("Outfit (M)", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Outfit2]), settings.SavedOutfitsMCategory, tabControlOutfitsM, MsgObject.Action.OutfitSave),
                     };
                     break;
                 }
 
-                case Game.Koikatu:
+                case GameInfo.Game.Koikatu:
                 {
                     string mainPath = settings.KKPath;
                     Tabs = new List<CardTypeTab>
                     {
-                        new CardTypeTab("Scene", Path.Combine(mainPath, @"studio\scene"), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
-                        new CardTypeTab("Female", Path.Combine(mainPath, @"chara\female"), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Male", Path.Combine(mainPath, @"chara\male"), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Outfit", Path.Combine(mainPath, @"coordinate"), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
+                        new CardTypeTab("Scene", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Scene]), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
+                        new CardTypeTab("Female", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Chara1]), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
+                        new CardTypeTab("Male", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Chara2]), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
+                        new CardTypeTab("Outfit", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Outfit1]), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
                         new CardTypeTab("Disabled"),
                     };
                     break;
                 }
 
-                case Game.Playhome:
+                case GameInfo.Game.Playhome:
                 {
                     Tabs = new List<CardTypeTab>
                     {
