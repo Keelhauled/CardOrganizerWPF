@@ -52,18 +52,20 @@
                                               ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                            <Border BorderBrush="Black" BorderThickness="3">
+                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
                                                    Width="320" Height="180" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                <Image.ContextMenu>
-                                                    <ContextMenu>
-                                                        <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
-                                                        <MenuItem Header="Import" Click="Scenes_MenuItem_Click_Import"/>
-                                                        <MenuItem Header="Import Characters" Click="Scenes_MenuItem_Click_ImportCharaOnly"/>
-                                                        <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                        <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                    </ContextMenu>
-                                                </Image.ContextMenu>
-                                            </Image>
+                                                    <Image.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
+                                                            <MenuItem Header="Import" Click="Scenes_MenuItem_Click_Import"/>
+                                                            <MenuItem Header="Import Characters" Click="Scenes_MenuItem_Click_ImportCharaOnly"/>
+                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                        </ContextMenu>
+                                                    </Image.ContextMenu>
+                                                </Image>
+                                            </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -84,18 +86,20 @@
                                               ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                   Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                <Image.ContextMenu>
-                                                    <ContextMenu>
-                                                        <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
-                                                        <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
-                                                        <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
-                                                        <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                        <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                    </ContextMenu>
-                                                </Image.ContextMenu>
-                                            </Image>
+                                            <Border BorderBrush="Black" BorderThickness="3">
+                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                                       Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                    <Image.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
+                                                            <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
+                                                            <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
+                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                        </ContextMenu>
+                                                    </Image.ContextMenu>
+                                                </Image>
+                                            </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -116,18 +120,20 @@
                                               ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                            <Border BorderBrush="Black" BorderThickness="3">
+                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
                                                    Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                <Image.ContextMenu>
-                                                    <ContextMenu>
-                                                        <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
-                                                        <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
-                                                        <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
-                                                        <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                        <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                    </ContextMenu>
-                                                </Image.ContextMenu>
-                                            </Image>
+                                                    <Image.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
+                                                            <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
+                                                            <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
+                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                        </ContextMenu>
+                                                    </Image.ContextMenu>
+                                                </Image>
+                                            </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -148,18 +154,20 @@
                                               ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                            <Border BorderBrush="Black" BorderThickness="3">
+                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
                                                    Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                <Image.ContextMenu>
-                                                    <ContextMenu>
-                                                        <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
-                                                        <MenuItem Header="Load Accessories" Click="Outfits_MenuItem_Click_LoadAccOnly"/>
-                                                        <MenuItem Header="Load Clothing" Click="Outfits_MenuItem_Click_LoadClothOnly"/>
-                                                        <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                        <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                    </ContextMenu>
-                                                </Image.ContextMenu>
-                                            </Image>
+                                                    <Image.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
+                                                            <MenuItem Header="Load Accessories" Click="Outfits_MenuItem_Click_LoadAccOnly"/>
+                                                            <MenuItem Header="Load Clothing" Click="Outfits_MenuItem_Click_LoadClothOnly"/>
+                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                        </ContextMenu>
+                                                    </Image.ContextMenu>
+                                                </Image>
+                                            </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -180,16 +188,18 @@
                                               ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                            <Border BorderBrush="Black" BorderThickness="3">
+                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
                                                    Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                <Image.ContextMenu>
-                                                    <ContextMenu>
-                                                        <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
-                                                        <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                        <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                    </ContextMenu>
-                                                </Image.ContextMenu>
-                                            </Image>
+                                                    <Image.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
+                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                        </ContextMenu>
+                                                    </Image.ContextMenu>
+                                                </Image>
+                                            </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
