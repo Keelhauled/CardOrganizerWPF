@@ -41,6 +41,9 @@
       <HintPath>..\DLL\MessagePackKK.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -65,8 +68,11 @@
     <Compile Include="Controls\InputBox.xaml.cs">
       <DependentUpon>InputBox.xaml</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
+    <EmbeddedResource Include="SettingsData.json" />
     <None Include="Testing\UISettings.cs" />
     <Compile Include="GameInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <None Include="Testing\ExtTabControl.cs" />
     <Compile Include="Utils\SortableObservableCollection.cs" />
@@ -74,7 +80,6 @@
     <Compile Include="Controls\ExtScrollViewer.cs" />
     <Compile Include="Utils\ObservableDictionary\ObservableDictionary.cs" />
     <Compile Include="Utils\ObservableDictionary\ObservableSortedDictionary.cs" />
-    <Compile Include="Properties\Settings.cs" />
     <Compile Include="TCPClientManager.cs" />
     <None Include="Testing\TabControlEx.cs" />
     <None Include="Testing\TabContent.cs" />
@@ -111,19 +116,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

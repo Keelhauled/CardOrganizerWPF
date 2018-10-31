@@ -27,22 +27,36 @@ namespace CardOrganizerWPF
         FileSystemWatcher watcher;
         SynchronizationContext uiContext = SynchronizationContext.Current;
 
-        public CardTypeTab(string header, string folderPath, int savedCategory, TabControl tabControl, MsgObject.Action saveMsg)
+        public CardTypeTab(Settings.GameData gameData, Settings.Category catData, TabControl tabControl, MsgObject.Action saveMsg)
         {
+            if(string.IsNullOrWhiteSpace(catData.Header))
+            {
+                TabDisabled("Disabled");
+                return;
+            }
+
             IsEnabled = true;
-            Header = header;
-            FolderPath = folderPath;
-            dataManager = new CardDataManager(folderPath);
+            Header = catData.Header;
+            FolderPath = Path.Combine(gameData.Path, catData.Path);
+            dataManager = new CardDataManager(FolderPath);
             Categories = GetCategoriesFromData();
-            SavedCategory = savedCategory != -1 ? savedCategory : 0;
+            SavedCategory = catData.Save != -1 ? catData.Save : 0;
             this.tabControl = tabControl;
             this.saveMsg = saveMsg;
 
-            watcher = new FileSystemWatcher(folderPath);
+            watcher = new FileSystemWatcher(FolderPath);
             watcher.Created += FileCreated;
             watcher.EnableRaisingEvents = true;
 
             //Console.WriteLine($"Tab '{header}' has {FindDuplicatesInData().Count} duplicates in data.");
+        }
+
+        public void TabDisabled(string header)
+        {
+            IsEnabled = false;
+            Header = header;
+            Categories = new ObservableSortedDictionary<string, Category>();
+            SavedCategory = -1;
         }
 
         public List<string> FindDuplicatesInData()
@@ -62,14 +76,6 @@ namespace CardOrganizerWPF
                         .Select(group => group.Key);
 
             return duplicateKeys.ToList();
-        }
-
-        public CardTypeTab(string header)
-        {
-            IsEnabled = false;
-            Header = header;
-            Categories = new ObservableSortedDictionary<string, Category>();
-            SavedCategory = -1;
         }
 
         void FileCreated(object sender, FileSystemEventArgs e)

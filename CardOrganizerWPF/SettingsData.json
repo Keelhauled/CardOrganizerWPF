@@ -1,0 +1,40 @@
+﻿{
+    "Window":
+	{
+		"Top": "100",
+		"Left": "100",
+		"Height": "800",
+		"Width": "1100",
+		"Maximized": "False"
+	},
+
+	"HS":
+	{
+		"Path": "",
+		"Tab": "-1",
+		"Category":
+		{
+			"Scene": {"Header": "Scene", "Path": "studioneo\\scene", "Save": "-1"},
+			"Chara1": {"Header": "Female", "Path": "chara\\female", "Save": "-1"},
+			"Chara2": {"Header": "Male", "Path": "chara\\male", "Save": "-1"},
+			"Outfit1": {"Header": "Outfit (F)", "Path": "coordinate\\female", "Save": "-1"},
+			"Outfit2": {"Header": "Outfit (M)", "Path": "coordinate\\male", "Save": "-1"}
+		}
+	},
+
+	"KK":
+	{
+		"Path": "",
+		"Tab": "-1",
+		"Category":
+		{
+			"Scene": {"Header": "Scene", "Path": "studio\\scene", "Save": "-1"},
+			"Chara1": {"Header": "Female", "Path": "chara\\female", "Save": "-1"},
+			"Chara2": {"Header": "Male", "Path": "chara\\male", "Save": "-1"},
+			"Outfit1": {"Header": "Outfit", "Path": "coordinate", "Save": "-1"},
+			"Outfit2": {"Header": "", "Path": "", "Save": "-1"}
+		}
+	},
+
+	"ScrollSpeed": "128"
+}
