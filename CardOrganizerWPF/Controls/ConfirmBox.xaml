@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CardOrganizerWPF"
         mc:Ignorable="d"
         Title="{Binding TitleText}" Height="150" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
-        FocusManager.FocusedElement="{Binding ElementName=OKButton}">
+        FocusManager.FocusedElement="{Binding ElementName=NoButton}">
 
     <Window.Resources>
         <SolidColorBrush x:Key="ButtonBG" Color="#E8E8E8" />
@@ -18,13 +18,13 @@
 
     <DockPanel>
         <Grid Background="White" DockPanel.Dock="Top" Height="75">
-            <TextBlock FontSize="20" Text="{Binding InfoText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding InfoText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
         <Grid Background="{StaticResource ButtonBG}" DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
-                <Button x:Name="OKButton" Content="OK" Click="OKButton_Click" Width="70"/>
-                <Button Content="Cancel" Click="CancelButton_Click"  Margin="10,0,0,0" Width="70"/>
+                <Button Content="Yes" Click="OKButton_Click" Width="70"/>
+                <Button x:Name="NoButton" Content="No" Click="CancelButton_Click"  Margin="10,0,0,0" Width="70"/>
             </StackPanel>
         </Grid>
     </DockPanel>
