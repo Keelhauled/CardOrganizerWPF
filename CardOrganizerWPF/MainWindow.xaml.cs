@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Diagnostics;
 
 namespace CardOrganizerWPF
@@ -27,15 +19,17 @@ namespace CardOrganizerWPF
 
         private TCPClientManager tcpClientManager;
         private SynchronizationContext uiContext = SynchronizationContext.Current;
-        private Properties.Settings settings = Properties.Settings.Default;
         private string markedTab = "";
+        private Settings.GameData gameData;
+
         private CardTypeTab SelectedTab => Tabs[tabControlMain.SelectedIndex == -1 ? 0 : tabControlMain.SelectedIndex];
 
         public MainWindow()
         {
-            //settings.Reset();
             InitializeComponent();
             DataContext = this;
+
+            Settings.LoadData();
             SettingsLoad();
             Closing += (x, y) => SettingsSave();
 
@@ -59,75 +53,72 @@ namespace CardOrganizerWPF
             switch(game)
             {
                 case GameInfo.Game.HoneySelect:
-                {
-                    string mainPath = settings.HSPath;
-                    Tabs = new List<CardTypeTab>
-                    {
-                        new CardTypeTab("Scene", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Scene]), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
-                        new CardTypeTab("Female", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Chara1]), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Male", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Chara2]), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Outfit (F)", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Outfit1]), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
-                        new CardTypeTab("Outfit (M)", Path.Combine(mainPath, GameInfo.HSPath[GameInfo.Path.Outfit2]), settings.SavedOutfitsMCategory, tabControlOutfitsM, MsgObject.Action.OutfitSave),
-                    };
+                    gameData = Settings.data.HS;
                     break;
-                }
 
                 case GameInfo.Game.Koikatu:
-                {
-                    string mainPath = settings.KKPath;
-                    Tabs = new List<CardTypeTab>
-                    {
-                        new CardTypeTab("Scene", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Scene]), settings.SavedScenesCategory, tabControlScenes, MsgObject.Action.SceneSave),
-                        new CardTypeTab("Female", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Chara1]), settings.SavedCharactersFCategory, tabControlCharactersF, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Male", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Chara2]), settings.SavedCharactersMCategory, tabControlCharactersM, MsgObject.Action.CharaSave),
-                        new CardTypeTab("Outfit", Path.Combine(mainPath, GameInfo.KKPath[GameInfo.Path.Outfit1]), settings.SavedOutfitsFCategory, tabControlOutfitsF, MsgObject.Action.OutfitSave),
-                        new CardTypeTab("Disabled"),
-                    };
+                    gameData = Settings.data.KK;
                     break;
-                }
             }
+
+            if(string.IsNullOrWhiteSpace(gameData.Path))
+            {
+                // ask for folder
+            }
+
+            Tabs = new List<CardTypeTab>
+            {
+                new CardTypeTab(gameData, gameData.Category.Scene, tabControlScenes, MsgObject.Action.SceneSave),
+                new CardTypeTab(gameData, gameData.Category.Chara1, tabControlCharactersF, MsgObject.Action.CharaSave),
+                new CardTypeTab(gameData, gameData.Category.Chara2, tabControlCharactersM, MsgObject.Action.CharaSave),
+                new CardTypeTab(gameData, gameData.Category.Outfit1, tabControlOutfitsF, MsgObject.Action.OutfitSave),
+                new CardTypeTab(gameData, gameData.Category.Outfit2, tabControlOutfitsM, MsgObject.Action.OutfitSave),
+            };
+
+            SavedTab = gameData.Tab != -1 ? gameData.Tab : 0;
         }
 
         private void SettingsLoad()
         {
-            Top = settings.Top;
-            Left = settings.Left;
-            Height = settings.Height;
-            Width = settings.Width;
-            if(settings.Maximized)
+            var data = Settings.data;
+            Top = data.Window.Top;
+            Left = data.Window.Left;
+            Height = data.Window.Height;
+            Width = data.Window.Width;
+            if(data.Window.Maximized)
                 WindowState = WindowState.Maximized;
-
-            SavedTab = settings.SavedTab != -1 ? settings.SavedTab : 0;
         }
 
         private void SettingsSave()
         {
+            var data = Settings.data;
+
             if(WindowState == WindowState.Maximized)
             {
                 // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
-                settings.Top = RestoreBounds.Top;
-                settings.Left = RestoreBounds.Left;
-                settings.Height = RestoreBounds.Height;
-                settings.Width = RestoreBounds.Width;
-                settings.Maximized = true;
+                data.Window.Top = RestoreBounds.Top;
+                data.Window.Left = RestoreBounds.Left;
+                data.Window.Height = RestoreBounds.Height;
+                data.Window.Width = RestoreBounds.Width;
+                data.Window.Maximized = true;
             }
             else
             {
-                settings.Top = Top;
-                settings.Left = Left;
-                settings.Height = Height;
-                settings.Width = Width;
-                settings.Maximized = false;
+                data.Window.Top = Top;
+                data.Window.Left = Left;
+                data.Window.Height = Height;
+                data.Window.Width = Width;
+                data.Window.Maximized = false;
             }
 
-            settings.SavedScenesCategory = tabControlScenes.SelectedIndex;
-            settings.SavedCharactersFCategory = tabControlCharactersF.SelectedIndex;
-            settings.SavedOutfitsFCategory = tabControlOutfitsF.SelectedIndex;
-            settings.SavedCharactersMCategory = tabControlCharactersM.SelectedIndex;
-            settings.SavedOutfitsMCategory = tabControlOutfitsM.SelectedIndex;
-            settings.SavedTab = tabControlMain.SelectedIndex;
+            gameData.Category.Scene.Save = tabControlScenes.SelectedIndex;
+            gameData.Category.Chara1.Save = tabControlCharactersF.SelectedIndex;
+            gameData.Category.Chara2.Save = tabControlOutfitsF.SelectedIndex;
+            gameData.Category.Outfit1.Save = tabControlCharactersM.SelectedIndex;
+            gameData.Category.Outfit2.Save = tabControlOutfitsM.SelectedIndex;
+            gameData.Tab = tabControlMain.SelectedIndex;
 
-            settings.Save();
+            Settings.Save();
             foreach(var tab in Tabs) tab.SaveCardData();
             tcpClientManager.SendMessage(MsgObject.QuitMsg());
         }
