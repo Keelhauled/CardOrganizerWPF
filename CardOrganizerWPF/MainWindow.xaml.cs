@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Diagnostics;
+using System.Windows.Threading;
+using Ookii.Dialogs.Wpf;
 
 namespace CardOrganizerWPF
 {
@@ -17,12 +19,13 @@ namespace CardOrganizerWPF
         public ICommand ScrollToTop { get; set; }
         public ICommand ScrollToBottom { get; set; }
 
+        public static Action Rendered { get; set; }
+        private CardTypeTab SelectedTab => Tabs[tabControlMain.SelectedIndex == -1 ? 0 : tabControlMain.SelectedIndex];
+
         private TCPClientManager tcpClientManager;
         private SynchronizationContext uiContext = SynchronizationContext.Current;
         private string markedTab = "";
         private Settings.GameData gameData;
-
-        private CardTypeTab SelectedTab => Tabs[tabControlMain.SelectedIndex == -1 ? 0 : tabControlMain.SelectedIndex];
 
         public MainWindow()
         {
@@ -31,39 +34,61 @@ namespace CardOrganizerWPF
 
             Settings.LoadData();
             SettingsLoad();
-            Closing += (x, y) => SettingsSave();
+
+            Rendered = () =>
+            {
+                if(string.IsNullOrWhiteSpace(gameData.Path))
+                {
+                    var dialog = new VistaFolderBrowserDialog();
+                    if(dialog.ShowDialog(new Window()) == true)
+                    {
+                        gameData.Path = dialog.SelectedPath;
+                    }
+
+                    // cancel if path is not good
+                }
+            };
+
+            Loaded += (sender, e) =>
+            {
+                Dispatcher.BeginInvoke(Rendered, DispatcherPriority.ContextIdle, null);
+            };
+
+            Closing += (sender, e) =>
+            {
+                SettingsSave();
+            };
 
             tcpClientManager = new TCPClientManager(x => uiContext.Send(y => SelectedTab.HandleMessage(x), null));
             ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
 
+            CreateTabs();
+        }
+
+        private void CreateTabs()
+        {
             var args = Environment.GetCommandLineArgs();
-            if(args.Length > 1 && GameInfo.games.TryGetValue(args[1], out GameInfo.Game game))
+            if(args.Length > 1)
             {
-                CreateTabs(game);
+                switch(args[1])
+                {
+                    case "HS":
+                        gameData = Settings.data.HS;
+                        break;
+
+                    case "KK":
+                        gameData = Settings.data.KK;
+                        break;
+
+                    default:
+                        gameData = Settings.data.KK;
+                        break;
+                }
             }
             else
             {
-                CreateTabs(GameInfo.Game.Koikatu);
-            }
-        }
-
-        private void CreateTabs(GameInfo.Game game)
-        {
-            switch(game)
-            {
-                case GameInfo.Game.HoneySelect:
-                    gameData = Settings.data.HS;
-                    break;
-
-                case GameInfo.Game.Koikatu:
-                    gameData = Settings.data.KK;
-                    break;
-            }
-
-            if(string.IsNullOrWhiteSpace(gameData.Path))
-            {
-                // ask for folder
+                gameData = Settings.data.KK;
             }
 
             Tabs = new List<CardTypeTab>
@@ -119,7 +144,7 @@ namespace CardOrganizerWPF
             gameData.Tab = tabControlMain.SelectedIndex;
 
             Settings.Save();
-            foreach(var tab in Tabs) tab.SaveCardData();
+            //foreach(var tab in Tabs) tab.SaveCardData();
             tcpClientManager.SendMessage(MsgObject.QuitMsg());
         }
 

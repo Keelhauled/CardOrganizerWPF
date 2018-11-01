@@ -44,6 +44,9 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -71,7 +74,6 @@
     <None Include="packages.config" />
     <EmbeddedResource Include="SettingsData.json" />
     <None Include="Testing\UISettings.cs" />
-    <Compile Include="GameInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <None Include="Testing\ExtTabControl.cs" />
@@ -131,7 +133,7 @@
     <None Include="Resources\MHW-Odogaron_Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Resources\houtengeki_odogaron_small.jpg" />
+    <None Include="Resources\houtengeki_odogaron_small.jpg" />
   </ItemGroup>
   <Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
