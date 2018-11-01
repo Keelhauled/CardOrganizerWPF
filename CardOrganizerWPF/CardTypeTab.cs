@@ -29,34 +29,34 @@ namespace CardOrganizerWPF
 
         public CardTypeTab(Settings.GameData gameData, Settings.Category catData, TabControl tabControl, MsgObject.Action saveMsg)
         {
-            if(string.IsNullOrWhiteSpace(catData.Header))
-            {
-                TabDisabled("Disabled");
-                return;
-            }
-
-            IsEnabled = true;
-            Header = catData.Header;
-            FolderPath = Path.Combine(gameData.Path, catData.Path);
-            dataManager = new CardDataManager(FolderPath);
-            Categories = GetCategoriesFromData();
-            SavedCategory = catData.Save != -1 ? catData.Save : 0;
-            this.tabControl = tabControl;
-            this.saveMsg = saveMsg;
-
-            watcher = new FileSystemWatcher(FolderPath);
-            watcher.Created += FileCreated;
-            watcher.EnableRaisingEvents = true;
-
-            //Console.WriteLine($"Tab '{header}' has {FindDuplicatesInData().Count} duplicates in data.");
-        }
-
-        public void TabDisabled(string header)
-        {
-            IsEnabled = false;
-            Header = header;
             Categories = new ObservableSortedDictionary<string, Category>();
             SavedCategory = -1;
+
+            if(string.IsNullOrWhiteSpace(catData.Header))
+            {
+                IsEnabled = false;
+                Header = "Disabled";
+            }
+            else
+            {
+                IsEnabled = true;
+                Header = catData.Header;
+                Categories = new ObservableSortedDictionary<string, Category>();
+                this.tabControl = tabControl;
+                this.saveMsg = saveMsg;
+
+                MainWindow.Rendered += () =>
+                {
+                    FolderPath = Path.Combine(gameData.Path, catData.Path);
+                    dataManager = new CardDataManager(FolderPath);
+                    GetCategoriesFromData(Categories);
+                    tabControl.SelectedIndex = SavedCategory = catData.Save != -1 ? catData.Save : 0;
+
+                    watcher = new FileSystemWatcher(FolderPath);
+                    watcher.Created += FileCreated;
+                    watcher.EnableRaisingEvents = true;
+                };
+            }
         }
 
         public List<string> FindDuplicatesInData()
@@ -98,13 +98,12 @@ namespace CardOrganizerWPF
             uiContext.Post((x) => AddImage(e.FullPath), null);
         }
 
-        private ObservableSortedDictionary<string, Category> GetCategoriesFromData()
+        private void GetCategoriesFromData(ObservableSortedDictionary<string, Category> categories)
         {
             var files = Directory.GetFiles(FolderPath, "*.png");
             var sorted = files.Select(x => new KeyValuePair<string, DateTime>(x, File.GetLastWriteTime(x))).ToList();
             sorted.Sort((KeyValuePair<string, DateTime> a, KeyValuePair<string, DateTime> b) => b.Value.CompareTo(a.Value));
 
-            var categories = new SortedDictionary<string, Category>();
             var undefined = new Category(Category.DEFAULT_CATEGORY_NAME, Template);
 
             foreach(var file in sorted)
@@ -141,7 +140,6 @@ namespace CardOrganizerWPF
             }
 
             categories.Add(Category.DEFAULT_CATEGORY_NAME, undefined);
-            return new ObservableSortedDictionary<string, Category>(categories);
         }
 
         public Category GetSelectedCategory()
