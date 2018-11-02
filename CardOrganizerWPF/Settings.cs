@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -60,12 +61,12 @@ namespace CardOrganizerWPF
         }
 
         public WindowData Window;
-        public GameData HS;
-        public GameData KK;
+        public Dictionary<string, GameData> Games;
         public double ScrollSpeed;
 
         public class GameData
         {
+            public string Name;
             public string Path;
             public int Tab;
             public CategoryData Category;

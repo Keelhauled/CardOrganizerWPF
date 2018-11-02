@@ -9,10 +9,10 @@ namespace CardOrganizerHS
 {
     class CardOrganizerHS : IEnhancedPlugin
     {
-        public string Name => "CardOrganizerHS";
-        public string Version => "1.0.0";
+        public string Name { get; } = "CardOrganizerHS";
+        public string Version { get; } = "1.0.0";
 
-        public string[] Filter => new string[]
+        public string[] Filter { get; } = new string[]
         {
             "StudioNEO_32",
             "StudioNEO_64",
