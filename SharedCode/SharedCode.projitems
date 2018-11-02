@@ -9,6 +9,7 @@
     <Import_RootNamespace>SharedCode</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IMessenger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MsgObject.cs" />
   </ItemGroup>
 </Project>

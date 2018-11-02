@@ -11,7 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CardHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PluginUtils.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TCPServerManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RPCClient_Plugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UnityMainThreadDispatcher.cs" />
   </ItemGroup>
 </Project>

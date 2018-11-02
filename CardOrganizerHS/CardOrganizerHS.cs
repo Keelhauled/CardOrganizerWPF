@@ -9,10 +9,8 @@ namespace CardOrganizerHS
 {
     class CardOrganizerHS : IEnhancedPlugin
     {
-        public const string PLUGIN_NAME = "CardOrganizerHS";
-        public const string PLUGIN_VERSION = "1.0.0";
-        public string Name => PLUGIN_NAME;
-        public string Version => PLUGIN_VERSION;
+        public string Name => "CardOrganizerHS";
+        public string Version => "1.0.0";
 
         public string[] Filter => new string[]
         {
@@ -24,8 +22,8 @@ namespace CardOrganizerHS
 
         public void OnApplicationStart()
         {
-            var gameobject = new GameObject(PLUGIN_NAME);
-            gameobject.AddComponent<UnityMainThreadDispatcher>();
+            var gameobject = new GameObject(Name);
+            var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
 
             var methods = new Dictionary<string, CardHandler>
             {
@@ -35,11 +33,16 @@ namespace CardOrganizerHS
                 { "MapSelect", gameobject.AddComponent<Methods_MapSelect>() },
             };
 
-            gameobject.AddComponent<TCPServerManager>().MessageAction = (x) =>
+            Action<MsgObject> action = (message) =>
             {
-                if(methods.TryGetValue(SceneManager.GetActiveScene().name, out CardHandler manager))
-                    manager.UseCard(x);
+                dispatcher.Enqueue(() =>
+                {
+                    if(methods.TryGetValue(SceneManager.GetActiveScene().name, out CardHandler manager))
+                        manager.UseCard(message);
+                });
             };
+
+            RPCClient_Plugin.Start("CardOrganizerServer.HS", 9125, action);
         }
 
         public void OnApplicationQuit(){}

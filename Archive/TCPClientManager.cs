@@ -15,6 +15,10 @@ namespace CardOrganizerWPF
         public TCPClientManager(Action<MsgObject> action)
         {
             MessageAction = action;
+        }
+
+        public void StartListening()
+        {
             clientReceiveThread = new Thread(ListenForData){ IsBackground = true };
             clientReceiveThread.Start();
         }
@@ -29,7 +33,7 @@ namespace CardOrganizerWPF
                 {
                     using(NetworkStream stream = socketConnection.GetStream())
                     {
-                        int length;		
+                        int length;
                         while((length = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             var incomingData = new byte[length];

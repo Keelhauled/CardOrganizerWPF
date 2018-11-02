@@ -22,7 +22,6 @@ namespace CardOrganizerWPF
         public static Action Rendered { get; set; }
         private CardTypeTab SelectedTab => Tabs[tabControlMain.SelectedIndex == -1 ? 0 : tabControlMain.SelectedIndex];
 
-        private TCPClientManager tcpClientManager;
         private SynchronizationContext uiContext = SynchronizationContext.Current;
         private string markedTab = "";
         private Settings.GameData gameData;
@@ -44,9 +43,9 @@ namespace CardOrganizerWPF
                     {
                         gameData.Path = dialog.SelectedPath;
                     }
-
-                    // cancel if path is not good
                 }
+
+                // cancel if path is not good
             };
 
             Loaded += (sender, e) =>
@@ -57,13 +56,19 @@ namespace CardOrganizerWPF
             Closing += (sender, e) =>
             {
                 SettingsSave();
+                //tcpClientManager.SendMessage(MsgObject.QuitMsg());
             };
 
-            tcpClientManager = new TCPClientManager(x => uiContext.Send(y => SelectedTab.HandleMessage(x), null));
+            //tcpClientManager = new TCPClientManager(x => uiContext.Send(y => SelectedTab.HandleMessage(x), null));
             ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
 
             CreateTabs();
+
+            string serverName = "CardOrganizerServer.KK";
+            int serverPort = 9125;
+            new RPCServer(serverName, serverPort);
+            RPCClient_UI.Start(serverName, serverPort);
         }
 
         private void CreateTabs()
@@ -145,7 +150,6 @@ namespace CardOrganizerWPF
 
             Settings.Save();
             //foreach(var tab in Tabs) tab.SaveCardData();
-            tcpClientManager.SendMessage(MsgObject.QuitMsg());
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -168,7 +172,7 @@ namespace CardOrganizerWPF
         #region Card Methods
         private void Button_Click_Save(object sender, RoutedEventArgs e)
         {
-            tcpClientManager.SendMessage(MsgObject.UseMsg(SelectedTab.saveMsg, SelectedTab.FolderPath));
+            RPCClient_UI.SendMessage(MsgObject.UseMsg(SelectedTab.saveMsg, SelectedTab.FolderPath));
         }
 
         private void Scenes_MenuItem_Click_Load(object sender, RoutedEventArgs e)
@@ -224,7 +228,7 @@ namespace CardOrganizerWPF
         private void UseCard(RoutedEventArgs e, MsgObject.Action action)
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
-            tcpClientManager.SendMessage(MsgObject.UseMsg(action, thumb.Path));
+            RPCClient_UI.SendMessage(MsgObject.UseMsg(action, thumb.Path));
         }
 
         private void MenuItem_Click_Delete(object sender, RoutedEventArgs e)

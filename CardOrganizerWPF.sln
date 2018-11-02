@@ -13,12 +13,22 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PluginLibrary", "PluginLibr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{CE979617-A194-4C66-9528-8242F9A980CE}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		TODO.txt = TODO.txt
 	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedCode", "SharedCode\SharedCode.shproj", "{29BA992B-DAB2-4E00-8211-1131740569BA}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TraverseStandalone", "TraverseStandalone\TraverseStandalone.shproj", "{80387C39-6E7D-4CD2-B29E-8D950CC25D2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Archive", "Archive", "{A04F5A5A-32C7-49DC-B246-61001210DA09}"
+	ProjectSection(SolutionItems) = preProject
+		Archive\AsynchronousClient.cs = Archive\AsynchronousClient.cs
+		Archive\TabContent.cs = Archive\TabContent.cs
+		Archive\TabControlEx.cs = Archive\TabControlEx.cs
+		Archive\TCPClientManager.cs = Archive\TCPClientManager.cs
+		Archive\TCPServerManager.cs = Archive\TCPServerManager.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
