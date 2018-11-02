@@ -23,7 +23,7 @@ namespace CardOrganizerKK
         {
             if(DisableLists.Value) DisableCharaList.Patch();
 
-            var gameobject = new GameObject("CardOrganizerKK");
+            var gameobject = new GameObject(nameof(CardOrganizerKK));
             var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
             var studio = gameobject.AddComponent<Methods_CharaStudio>();
             var freeh = gameobject.AddComponent<Methods_FreeHSelect>();

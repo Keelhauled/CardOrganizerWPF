@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 
 namespace CardOrganizerWPF
@@ -63,37 +64,14 @@ namespace CardOrganizerWPF
             ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
 
-            CreateTabs();
-
-            string serverName = "CardOrganizerServer.KK";
-            int serverPort = 9125;
-            new RPCServer(serverName, serverPort);
-            RPCClient_UI.Start(serverName, serverPort);
-        }
-
-        private void CreateTabs()
-        {
             var args = Environment.GetCommandLineArgs();
-            if(args.Length > 1)
+            if(args.Length > 0 && Settings.data.Games.TryGetValue(args[0], out Settings.GameData data))
             {
-                switch(args[1])
-                {
-                    case "HS":
-                        gameData = Settings.data.HS;
-                        break;
-
-                    case "KK":
-                        gameData = Settings.data.KK;
-                        break;
-
-                    default:
-                        gameData = Settings.data.KK;
-                        break;
-                }
+                gameData = data;
             }
             else
             {
-                gameData = Settings.data.KK;
+                gameData = Settings.data.Games["KK"];
             }
 
             Tabs = new List<CardTypeTab>
@@ -106,6 +84,12 @@ namespace CardOrganizerWPF
             };
 
             SavedTab = gameData.Tab != -1 ? gameData.Tab : 0;
+
+            string serverName = $"CardOrganizerServer.{gameData.Name}";
+            int serverPort = 9125;
+
+            new RPCServer(serverName, serverPort);
+            RPCClient_UI.Start(serverName, serverPort);
         }
 
         private void SettingsLoad()
@@ -149,7 +133,7 @@ namespace CardOrganizerWPF
             gameData.Tab = tabControlMain.SelectedIndex;
 
             Settings.Save();
-            //foreach(var tab in Tabs) tab.SaveCardData();
+            foreach(var tab in Tabs) tab.SaveCardData();
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
