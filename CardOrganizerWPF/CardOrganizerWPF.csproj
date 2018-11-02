@@ -83,6 +83,7 @@
     <Compile Include="RPCServer.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\Prop.cs" />
     <Compile Include="Utils\SortableObservableCollection.cs" />
     <Compile Include="Controls\DelegateCommand.cs" />
     <Compile Include="Controls\ExtScrollViewer.cs" />

@@ -13,8 +13,8 @@ namespace CardOrganizerWPF
 {
     public class CardTypeTab
     {
-        public bool IsEnabled { get; set; }
-        public string Header { get; set; }
+        public Prop<bool> IsEnabled { get; set; } = new Prop<bool>();
+        public Prop<string> Header { get; set; } = new Prop<string>();
         public string FolderPath { get; set; }
         public int SavedCategory { get; set; }
         public DataTemplate Template { get; set; }
@@ -31,32 +31,32 @@ namespace CardOrganizerWPF
         {
             Categories = new ObservableSortedDictionary<string, Category>();
             SavedCategory = -1;
+            IsEnabled.Value = false;
+            Header.Value = "null";
+            this.tabControl = tabControl;
+            this.saveMsg = saveMsg;
 
+            MainWindow.Rendered += () => SetGame(gameData, catData);
+        }
+
+        public void SetGame(Settings.GameData gameData, Settings.Category catData)
+        {
             if(string.IsNullOrWhiteSpace(catData.Header))
             {
-                IsEnabled = false;
-                Header = "Disabled";
+                Header.Value = "Disabled";
+                return;
             }
-            else
-            {
-                IsEnabled = true;
-                Header = catData.Header;
-                Categories = new ObservableSortedDictionary<string, Category>();
-                this.tabControl = tabControl;
-                this.saveMsg = saveMsg;
 
-                MainWindow.Rendered += () =>
-                {
-                    FolderPath = Path.Combine(gameData.Path, catData.Path);
-                    dataManager = new CardDataManager(FolderPath);
-                    GetCategoriesFromData(Categories);
-                    tabControl.SelectedIndex = SavedCategory = catData.Save != -1 ? catData.Save : 0;
+            IsEnabled.Value = true;
+            Header.Value = catData.Header;
+            FolderPath = Path.Combine(gameData.Path, catData.Path);
+            dataManager = new CardDataManager(FolderPath);
+            GetCategoriesFromData(Categories);
+            tabControl.SelectedIndex = SavedCategory = catData.Save != -1 ? catData.Save : 0;
 
-                    watcher = new FileSystemWatcher(FolderPath);
-                    watcher.Created += FileCreated;
-                    watcher.EnableRaisingEvents = true;
-                };
-            }
+            watcher = new FileSystemWatcher(FolderPath);
+            watcher.Created += FileCreated;
+            watcher.EnableRaisingEvents = true;
         }
 
         public List<string> FindDuplicatesInData()
