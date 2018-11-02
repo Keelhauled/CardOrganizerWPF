@@ -24,10 +24,9 @@ public class MsgObject
         return new MsgObject{ type = Type.Use, action = action, path = path};
     }
 
-    public void Print(int length)
+    public void Print()
     {
         Console.WriteLine(new string('=', 40));
-        Console.WriteLine($"Message length: {length}");
         Console.WriteLine($"Type: {type}");
         Console.WriteLine($"Action: {action}");
         Console.WriteLine($"Path: {path}");

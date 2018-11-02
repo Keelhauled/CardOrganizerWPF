@@ -51,7 +51,12 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Remoting">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Windows.Presentation" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -73,18 +78,16 @@
     </Compile>
     <None Include="packages.config" />
     <EmbeddedResource Include="SettingsData.json" />
-    <None Include="Testing\UISettings.cs" />
+    <Compile Include="RPCClient_UI.cs" />
+    <Compile Include="RemotingMessenger.cs" />
+    <Compile Include="RPCServer.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utils\Extensions.cs" />
-    <None Include="Testing\ExtTabControl.cs" />
     <Compile Include="Utils\SortableObservableCollection.cs" />
     <Compile Include="Controls\DelegateCommand.cs" />
     <Compile Include="Controls\ExtScrollViewer.cs" />
     <Compile Include="Utils\ObservableDictionary\ObservableDictionary.cs" />
     <Compile Include="Utils\ObservableDictionary\ObservableSortedDictionary.cs" />
-    <Compile Include="TCPClientManager.cs" />
-    <None Include="Testing\TabControlEx.cs" />
-    <None Include="Testing\TabContent.cs" />
     <Page Include="Controls\ConfirmBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -97,7 +100,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <None Include="Testing\AsynchronousClient.cs" />
     <Compile Include="CardTypeTab.cs" />
     <Compile Include="Utils\FileOperationAPIWrapper.cs" />
     <Compile Include="MainWindow.xaml.cs">

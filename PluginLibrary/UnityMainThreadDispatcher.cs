@@ -23,13 +23,11 @@ using UnityEngine;
 /// </summary>
 public class UnityMainThreadDispatcher : MonoBehaviour
 {
-    public static UnityMainThreadDispatcher Instance { get; set; }
     private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 
     void Start()
     {
         DontDestroyOnLoad(this);
-        Instance = this;
     }
 
     public void Update()
@@ -74,10 +72,5 @@ public class UnityMainThreadDispatcher : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-    }
-
-    void OnDestroy()
-    {
-        Instance = null;
     }
 }

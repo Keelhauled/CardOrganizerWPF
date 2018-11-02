@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using BepInEx;
+using PluginLibrary;
 using UnityEngine;
 
 namespace CardOrganizerKK
@@ -23,31 +24,36 @@ namespace CardOrganizerKK
             if(DisableLists.Value) DisableCharaList.Patch();
 
             var gameobject = new GameObject("CardOrganizerKK");
-            gameobject.AddComponent<UnityMainThreadDispatcher>();
+            var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
             var studio = gameobject.AddComponent<Methods_CharaStudio>();
             var freeh = gameobject.AddComponent<Methods_FreeHSelect>();
             var maker = gameobject.AddComponent<Methods_Maker>();
             var hscene = gameobject.AddComponent<Methods_HScene>();
 
-            gameobject.AddComponent<TCPServerManager>().MessageAction = (message) =>
+            Action<MsgObject> action = (message) =>
             {
-                if(FindObjectOfType<StudioScene>())
+                dispatcher.Enqueue(() =>
                 {
-                    studio.UseCard(message);
-                }
-                else if(FindObjectOfType<FreeHScene>() && !FindObjectOfType<FreeHCharaSelect>())
-                {
-                    freeh.UseCard(message);
-                }
-                else if(FindObjectOfType<CustomScene>())
-                {
-                    maker.UseCard(message);
-                }
-                else if(FindObjectOfType<HSceneProc>())
-                {
-                    hscene.UseCard(message);
-                }
+                    if(FindObjectOfType<StudioScene>())
+                    {
+                        studio.UseCard(message);
+                    }
+                    else if(FindObjectOfType<FreeHScene>() && !FindObjectOfType<FreeHCharaSelect>())
+                    {
+                        freeh.UseCard(message);
+                    }
+                    else if(FindObjectOfType<CustomScene>())
+                    {
+                        maker.UseCard(message);
+                    }
+                    else if(FindObjectOfType<HSceneProc>())
+                    {
+                        hscene.UseCard(message);
+                    }
+                });
             };
+
+            RPCClient_Plugin.Start("CardOrganizerServer.KK", 9125, action);
         }
     }
 }
