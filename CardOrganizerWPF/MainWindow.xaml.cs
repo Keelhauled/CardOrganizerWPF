@@ -39,8 +39,6 @@ namespace CardOrganizerWPF
             Settings.LoadData();
             SettingsLoad();
 
-            Loaded += (sender, e) => OnLoaded();
-
             //tcpClientManager = new TCPClientManager(x => uiContext.Send(y => SelectedTab.HandleMessage(x), null));
             ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
@@ -63,7 +61,7 @@ namespace CardOrganizerWPF
             };
         }
 
-        private void OnLoaded()
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if(gameData == null)
             {
@@ -101,11 +99,7 @@ namespace CardOrganizerWPF
                 TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
 
                 tabControlMain.SelectedIndex = SavedTab = gameData.Tab != -1 ? gameData.Tab : 0;
-
-                Closing += (sender, e) =>
-                {
-                    SettingsSave();
-                };
+                Closing += (x, y) => SettingsSave();
 
                 return;
             }
@@ -274,20 +268,24 @@ namespace CardOrganizerWPF
             if(e.LeftButton == MouseButtonState.Pressed)
             {
                 dynamic src = e.OriginalSource;
-                dynamic context = src.DataContext;
 
-                if(context is KeyValuePair<string, Category>)
+                if(!(src is ExtScrollViewer))
                 {
-                    if(Keyboard.Modifiers == ModifierKeys.Control)
+                    dynamic context = src.DataContext;
+
+                    if(context is KeyValuePair<string, Category> data)
                     {
-                        markedTab = context.Key;
-                        e.Handled = true;
-                        Console.WriteLine($"{markedTab} was marked");
-                    }
-                    else
-                    {
-                        SelectedTab.SaveScrollPosition();
-                    }
+                        if(Keyboard.Modifiers == ModifierKeys.Control)
+                        {
+                            e.Handled = true;
+                            markedTab = data.Key;
+                            Console.WriteLine($"{markedTab} was marked");
+                        }
+                        else
+                        {
+                            SelectedTab.SaveScrollPosition();
+                        }
+                    } 
                 }
             }
         }
@@ -309,17 +307,12 @@ namespace CardOrganizerWPF
         {
             var target = GetPlacementTarget(e);
             markedTab = target.Text;
+            Console.WriteLine($"{markedTab} was marked");
         }
 
         private void MenuItem_Click_RenameCategory(object sender, RoutedEventArgs e)
         {
-            //var target = GetPlacementTarget(e);
-            //string text = new InputBox("Rename Category").ShowDialog();
-            //if(text != "")
-            //{
-                
-            //    target.Text = text;
-            //}
+            
         }
 
         private TextBlock GetPlacementTarget(RoutedEventArgs e)
