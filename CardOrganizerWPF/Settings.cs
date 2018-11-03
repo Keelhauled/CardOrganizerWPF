@@ -66,7 +66,7 @@ namespace CardOrganizerWPF
 
         public class GameData
         {
-            public string Name;
+            public string Server;
             public string Path;
             public int Tab;
             public CategoryData Category;

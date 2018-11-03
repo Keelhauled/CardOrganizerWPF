@@ -41,7 +41,7 @@
 
         <TabControl x:Name="tabControlMain" SelectedIndex="{Binding SavedTab}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">
 
-            <TabItem DataContext="{Binding Tabs[0]}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
+            <TabItem DataContext="{Binding TabScene}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
                 <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True"
                             x:Name="tabControlScenes" SelectedIndex="{Binding SavedCategory}" ItemsSource="{Binding Categories}" Padding="0"
                             SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
@@ -75,7 +75,7 @@
                 </TabControl>
             </TabItem>
 
-            <TabItem DataContext="{Binding Tabs[1]}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
+            <TabItem DataContext="{Binding TabChara1}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
                 <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersF"
                             SelectedIndex="{Binding SavedCategory}" ItemsSource="{Binding Categories}" Padding="0"
                             SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
@@ -109,7 +109,7 @@
                 </TabControl>
             </TabItem>
 
-            <TabItem DataContext="{Binding Tabs[2]}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
+            <TabItem DataContext="{Binding TabChara2}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
                 <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersM"
                             SelectedIndex="{Binding SavedCategory}" ItemsSource="{Binding Categories}" Padding="0"
                             SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
@@ -143,7 +143,7 @@
                 </TabControl>
             </TabItem>
 
-            <TabItem DataContext="{Binding Tabs[3]}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
+            <TabItem DataContext="{Binding TabOutfit1}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
                 <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsF"
                             SelectedIndex="{Binding SavedCategory}" ItemsSource="{Binding Categories}" Padding="0"
                             SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
@@ -177,7 +177,7 @@
                 </TabControl>
             </TabItem>
 
-            <TabItem DataContext="{Binding Tabs[4]}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
+            <TabItem DataContext="{Binding TabOutfit2}" Header="{Binding Header.Value}" IsEnabled="{Binding IsEnabled.Value}">
                 <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsM"
                             SelectedIndex="{Binding SavedCategory}" ItemsSource="{Binding Categories}" Padding="0"
                             SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">

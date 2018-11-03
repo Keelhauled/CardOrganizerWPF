@@ -78,6 +78,9 @@
     </Compile>
     <None Include="packages.config" />
     <EmbeddedResource Include="SettingsData.json" />
+    <Compile Include="Controls\SelectList.xaml.cs">
+      <DependentUpon>SelectList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RPCClient_UI.cs" />
     <Compile Include="RemotingMessenger.cs" />
     <Compile Include="RPCServer.cs" />
@@ -90,6 +93,10 @@
     <Compile Include="Utils\ObservableDictionary\ObservableDictionary.cs" />
     <Compile Include="Utils\ObservableDictionary\ObservableSortedDictionary.cs" />
     <Page Include="Controls\ConfirmBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SelectList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
