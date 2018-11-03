@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -7,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 
 namespace CardOrganizerWPF
@@ -16,11 +16,16 @@ namespace CardOrganizerWPF
     {
         #region Initialization
         public int SavedTab { get; set; }
-        public List<CardTypeTab> Tabs { get; set; }
         public ICommand ScrollToTop { get; set; }
         public ICommand ScrollToBottom { get; set; }
 
-        public static Action Rendered { get; set; }
+        public CardTypeTab TabScene { get; set; }
+        public CardTypeTab TabChara1 { get; set; }
+        public CardTypeTab TabChara2 { get; set; }
+        public CardTypeTab TabOutfit1 { get; set; }
+        public CardTypeTab TabOutfit2 { get; set; }
+
+        private List<CardTypeTab> Tabs { get; set; }
         private CardTypeTab SelectedTab => Tabs[tabControlMain.SelectedIndex == -1 ? 0 : tabControlMain.SelectedIndex];
 
         private SynchronizationContext uiContext = SynchronizationContext.Current;
@@ -35,61 +40,81 @@ namespace CardOrganizerWPF
             Settings.LoadData();
             SettingsLoad();
 
-            Rendered = () =>
-            {
-                if(string.IsNullOrWhiteSpace(gameData.Path))
-                {
-                    var dialog = new VistaFolderBrowserDialog();
-                    if(dialog.ShowDialog(new Window()) == true)
-                    {
-                        gameData.Path = dialog.SelectedPath;
-                    }
-                }
-
-                // cancel if path is not good
-            };
-
             Loaded += (sender, e) =>
             {
-                Dispatcher.BeginInvoke(Rendered, DispatcherPriority.ContextIdle, null);
-            };
-
-            Closing += (sender, e) =>
-            {
-                SettingsSave();
-                //tcpClientManager.SendMessage(MsgObject.QuitMsg());
+                Dispatcher.BeginInvoke(new Action(Rendered), DispatcherPriority.ContextIdle, null);
             };
 
             //tcpClientManager = new TCPClientManager(x => uiContext.Send(y => SelectedTab.HandleMessage(x), null));
             ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
 
-            var args = Environment.GetCommandLineArgs();
-            if(args.Length > 0 && Settings.data.Games.TryGetValue(args[0], out Settings.GameData data))
-            {
-                gameData = data;
-            }
-            else
-            {
-                gameData = Settings.data.Games["KK"];
-            }
+            //var args = Environment.GetCommandLineArgs();
+            //if(args.Length > 0 && Settings.data.Games.TryGetValue(args[0], out Settings.GameData data))
+            //{
+            //    gameData = data;
+            //}
+
+            TabScene = new CardTypeTab(tabControlScenes, MsgObject.Action.SceneSave);
+            TabChara1 = new CardTypeTab(tabControlCharactersF, MsgObject.Action.CharaSave);
+            TabChara2 = new CardTypeTab(tabControlCharactersM, MsgObject.Action.CharaSave);
+            TabOutfit1 = new CardTypeTab(tabControlOutfitsF, MsgObject.Action.OutfitSave);
+            TabOutfit2 = new CardTypeTab(tabControlOutfitsM, MsgObject.Action.OutfitSave);
 
             Tabs = new List<CardTypeTab>
             {
-                new CardTypeTab(gameData, gameData.Category.Scene, tabControlScenes, MsgObject.Action.SceneSave),
-                new CardTypeTab(gameData, gameData.Category.Chara1, tabControlCharactersF, MsgObject.Action.CharaSave),
-                new CardTypeTab(gameData, gameData.Category.Chara2, tabControlCharactersM, MsgObject.Action.CharaSave),
-                new CardTypeTab(gameData, gameData.Category.Outfit1, tabControlOutfitsF, MsgObject.Action.OutfitSave),
-                new CardTypeTab(gameData, gameData.Category.Outfit2, tabControlOutfitsM, MsgObject.Action.OutfitSave),
+                TabScene, TabChara1, TabChara2, TabOutfit1, TabOutfit2
             };
+        }
 
-            SavedTab = gameData.Tab != -1 ? gameData.Tab : 0;
+        private void Rendered()
+        {
+            if(gameData == null)
+            {
+                var list = new SelectList("Choose profile", Settings.data.Games.Keys.ToList());
+                list.Top = Top + (Height / 2) - (list.Height / 2);
+                list.Left = Left + (Width / 2) - (list.Width / 2);
+                if(list.ShowDialog() == true)
+                {
+                    gameData = Settings.data.Games[list.Selected];
+                }
+            }
 
-            string serverName = $"CardOrganizerServer.{gameData.Name}";
-            int serverPort = 9125;
+            if(gameData != null)
+            {
+                if(string.IsNullOrWhiteSpace(gameData.Path))
+                {
+                    var dialog = new VistaFolderBrowserDialog();
+                    if(dialog.ShowDialog(this) == true)
+                    {
+                        gameData.Path = dialog.SelectedPath;
+                    }
+                }
 
-            new RPCServer(serverName, serverPort);
-            RPCClient_UI.Start(serverName, serverPort);
+                // cancel if path is not good
+
+                string serverName = $"CardOrganizerServer.{gameData.Server}";
+                int serverPort = 9125;
+                new RPCServer(serverName, serverPort);
+                RPCClient_UI.Start(serverName, serverPort);
+
+                TabScene.SetGame(gameData, gameData.Category.Scene);
+                TabChara1.SetGame(gameData, gameData.Category.Chara1);
+                TabChara2.SetGame(gameData, gameData.Category.Chara2);
+                TabOutfit1.SetGame(gameData, gameData.Category.Outfit1);
+                TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
+
+                tabControlMain.SelectedIndex = SavedTab = gameData.Tab != -1 ? gameData.Tab : 0;
+
+                Closing += (sender, e) =>
+                {
+                    SettingsSave();
+                };
+
+                return;
+            }
+
+            Close();
         }
 
         private void SettingsLoad()

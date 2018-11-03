@@ -10,9 +10,9 @@
 
 	"Games":
 	{
-		"HS":
+		"Honey Select":
 		{
-			"Name": "HS",
+			"Server": "HS",
 			"Path": "",
 			"Tab": "-1",
 			"Category":
@@ -25,9 +25,9 @@
 			}
 		},
 
-		"KK":
+		"Koikatu":
 		{
-			"Name": "KK",
+			"Server": "KK",
 			"Path": "",
 			"Tab": "-1",
 			"Category":

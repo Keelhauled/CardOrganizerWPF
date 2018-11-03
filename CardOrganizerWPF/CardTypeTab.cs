@@ -27,7 +27,7 @@ namespace CardOrganizerWPF
         FileSystemWatcher watcher;
         SynchronizationContext uiContext = SynchronizationContext.Current;
 
-        public CardTypeTab(Settings.GameData gameData, Settings.Category catData, TabControl tabControl, MsgObject.Action saveMsg)
+        public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg)
         {
             Categories = new ObservableSortedDictionary<string, Category>();
             SavedCategory = -1;
@@ -35,8 +35,6 @@ namespace CardOrganizerWPF
             Header.Value = "null";
             this.tabControl = tabControl;
             this.saveMsg = saveMsg;
-
-            MainWindow.Rendered += () => SetGame(gameData, catData);
         }
 
         public void SetGame(Settings.GameData gameData, Settings.Category catData)
