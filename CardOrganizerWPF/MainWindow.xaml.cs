@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Ookii.Dialogs.Wpf;
 
 namespace CardOrganizerWPF
@@ -40,10 +39,7 @@ namespace CardOrganizerWPF
             Settings.LoadData();
             SettingsLoad();
 
-            Loaded += (sender, e) =>
-            {
-                Dispatcher.BeginInvoke(new Action(Rendered), DispatcherPriority.ContextIdle, null);
-            };
+            Loaded += (sender, e) => OnLoaded();
 
             //tcpClientManager = new TCPClientManager(x => uiContext.Send(y => SelectedTab.HandleMessage(x), null));
             ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
@@ -67,7 +63,7 @@ namespace CardOrganizerWPF
             };
         }
 
-        private void Rendered()
+        private void OnLoaded()
         {
             if(gameData == null)
             {
