@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -13,25 +12,24 @@ namespace CardOrganizerWPF
 {
     public class CardTypeTab
     {
-        public Prop<bool> IsEnabled { get; set; } = new Prop<bool>();
+        public Prop<bool> Enabled { get; set; } = new Prop<bool>();
         public Prop<string> Header { get; set; } = new Prop<string>();
-        public string FolderPath { get; set; }
-        public int SavedCategory { get; set; }
-        public DataTemplate Template { get; set; }
+        public Prop<int> SavedCategory { get; set; } = new Prop<int>();
         public ObservableSortedDictionary<string, Category> Categories { get; set; }
-        
+
+        private string folderPath;
         private CardDataManager dataManager;
         private TabControl tabControl;
-        public MsgObject.Action saveMsg;
-
-        FileSystemWatcher watcher;
-        SynchronizationContext uiContext = SynchronizationContext.Current;
+        private MsgObject.Action saveMsg;
+        private FileSystemWatcher watcher;
+        private SynchronizationContext uiContext;
 
         public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg)
         {
+            uiContext = SynchronizationContext.Current;
             Categories = new ObservableSortedDictionary<string, Category>();
-            SavedCategory = -1;
-            IsEnabled.Value = false;
+            SavedCategory.Value = -1;
+            Enabled.Value = false;
             Header.Value = "null";
             this.tabControl = tabControl;
             this.saveMsg = saveMsg;
@@ -45,14 +43,14 @@ namespace CardOrganizerWPF
                 return;
             }
 
-            IsEnabled.Value = true;
+            Enabled.Value = true;
             Header.Value = catData.Header;
-            FolderPath = Path.Combine(gameData.Path, catData.Path);
-            dataManager = new CardDataManager(FolderPath);
+            folderPath = Path.Combine(gameData.Path, catData.Path);
+            dataManager = new CardDataManager(folderPath);
             GetCategoriesFromData(Categories);
-            tabControl.SelectedIndex = SavedCategory = catData.Save != -1 ? catData.Save : 0;
+            SavedCategory.Value = catData.Save != -1 ? catData.Save : 0;
 
-            watcher = new FileSystemWatcher(FolderPath);
+            watcher = new FileSystemWatcher(folderPath);
             watcher.Created += FileCreated;
             watcher.EnableRaisingEvents = true;
         }
@@ -98,11 +96,11 @@ namespace CardOrganizerWPF
 
         private void GetCategoriesFromData(ObservableSortedDictionary<string, Category> categories)
         {
-            var files = Directory.GetFiles(FolderPath, "*.png");
+            var files = Directory.GetFiles(folderPath, "*.png");
             var sorted = files.Select(x => new KeyValuePair<string, DateTime>(x, File.GetLastWriteTime(x))).ToList();
             sorted.Sort((KeyValuePair<string, DateTime> a, KeyValuePair<string, DateTime> b) => b.Value.CompareTo(a.Value));
 
-            var undefined = new Category(Category.DEFAULT_CATEGORY_NAME, Template);
+            var undefined = new Category(Category.DEFAULT_CATEGORY_NAME);
 
             foreach(var file in sorted)
             {
@@ -115,7 +113,7 @@ namespace CardOrganizerWPF
 
                     if(!categories.TryGetValue(category.categoryName, out Category currentCategory))
                     {
-                        currentCategory = new Category(category.categoryName, Template);
+                        currentCategory = new Category(category.categoryName);
                         categories.Add(currentCategory.Title, currentCategory);
                     }
 
@@ -123,7 +121,7 @@ namespace CardOrganizerWPF
                     {
                         if(found) break;
 
-                        if(Path.Combine(FolderPath, card) == file.Key)
+                        if(Path.Combine(folderPath, card) == file.Key)
                         {
                             currentCategory.AddImage(thumb);
                             found = true;
@@ -147,12 +145,17 @@ namespace CardOrganizerWPF
 
         public void SaveCardData()
         {
-            dataManager?.SaveData(FolderPath);
+            dataManager?.SaveData(folderPath);
         }
 
         public void HandleMessage(MsgObject message)
         {
             AddImage(message.path);
+        }
+
+        public void SaveCard()
+        {
+            RPCClient_UI.SendMessage(MsgObject.UseMsg(saveMsg, folderPath));
         }
 
         #region Scrolling Methods
@@ -215,7 +218,7 @@ namespace CardOrganizerWPF
             if(Path.GetExtension(path) == ".png")
             {
                 string fileName = Path.GetFileName(path);
-                string newPath = Path.Combine(FolderPath, fileName);
+                string newPath = Path.Combine(folderPath, fileName);
                 bool inAnyCategory = FindThumb(newPath, out Category category, out Thumbnail thumb);
                 bool inSelectedCategory = inAnyCategory && category == GetSelectedCategory();
                 bool inNotSelectedCategory = inAnyCategory && !inSelectedCategory;
@@ -321,7 +324,7 @@ namespace CardOrganizerWPF
                 }
                 else
                 {
-                    var newCategory = new Category(toCategory, Template);
+                    var newCategory = new Category(toCategory);
                     newCategory.AddImageFirst(thumb);
                     Categories.Add(toCategory, newCategory);
                     dataManager.AddCategory(toCategory);
@@ -343,7 +346,7 @@ namespace CardOrganizerWPF
             }
             else
             {
-                var newCategory = new Category(newCategoryName, Template);
+                var newCategory = new Category(newCategoryName);
                 newCategory.AddImageFirst(thumb);
                 Categories.Add(newCategoryName, newCategory);
                 dataManager.AddCategory(newCategoryName);
@@ -363,7 +366,7 @@ namespace CardOrganizerWPF
         {
             if(!Categories.TryGetValue(categoryName, out _))
             {
-                Categories.Add(categoryName, new Category(categoryName, Template));
+                Categories.Add(categoryName, new Category(categoryName));
                 dataManager.AddCategory(categoryName);
             }
         }
@@ -389,11 +392,9 @@ namespace CardOrganizerWPF
         public string Title { get; set; }
         public double SavedScrollPosition { get; set; }
         public ObservableCollection<Thumbnail> Images { get; set; }
-        public DataTemplate Template { get; set; }
 
-        public Category(string title, DataTemplate template)
+        public Category(string title)
         {
-            Template = template;
             Images = new SortableObservableCollection<Thumbnail>();
             Title = title;
             SavedScrollPosition = 0;
