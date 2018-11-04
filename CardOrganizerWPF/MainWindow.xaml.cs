@@ -14,7 +14,7 @@ namespace CardOrganizerWPF
     public partial class MainWindow : Window
     {
         #region Initialization
-        public int SavedTab { get; set; }
+        public Prop<int> SavedTab { get; set; } = new Prop<int>();
         public ICommand ScrollToTop { get; set; }
         public ICommand ScrollToBottom { get; set; }
 
@@ -24,22 +24,35 @@ namespace CardOrganizerWPF
         public CardTypeTab TabOutfit1 { get; set; }
         public CardTypeTab TabOutfit2 { get; set; }
 
-        private List<CardTypeTab> Tabs { get; set; }
-        private CardTypeTab SelectedTab => Tabs[tabControlMain.SelectedIndex == -1 ? 0 : tabControlMain.SelectedIndex];
+        private CardTypeTab SelectedTab
+        {
+            get
+            {
+                switch(tabControlMain.SelectedIndex)
+                {
+                    case 0: return TabScene;
+                    case 1: return TabChara1;
+                    case 2: return TabChara2;
+                    case 3: return TabOutfit1;
+                    case 4: return TabOutfit2;
+                    default: return null;
+                }
+            }
+        }
 
-        private SynchronizationContext uiContext = SynchronizationContext.Current;
         private string markedTab = "";
+        private SynchronizationContext uiContext;
         private Settings.GameData gameData;
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
+            uiContext = SynchronizationContext.Current;
 
             Settings.LoadData();
             SettingsLoad();
 
-            //tcpClientManager = new TCPClientManager(x => uiContext.Send(y => SelectedTab.HandleMessage(x), null));
             ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
 
@@ -54,18 +67,13 @@ namespace CardOrganizerWPF
             TabChara2 = new CardTypeTab(tabControlCharactersM, MsgObject.Action.CharaSave);
             TabOutfit1 = new CardTypeTab(tabControlOutfitsF, MsgObject.Action.OutfitSave);
             TabOutfit2 = new CardTypeTab(tabControlOutfitsM, MsgObject.Action.OutfitSave);
-
-            Tabs = new List<CardTypeTab>
-            {
-                TabScene, TabChara1, TabChara2, TabOutfit1, TabOutfit2
-            };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if(gameData == null)
             {
-                var list = new SelectList("Choose profile", Settings.data.Games.Keys.ToList());
+                var list = new SelectList("Choose a profile", Settings.data.Games.Keys.ToList());
                 list.Top = Top + (Height / 2) - (list.Height / 2);
                 list.Left = Left + (Width / 2) - (list.Width / 2);
                 if(list.ShowDialog() == true)
@@ -98,7 +106,7 @@ namespace CardOrganizerWPF
                 TabOutfit1.SetGame(gameData, gameData.Category.Outfit1);
                 TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
 
-                tabControlMain.SelectedIndex = SavedTab = gameData.Tab != -1 ? gameData.Tab : 0;
+                SavedTab.Value = gameData.Tab != -1 ? gameData.Tab : 0;
                 Closing += (x, y) => SettingsSave();
 
                 return;
@@ -148,7 +156,12 @@ namespace CardOrganizerWPF
             gameData.Tab = tabControlMain.SelectedIndex;
 
             Settings.Save();
-            foreach(var tab in Tabs) tab.SaveCardData();
+
+            TabScene.SaveCardData();
+            TabChara1.SaveCardData();
+            TabChara2.SaveCardData();
+            TabOutfit1.SaveCardData();
+            TabOutfit2.SaveCardData();
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -171,7 +184,7 @@ namespace CardOrganizerWPF
         #region Card Methods
         private void Button_Click_Save(object sender, RoutedEventArgs e)
         {
-            RPCClient_UI.SendMessage(MsgObject.UseMsg(SelectedTab.saveMsg, SelectedTab.FolderPath));
+            SelectedTab.SaveCard();
         }
 
         private void Scenes_MenuItem_Click_Load(object sender, RoutedEventArgs e)

@@ -18,7 +18,7 @@
 
     <DockPanel>
         <Grid Background="White" DockPanel.Dock="Top" Height="75">
-            <ListBox x:Name="listBox" ItemsSource="{Binding GameList}">
+            <ListBox x:Name="listBox" ItemsSource="{Binding GameList}" BorderThickness="0">
                 <ListBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding EnterKeyCommand}"/>
                 </ListBox.InputBindings>
