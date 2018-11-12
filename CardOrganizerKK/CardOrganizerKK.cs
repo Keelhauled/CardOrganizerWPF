@@ -9,14 +9,29 @@ namespace CardOrganizerKK
     [BepInPlugin("keelhauled.cardorganizerkk", "CardOrganizerKK", "1.0.0")]
     class CardOrganizerKK : BaseUnityPlugin
     {
-        [Advanced(true)]
         [DisplayName("Disable ingame card lists")]
-        [Description("These lists drain a lot of performance and are useless with this plugin so they should be disabled.\nChanges take effect after game restart.")]
+        [Description("These lists drain a lot of performance and are useless with this plugin so they should be disabled.\n\n" +
+                     "Changes take effect after game restart.")]
         ConfigWrapper<bool> DisableLists { get; }
+
+        [Browsable(true)]
+        [DisplayName("Reconnect to server")]
+        [CustomSettingDraw(nameof(ReconnectDrawer))]
+        string Reconnect { get; set; } = "";
 
         CardOrganizerKK()
         {
             DisableLists = new ConfigWrapper<bool>("DisableLists", this, true);
+        }
+
+        void ReconnectDrawer()
+        {
+            var text = RPCClient_Plugin.threadRunning ? "Connected" : "Reconnect";
+
+            if(GUILayout.Button(text, GUILayout.ExpandWidth(true)))
+            {
+                RPCClient_Plugin.StartServer();
+            }
         }
 
         void Awake()
@@ -53,7 +68,7 @@ namespace CardOrganizerKK
                 });
             };
 
-            RPCClient_Plugin.Start("CardOrganizerServer.KK", 9125, action);
+            RPCClient_Plugin.Init("CardOrganizerServer.KK", 9125, action);
         }
     }
 }
