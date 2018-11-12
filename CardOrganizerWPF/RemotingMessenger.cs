@@ -27,12 +27,26 @@ namespace CardOrganizerWPF
 
         public void SendMessage(int id, byte[] message)
         {
-            messages.Enqueue(message);
+            lock(messages)
+            {
+                messages.Enqueue(message);
+            }
         }
 
         public byte[] GetMessage()
         {
-            return messages.Count > 0 ? messages.Dequeue() : null; 
+            lock(messages)
+            {
+                return messages.Count > 0 ? messages.Dequeue() : null;  
+            }
+        }
+
+        public void ClearMessage()
+        {
+            lock(messages)
+            {
+                messages.Clear();
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ namespace CardOrganizerHS
                 });
             };
 
-            RPCClient_Plugin.Start("CardOrganizerServer.HS", 9125, action);
+            RPCClient_Plugin.Init("CardOrganizerServer.HS", 9125, action);
         }
 
         public void OnApplicationQuit(){}

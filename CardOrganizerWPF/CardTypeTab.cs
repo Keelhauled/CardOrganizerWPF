@@ -101,13 +101,15 @@ namespace CardOrganizerWPF
             sorted.Sort((KeyValuePair<string, DateTime> a, KeyValuePair<string, DateTime> b) => b.Value.CompareTo(a.Value));
 
             var undefined = new Category(Category.DEFAULT_CATEGORY_NAME);
+            categories.Add(Category.DEFAULT_CATEGORY_NAME, undefined);
+            var dataCategories = dataManager.GetCategories();
 
             foreach(var file in sorted)
             {
                 bool found = false;
                 var thumb = new Thumbnail(file.Key, file.Value);
 
-                foreach(var category in dataManager.GetCategories())
+                foreach(var category in dataCategories)
                 {
                     if(found) break;
 
@@ -134,8 +136,6 @@ namespace CardOrganizerWPF
                     undefined.AddImage(thumb);
                 }
             }
-
-            categories.Add(Category.DEFAULT_CATEGORY_NAME, undefined);
         }
 
         public Category GetSelectedCategory()
@@ -403,19 +403,19 @@ namespace CardOrganizerWPF
         public void AddImageFirst(Thumbnail thumb)
         {
             Images.Insert(0, thumb);
-            Console.WriteLine($"Adding {thumb.Path} to category {Title}");
+            //Console.WriteLine($"Adding {thumb.Path} to category {Title}");
         }
 
         public void AddImage(Thumbnail thumb)
         {
             Images.Add(thumb);
-            Console.WriteLine($"Adding {thumb.Path} to category {Title}");
+            //Console.WriteLine($"Adding {thumb.Path} to category {Title}");
         }
 
         public void RemoveImage(Thumbnail thumb)
         {
             Images.Remove(thumb);
-            Console.WriteLine($"Removing {thumb.Path} from category {Title}");
+            //Console.WriteLine($"Removing {thumb.Path} from category {Title}");
         }
 
         public void SortImagesByDate()
