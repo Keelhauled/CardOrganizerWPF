@@ -99,7 +99,8 @@ namespace CardOrganizerKK
         public override void Outfit_Save(MsgObject message)
         {
             string coordName = "coordinateName";
-            var chaCtrl = CustomBase.Instance.chaCtrl;
+            var customBase = CustomBase.Instance;
+            var chaCtrl = customBase.chaCtrl;
             var customCtrl = Singleton<CustomControl>.Instance;
 
             string date = GetTimeNow();
@@ -112,7 +113,7 @@ namespace CardOrganizerKK
             DelayAction(() =>
             {
                 var outfit = chaCtrl.chaFile.coordinate[chaCtrl.chaFile.status.coordinateType];
-                CustomCapture.CreatePng(ref outfit.pngData, 252, 352, null, null, Camera.main, null);
+                outfit.pngData = customCtrl.customCap.CapCharaCard(true, customBase.saveFrameAssist);
                 outfit.coordinateName = coordName;
                 outfit.SaveFile(path);
 
