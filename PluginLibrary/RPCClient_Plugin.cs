@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using MessagePack;
+using MessagePack.Resolvers;
+using System.Reflection;
 
 namespace PluginLibrary
 {
@@ -10,7 +12,7 @@ namespace PluginLibrary
         private static Action<MsgObject> messageAction;
         private static string serverName;
         private static int serverPort;
-        public static volatile bool threadRunning = false;
+        private static volatile bool threadRunning = false;
 
         public static void Init(string name, int port, Action<MsgObject> action)
         {
@@ -36,6 +38,11 @@ namespace PluginLibrary
         public static void StopServer()
         {
             threadRunning = false;
+        }
+
+        public static bool Status()
+        {
+            return threadRunning;
         }
 
         private static void RefreshMessages()
@@ -70,12 +77,19 @@ namespace PluginLibrary
 
                     Thread.Sleep(100);
                 }
+                catch(ArgumentException ex)
+                {
+                    // catches an old bug in MessagePack-CSharp (Duplicate type name within an assembly, issue #127)
+                    // must use a fixed Assembly-CSharp-firstpass.dll for this to work with scriptloader in KK
+                    Console.WriteLine(ex);
+                }
                 catch(Exception)
                 {
-                    Console.WriteLine("[CardOrganizer] Stopping client");
                     threadRunning = false;
                 }
             }
+
+            Console.WriteLine("[CardOrganizer] Stopping client");
         }
     }
 }

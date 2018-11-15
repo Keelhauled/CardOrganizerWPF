@@ -26,7 +26,7 @@ namespace CardOrganizerKK
 
         void ReconnectDrawer()
         {
-            var text = RPCClient_Plugin.threadRunning ? "Connected" : "Reconnect";
+            var text = RPCClient_Plugin.Status() ? "Connected" : "Reconnect";
 
             if(GUILayout.Button(text, GUILayout.ExpandWidth(true)))
             {
@@ -39,6 +39,7 @@ namespace CardOrganizerKK
             if(DisableLists.Value) DisableCharaList.Patch();
 
             var gameobject = new GameObject(nameof(CardOrganizerKK));
+            gameobject.transform.SetParent(gameObject.transform);
             var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
             var studio = gameobject.AddComponent<Methods_CharaStudio>();
             var freeh = gameobject.AddComponent<Methods_FreeHSelect>();
@@ -69,6 +70,11 @@ namespace CardOrganizerKK
             };
 
             RPCClient_Plugin.Init("CardOrganizerServer.KK", 9125, action);
+        }
+
+        void OnDestroy()
+        {
+            RPCClient_Plugin.StopServer();
         }
     }
 }
