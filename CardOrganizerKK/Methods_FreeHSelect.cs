@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Harmony;
 using static BepInEx.Logger;
 using BepInEx.Logging;
@@ -11,12 +10,14 @@ namespace CardOrganizerKK
         public override void Character_LoadFemale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load female [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
             DelayAction(() => SetupCharacter(message.path, ResultType.Heroine));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
             DelayAction(() => SetupCharacter(message.path, ResultType.Player));
         }
 

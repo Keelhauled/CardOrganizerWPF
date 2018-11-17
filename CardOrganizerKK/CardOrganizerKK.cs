@@ -19,9 +19,13 @@ namespace CardOrganizerKK
         [CustomSettingDraw(nameof(ReconnectDrawer))]
         string Reconnect { get; set; } = "";
 
+        [DisplayName("Play sounds")]
+        public static ConfigWrapper<bool> PlaySounds { get; private set; }
+
         CardOrganizerKK()
         {
             DisableLists = new ConfigWrapper<bool>("DisableLists", this, true);
+            PlaySounds = new ConfigWrapper<bool>("PlaySounds", this, true);
         }
 
         void ReconnectDrawer()

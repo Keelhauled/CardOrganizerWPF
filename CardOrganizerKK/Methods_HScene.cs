@@ -2,7 +2,6 @@
 using System.Linq;
 using static BepInEx.Logger;
 using BepInEx.Logging;
-using Illusion.Game;
 using MessagePack;
 
 namespace CardOrganizerKK
@@ -12,21 +11,21 @@ namespace CardOrganizerKK
         public override void Outfit_Load(MsgObject message)
         {
             Log(LogLevel.Message, $"Load outfit [{Path.GetFileName(message.path)}]");
-            Utils.Sound.Play(SystemSE.sel);
+            PlayLoadSound();
             DelayAction(() => LoadOutfit(message.path, true, true));
         }
 
         public override void Outfit_LoadAccOnly(MsgObject message)
         {
             Log(LogLevel.Message, $"Load outfit accessories [{Path.GetFileName(message.path)}]");
-            Utils.Sound.Play(SystemSE.sel);
+            PlayLoadSound();
             DelayAction(() => LoadOutfit(message.path, false, true));
         }
 
         public override void Outfit_LoadClothOnly(MsgObject message)
         {
             Log(LogLevel.Message, $"Load outfit clothing [{Path.GetFileName(message.path)}]");
-            Utils.Sound.Play(SystemSE.sel);
+            PlayLoadSound();
             DelayAction(() => LoadOutfit(message.path, true, false));
         }
 
