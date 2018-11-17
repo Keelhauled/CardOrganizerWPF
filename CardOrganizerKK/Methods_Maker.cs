@@ -116,10 +116,6 @@ namespace CardOrganizerKK
                 outfit.pngData = customCtrl.customCap.CapCharaCard(true, customBase.saveFrameAssist);
                 outfit.coordinateName = coordName;
                 outfit.SaveFile(path);
-
-                int noUseIndex = customCtrl.saveFileListCtrl.GetNoUseIndex();
-                customCtrl.saveFileListCtrl.AddList(noUseIndex, coordName, "", "", path, filename, DateTime.Now, false);
-                customCtrl.saveFileListCtrl.ReCreate();
             });
         }
 
