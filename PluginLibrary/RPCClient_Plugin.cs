@@ -82,6 +82,7 @@ namespace PluginLibrary
                     // catches an old bug in MessagePack-CSharp (Duplicate type name within an assembly, issue #127)
                     // must use a fixed Assembly-CSharp-firstpass.dll for this to work with scriptloader in KK
                     Console.WriteLine(ex);
+                    threadRunning = false;
                 }
                 catch(Exception)
                 {

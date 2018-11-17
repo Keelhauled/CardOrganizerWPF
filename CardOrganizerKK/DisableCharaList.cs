@@ -25,15 +25,20 @@ namespace CardOrganizerKK
         [HarmonyPrefix, HarmonyPatch(typeof(CharaList), "InitFemaleList")]
         public static bool HarmonyPatch_CharaList_InitFemaleList()
         {
-            Log(LogLevel.Message, "YOINK");
+            ShowWarning();
             return false;
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(CharaList), "InitMaleList")]
         public static bool HarmonyPatch_CharaList_InitMaleList()
         {
-            Log(LogLevel.Message, "YOINK");
+            ShowWarning();
             return false;
+        }
+
+        public static void ShowWarning()
+        {
+            Log(LogLevel.Message, "[CardOrganizer] List disabled.");
         }
     }
 }
