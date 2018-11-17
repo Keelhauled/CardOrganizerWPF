@@ -14,10 +14,12 @@ namespace CardOrganizerKK
 {
     class Methods_CharaStudio : Methods_Common
     {
+        // Copied from Studio.SaveScene
         public override void Scene_Save(MsgObject message)
         {
             string path = Path.Combine(message.path, GetTimeNow() + ".png");
             Log(LogLevel.Message, $"Save scene [{Path.GetFileName(path)}]");
+            PlaySaveSound();
 
             DelayAction(() =>
             {
@@ -30,21 +32,25 @@ namespace CardOrganizerKK
         public override void Scene_Load(MsgObject message)
         {
             Log(LogLevel.Message, $"Load scene [{Path.GetFileName(message.path)}]");
-            StartCoroutine(Studio.Studio.Instance.LoadSceneCoroutine(message.path));
+            PlayLoadSound();
+            DelayAction(() => StartCoroutine(Studio.Studio.Instance.LoadSceneCoroutine(message.path)));
         }
 
         public override void Scene_ImportAll(MsgObject message)
         {
             Log(LogLevel.Message, $"Import scene [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
             DelayAction(() => Studio.Studio.Instance.ImportScene(message.path));
         }
 
         public override void Scene_ImportChara(MsgObject message)
         {
             Log(LogLevel.Message, $"Import scene characters [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
             DelayAction(() => ImportSceneChara(message.path));
         }
 
+        // Edited version of SceneInfo.Import
         void ImportSceneChara(string path)
         {
             using(var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -153,6 +159,7 @@ namespace CardOrganizerKK
             {
                 string date = GetTimeNow();
                 //KKKiyase.ForceDisableOneFrame();
+                PlaySaveSound();
 
                 foreach(var item in characters)
                 {
@@ -177,18 +184,21 @@ namespace CardOrganizerKK
             else
             {
                 Log(LogLevel.Message, "Select characters to save");
+                PlayFailSound();
             }
         }
 
         public override void Character_LoadFemale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load female [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
             DelayAction(() => Studio.Studio.Instance.AddFemale(message.path));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
             DelayAction(() => Studio.Studio.Instance.AddMale(message.path));
         }
 
@@ -198,6 +208,8 @@ namespace CardOrganizerKK
             if(characters.Count > 0)
             {
                 Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} [{Path.GetFileName(message.path)}]");
+                PlayLoadSound();
+
                 DelayAction(() =>
                 {
                     foreach(var x in characters) x.ChangeChara(message.path);
@@ -207,33 +219,14 @@ namespace CardOrganizerKK
             else
             {
                 Log(LogLevel.Message, "Select characters to replace");
+                PlayFailSound();
             }
         }
 
         public override void Character_ReplaceBody(MsgObject message)
         {
-            //var characters = GetSelectedCharacters();
-
-            //if(characters.Count > 0)
-            //{
-            //    foreach(var chara in characters)
-            //    {
-            //        byte[] clothes = MessagePackSerializer.Serialize(chara.charInfo.nowCoordinate.clothes);
-            //        byte[] accessory = MessagePackSerializer.Serialize(chara.charInfo.nowCoordinate.accessory);
-            //        var coordinateType = chara.charFileStatus.coordinateType;
-
-            //        chara.ChangeChara(message.path);
-            //        chara.charInfo.nowCoordinate.clothes = MessagePackSerializer.Deserialize<ChaFileClothes>(clothes);
-            //        chara.charInfo.nowCoordinate.accessory = MessagePackSerializer.Deserialize<ChaFileAccessory>(accessory);
-            //        chara.SetCoordinateInfo((ChaFileDefine.CoordinateType)coordinateType);
-            //        chara.charInfo.Reload(false, true, true, true);
-            //        if(chara.sex == 1) chara.charInfo.UpdateBustSoftnessAndGravity();
-            //    }
-            //}
-            //else
-            //{
-            //    Log(LogLevel.Message, "Select characters to replace");
-            //}
+            Log(LogLevel.Message, "\"Character_ReplaceBody\" has not been implemented yet");
+            PlayFailSound();
         }
 
         public override void Outfit_Save(MsgObject message)
@@ -248,7 +241,9 @@ namespace CardOrganizerKK
                 {
                     string prefix = chara.sex == 0 ? "KKCoordeM" : "KKCoordeF";
                     string path = Path.Combine(message.path, $"{prefix}_{date}.png");
+
                     Log(LogLevel.Message, $"Save outfit [{Path.GetFileName(path)}]");
+                    PlaySaveSound();
 
                     DelayAction(() =>
                     {
@@ -263,6 +258,7 @@ namespace CardOrganizerKK
             else
             {
                 Log(LogLevel.Message, "Select character before saving outfit");
+                PlayFailSound();
             }
         }
 
@@ -281,6 +277,7 @@ namespace CardOrganizerKK
             LoadOutfit(message.path, true, false, $"Load outfit clothing [{Path.GetFileName(message.path)}]");
         }
 
+        // Copied from CustomCoordinateFile.Start
         void LoadOutfit(string path, bool loadClothes, bool loadAcs, string logMsg)
         {
             var characters = GetSelectedCharacters();
@@ -288,6 +285,8 @@ namespace CardOrganizerKK
             if(characters.Count > 0)
             {
                 Log(LogLevel.Message, logMsg);
+                PlayLoadSound();
+
                 DelayAction(() =>
                 {
                     foreach(var chara in characters)
@@ -312,6 +311,7 @@ namespace CardOrganizerKK
             else
             {
                 Log(LogLevel.Message, "Select character before loading outfit");
+                PlayFailSound();
             }
         }
 

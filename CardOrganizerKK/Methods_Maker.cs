@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using UnityEngine;
 using MessagePack;
 using ChaCustom;
-using Illusion.Game;
 using Manager;
 using static BepInEx.Logger;
 using BepInEx.Logging;
@@ -22,8 +20,9 @@ namespace CardOrganizerKK
             string filename = $"{param.lastname}_{param.firstname}_{GetTimeNow()}";
             string filenameext = filename + ".png";
             string path = Path.Combine(message.path, filenameext);
+
             Log(LogLevel.Message, $"Save character [{filenameext}]");
-            Utils.Sound.Play(SystemSE.ok_s);
+            PlaySaveSound();
 
             DelayAction(() =>
             {
@@ -66,12 +65,14 @@ namespace CardOrganizerKK
         public override void Character_LoadFemale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load female [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
             DelayAction(() => LoadCharacter(message.path));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
             DelayAction(() => LoadCharacter(message.path));
         }
 
@@ -79,7 +80,6 @@ namespace CardOrganizerKK
         void LoadCharacter(string path)
         {
             //KKKiyase.ForceDisableOneFrame();
-            Utils.Sound.Play(SystemSE.ok_s);
 
             bool loadFace = true;
             bool loadBody = true;
@@ -95,6 +95,19 @@ namespace CardOrganizerKK
             CustomHistory.Instance.Add5(chaCtrl, chaCtrl.Reload, !loadCoord, !loadFace && !loadCoord, !loadHair, !loadBody);
         }
 
+        public override void Character_ReplaceAll(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Replace character [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
+            DelayAction(() => LoadCharacter(message.path));
+        }
+
+        public override void Character_ReplaceBody(MsgObject message)
+        {
+            Log(LogLevel.Message, "\"Character_ReplaceBody\" has not been implemented yet");
+            PlayFailSound();
+        }
+
         // Copied from CustomCoordinateFile.CreateCoordinateFileCoroutine
         public override void Outfit_Save(MsgObject message)
         {
@@ -108,7 +121,9 @@ namespace CardOrganizerKK
             string filename = $"{prefix}_{date}";
             string filenameext = filename + ".png";
             string path = Path.Combine(message.path, filenameext);
+
             Log(LogLevel.Message, $"Save outfit [{Path.GetFileName(path)}]");
+            PlaySaveSound();
 
             DelayAction(() =>
             {
@@ -122,24 +137,25 @@ namespace CardOrganizerKK
         public override void Outfit_Load(MsgObject message)
         {
             Log(LogLevel.Message, $"Load outfit [{Path.GetFileName(message.path)}]");
-            Utils.Sound.Play(SystemSE.ok_s);
+            PlayLoadSound();
             DelayAction(() => LoadOutfit(message.path, true, true));
         }
 
         public override void Outfit_LoadAccOnly(MsgObject message)
         {
             Log(LogLevel.Message, $"Load outfit accessories [{Path.GetFileName(message.path)}]");
-            Utils.Sound.Play(SystemSE.ok_s);
+            PlayLoadSound();
             DelayAction(() => LoadOutfit(message.path, false, true));
         }
 
         public override void Outfit_LoadClothOnly(MsgObject message)
         {
             Log(LogLevel.Message, $"Load outfit clothing [{Path.GetFileName(message.path)}]");
-            Utils.Sound.Play(SystemSE.ok_s);
+            PlayLoadSound();
             DelayAction(() => LoadOutfit(message.path, true, false));
         }
 
+        // Copied from CustomCoordinateFile.Start
         void LoadOutfit(string path, bool loadClothes, bool loadAcs)
         {
             var chaCtrl = CustomBase.Instance.chaCtrl;

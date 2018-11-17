@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading;
 using MessagePack;
-using MessagePack.Resolvers;
-using System.Reflection;
 
 namespace PluginLibrary
 {
@@ -79,9 +77,8 @@ namespace PluginLibrary
                 }
                 catch(ArgumentException ex)
                 {
-                    // catches an old bug in MessagePack-CSharp (Duplicate type name within an assembly, issue #127)
-                    // must use a fixed Assembly-CSharp-firstpass.dll for this to work with scriptloader in KK
-                    Console.WriteLine(ex);
+                    Console.WriteLine("ERROR: Old bug in MessagePack-CSharp (Duplicate type name within an assembly, issue #127)\n" +
+                                      "Must use a fixed Assembly-CSharp-firstpass.dll for this to work with scriptloader in KK\n" + ex);
                     threadRunning = false;
                 }
                 catch(Exception)

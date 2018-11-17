@@ -1,5 +1,4 @@
-﻿using System;
-using Harmony;
+﻿using Harmony;
 using ChaCustom;
 using Studio;
 using static BepInEx.Logger;

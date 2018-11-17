@@ -3,6 +3,7 @@ using Harmony;
 using PluginLibrary;
 using static BepInEx.Logger;
 using BepInEx.Logging;
+using Illusion.Game;
 
 namespace CardOrganizerKK
 {
@@ -35,6 +36,21 @@ namespace CardOrganizerKK
                     tryKiyase = false;
                 }
             }
+        }
+
+        public static void PlaySaveSound()
+        {
+            if(CardOrganizerKK.PlaySounds.Value) Utils.Sound.Play(SystemSE.photo);
+        }
+
+        public static void PlayLoadSound()
+        {
+            if(CardOrganizerKK.PlaySounds.Value) Utils.Sound.Play(SystemSE.result_single);
+        }
+
+        public static void PlayFailSound()
+        {
+            if(CardOrganizerKK.PlaySounds.Value) Utils.Sound.Play(SystemSE.cancel);
         }
     }
 }
