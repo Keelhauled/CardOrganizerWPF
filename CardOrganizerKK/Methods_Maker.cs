@@ -66,21 +66,21 @@ namespace CardOrganizerKK
         {
             Log(LogLevel.Message, $"Load female [{Path.GetFileName(message.path)}]");
             PlayLoadSound();
-            DelayAction(() => LoadCharacter(message.path, true));
+            DelayAction(() => LoadCharacter(message.path));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
             PlayLoadSound();
-            DelayAction(() => LoadCharacter(message.path, true));
+            DelayAction(() => LoadCharacter(message.path));
         }
 
         public override void Character_ReplaceAll(MsgObject message)
         {
             Log(LogLevel.Message, $"Replace character [{Path.GetFileName(message.path)}]");
             PlayLoadSound();
-            DelayAction(() => LoadCharacter(message.path, true));
+            DelayAction(() => LoadCharacter(message.path));
         }
 
         public override void Character_ReplaceFace(MsgObject message)
@@ -111,7 +111,7 @@ namespace CardOrganizerKK
             DelayAction(() => LoadCharacter(message.path, false, false, false, false, true));
         }
 
-        void LoadCharacter(string path, bool all)
+        void LoadCharacter(string path)
         {
             LoadCharacter(path, true, true, true, true, true);
         }
