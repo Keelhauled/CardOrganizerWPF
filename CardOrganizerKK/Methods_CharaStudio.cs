@@ -9,11 +9,72 @@ using Harmony;
 using static BepInEx.Logger;
 using BepInEx.Logging;
 using MessagePack;
+using System.Reflection;
 
 namespace CardOrganizerKK
 {
     class Methods_CharaStudio : Methods_Common
     {
+        static class LoadFilePatch
+        {
+            static HarmonyInstance harmony;
+            static MethodInfo patch;
+            static MethodInfo original;
+
+            public static bool doPatch = false;
+            static bool loadFace = true;
+            static bool loadBody = true;
+            static bool loadHair = true;
+            static bool parameter = true;
+            static bool loadCoord = true;
+
+            public static void SetParam(bool dopatch, bool loadface, bool loadbody, bool loadhair, bool param, bool loadcoord)
+            {
+                doPatch = dopatch;
+                loadFace = loadface;
+                loadBody = loadbody;
+                loadHair = loadhair;
+                parameter = param;
+                loadCoord = loadcoord;
+            }
+
+            public static void Patch()
+            {
+                harmony = HarmonyInstance.Create("keelhauled.cardorganizerkk.loadfilepatch.harmony");
+                patch = AccessTools.Method(typeof(LoadFilePatch), nameof(PatchMethod));
+                original = AccessTools.Method(typeof(ChaFileControl), nameof(ChaFileControl.LoadCharaFile), new Type[]{ typeof(string), typeof(byte), typeof(bool), typeof(bool) });
+                harmony.Patch(original, new HarmonyMethod(patch), null);
+            }
+
+            public static void RemovePatch()
+            {
+                harmony.RemovePatch(original, patch);
+            }
+
+            public static bool PatchMethod(ChaFileControl __instance, ref string filename, ref byte sex, bool __result)
+            {
+                Log(LogLevel.Message, "MESSAGE");
+
+                if(doPatch)
+                {
+                    __result = __instance.LoadFileLimited(filename, sex, loadFace, loadBody, loadHair, parameter, loadCoord);
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        void Start()
+        {
+            LoadFilePatch.Patch();
+        }
+
+        void OnDestroy()
+        {
+            LoadFilePatch.RemovePatch();
+        }
+
         // Copied from Studio.SaveScene
         public override void Scene_Save(MsgObject message)
         {
@@ -154,7 +215,6 @@ namespace CardOrganizerKK
         public override void Character_Save(MsgObject message)
         {
             var characters = GetSelectedCharacters();
-
             if(characters.Count > 0)
             {
                 string date = GetTimeNow();
@@ -204,15 +264,42 @@ namespace CardOrganizerKK
 
         public override void Character_ReplaceAll(MsgObject message)
         {
+            ReplaceChara(message.path, false, true, true, true, true, true);
+        }
+
+        public override void Character_ReplaceFace(MsgObject message)
+        {
+            ReplaceChara(message.path, true, true, false, false, false, false);
+        }
+
+        public override void Character_ReplaceBody(MsgObject message)
+        {
+            ReplaceChara(message.path, true, false, true, false, false, false);
+        }
+
+        public override void Character_ReplaceHair(MsgObject message)
+        {
+            ReplaceChara(message.path, true, false, false, true, false, false);
+        }
+
+        public override void Character_ReplaceOutfit(MsgObject message)
+        {
+            ReplaceChara(message.path, true, false, false, false, false, true);
+        }
+
+        void ReplaceChara(string path, bool doPatch, bool loadFace, bool loadBody, bool loadHair, bool parameter, bool loadCoord)
+        {
             var characters = GetSelectedCharacters();
             if(characters.Count > 0)
             {
-                Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} [{Path.GetFileName(message.path)}]");
+                Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} [{Path.GetFileName(path)}]");
                 PlayLoadSound();
 
                 DelayAction(() =>
                 {
-                    foreach(var x in characters) x.ChangeChara(message.path);
+                    LoadFilePatch.SetParam(doPatch, loadFace, loadBody, loadHair, parameter, loadCoord);
+                    foreach(var x in characters) x.ChangeChara(path);
+                    LoadFilePatch.doPatch = false;
                     UpdateStateInfo();
                 });
             }
@@ -223,34 +310,9 @@ namespace CardOrganizerKK
             }
         }
 
-        public override void Character_ReplaceFace(MsgObject message)
-        {
-            Log(LogLevel.Message, $"\"{nameof(Character_ReplaceFace)}\" has not been implemented yet");
-            PlayFailSound();
-        }
-
-        public override void Character_ReplaceBody(MsgObject message)
-        {
-            Log(LogLevel.Message, $"\"{nameof(Character_ReplaceBody)}\" has not been implemented yet");
-            PlayFailSound();
-        }
-
-        public override void Character_ReplaceHair(MsgObject message)
-        {
-            Log(LogLevel.Message, $"\"{nameof(Character_ReplaceHair)}\" has not been implemented yet");
-            PlayFailSound();
-        }
-
-        public override void Character_ReplaceOutfit(MsgObject message)
-        {
-            Log(LogLevel.Message, $"\"{nameof(Character_ReplaceOutfit)}\" has not been implemented yet");
-            PlayFailSound();
-        }
-
         public override void Outfit_Save(MsgObject message)
         {
             var characters = GetSelectedCharacters();
-
             if(characters.Count > 0)
             {
                 string date = GetTimeNow();
@@ -299,7 +361,6 @@ namespace CardOrganizerKK
         void LoadOutfit(string path, bool loadClothes, bool loadAcs, string logMsg)
         {
             var characters = GetSelectedCharacters();
-
             if(characters.Count > 0)
             {
                 Log(LogLevel.Message, logMsg);
