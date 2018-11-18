@@ -51,7 +51,10 @@ public class MsgObject
         CharaLoadFemale,
         CharaLoadMale,
         CharaReplaceAll,
+        CharaReplaceFace,
         CharaReplaceBody,
+        CharaReplaceHair,
+        CharaReplaceOutfit,
 
         OutfitSave,
         OutfitLoad,

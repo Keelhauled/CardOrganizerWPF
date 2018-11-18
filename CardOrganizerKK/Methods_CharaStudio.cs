@@ -223,9 +223,27 @@ namespace CardOrganizerKK
             }
         }
 
+        public override void Character_ReplaceFace(MsgObject message)
+        {
+            Log(LogLevel.Message, $"\"{nameof(Character_ReplaceFace)}\" has not been implemented yet");
+            PlayFailSound();
+        }
+
         public override void Character_ReplaceBody(MsgObject message)
         {
-            Log(LogLevel.Message, "\"Character_ReplaceBody\" has not been implemented yet");
+            Log(LogLevel.Message, $"\"{nameof(Character_ReplaceBody)}\" has not been implemented yet");
+            PlayFailSound();
+        }
+
+        public override void Character_ReplaceHair(MsgObject message)
+        {
+            Log(LogLevel.Message, $"\"{nameof(Character_ReplaceHair)}\" has not been implemented yet");
+            PlayFailSound();
+        }
+
+        public override void Character_ReplaceOutfit(MsgObject message)
+        {
+            Log(LogLevel.Message, $"\"{nameof(Character_ReplaceOutfit)}\" has not been implemented yet");
             PlayFailSound();
         }
 

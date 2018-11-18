@@ -217,9 +217,24 @@ namespace CardOrganizerWPF
             UseCard(e, MsgObject.Action.CharaReplaceAll);
         }
 
+        private void Characters_MenuItem_Click_ReplaceFace(object sender, RoutedEventArgs e)
+        {
+            UseCard(e, MsgObject.Action.CharaReplaceFace);
+        }
+
         private void Characters_MenuItem_Click_ReplaceBody(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaReplaceBody);
+        }
+
+        private void Characters_MenuItem_Click_ReplaceHair(object sender, RoutedEventArgs e)
+        {
+            UseCard(e, MsgObject.Action.CharaReplaceHair);
+        }
+
+        private void Characters_MenuItem_Click_ReplaceOutfit(object sender, RoutedEventArgs e)
+        {
+            UseCard(e, MsgObject.Action.CharaReplaceOutfit);
         }
 
         private void Outfits_MenuItem_Click_Load(object sender, RoutedEventArgs e)
