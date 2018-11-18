@@ -61,6 +61,7 @@
                                                             <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
                                                             <MenuItem Header="Import" Click="Scenes_MenuItem_Click_Import"/>
                                                             <MenuItem Header="Import Characters" Click="Scenes_MenuItem_Click_ImportCharaOnly"/>
+                                                            <Separator/>
                                                             <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
                                                             <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
                                                         </ContextMenu>
@@ -94,7 +95,11 @@
                                                         <ContextMenu>
                                                             <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
                                                             <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
+                                                            <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace"/>
                                                             <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
+                                                            <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair"/>
+                                                            <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit"/>
+                                                            <Separator/>
                                                             <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
                                                             <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
                                                         </ContextMenu>
@@ -128,7 +133,11 @@
                                                         <ContextMenu>
                                                             <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
                                                             <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
+                                                            <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace"/>
                                                             <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
+                                                            <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair"/>
+                                                            <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit"/>
+                                                            <Separator/>
                                                             <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
                                                             <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
                                                         </ContextMenu>
@@ -163,6 +172,7 @@
                                                             <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
                                                             <MenuItem Header="Load Accessories" Click="Outfits_MenuItem_Click_LoadAccOnly"/>
                                                             <MenuItem Header="Load Clothing" Click="Outfits_MenuItem_Click_LoadClothOnly"/>
+                                                            <Separator/>
                                                             <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
                                                             <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
                                                         </ContextMenu>
@@ -195,6 +205,7 @@
                                                     <Image.ContextMenu>
                                                         <ContextMenu>
                                                             <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
+                                                            <Separator/>
                                                             <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
                                                             <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
                                                         </ContextMenu>

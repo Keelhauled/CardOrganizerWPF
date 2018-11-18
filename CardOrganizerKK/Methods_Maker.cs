@@ -66,26 +66,60 @@ namespace CardOrganizerKK
         {
             Log(LogLevel.Message, $"Load female [{Path.GetFileName(message.path)}]");
             PlayLoadSound();
-            DelayAction(() => LoadCharacter(message.path));
+            DelayAction(() => LoadCharacter(message.path, true));
         }
 
         public override void Character_LoadMale(MsgObject message)
         {
             Log(LogLevel.Message, $"Load male [{Path.GetFileName(message.path)}]");
             PlayLoadSound();
-            DelayAction(() => LoadCharacter(message.path));
+            DelayAction(() => LoadCharacter(message.path, true));
+        }
+
+        public override void Character_ReplaceAll(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Replace character [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
+            DelayAction(() => LoadCharacter(message.path, true));
+        }
+
+        public override void Character_ReplaceFace(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Replace character face [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
+            DelayAction(() => LoadCharacter(message.path, true, false, false, false, false));
+        }
+
+        public override void Character_ReplaceBody(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Replace character body [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
+            DelayAction(() => LoadCharacter(message.path, false, true, false, false, false));
+        }
+
+        public override void Character_ReplaceHair(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Replace character hair [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
+            DelayAction(() => LoadCharacter(message.path, false, false, true, false, false));
+        }
+
+        public override void Character_ReplaceOutfit(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Replace character outfits [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
+            DelayAction(() => LoadCharacter(message.path, false, false, false, false, true));
+        }
+
+        void LoadCharacter(string path, bool all)
+        {
+            LoadCharacter(path, true, true, true, true, true);
         }
 
         // Copied from CustomCharaFile.Start
-        void LoadCharacter(string path)
+        void LoadCharacter(string path, bool loadFace, bool loadBody, bool loadHair, bool parameter, bool loadCoord)
         {
             //KKKiyase.ForceDisableOneFrame();
-
-            bool loadFace = true;
-            bool loadBody = true;
-            bool loadHair = true;
-            bool parameter = true;
-            bool loadCoord = true;
 
             var chaCtrl = CustomBase.Instance.chaCtrl;
             chaCtrl.chaFile.LoadFileLimited(path, chaCtrl.sex, loadFace, loadBody, loadHair, parameter, loadCoord);
@@ -93,19 +127,6 @@ namespace CardOrganizerKK
             chaCtrl.Reload(!loadCoord, !loadFace && !loadCoord, !loadHair, !loadBody);
             CustomBase.Instance.updateCustomUI = true;
             CustomHistory.Instance.Add5(chaCtrl, chaCtrl.Reload, !loadCoord, !loadFace && !loadCoord, !loadHair, !loadBody);
-        }
-
-        public override void Character_ReplaceAll(MsgObject message)
-        {
-            Log(LogLevel.Message, $"Replace character [{Path.GetFileName(message.path)}]");
-            PlayLoadSound();
-            DelayAction(() => LoadCharacter(message.path));
-        }
-
-        public override void Character_ReplaceBody(MsgObject message)
-        {
-            Log(LogLevel.Message, "\"Character_ReplaceBody\" has not been implemented yet");
-            PlayFailSound();
         }
 
         // Copied from CustomCoordinateFile.CreateCoordinateFileCoroutine

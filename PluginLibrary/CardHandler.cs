@@ -68,8 +68,20 @@ namespace PluginLibrary
                     Character_ReplaceAll(message);
                     break;
 
+                case MsgObject.Action.CharaReplaceFace:
+                    Character_ReplaceFace(message);
+                    break;
+
                 case MsgObject.Action.CharaReplaceBody:
                     Character_ReplaceBody(message);
+                    break;
+
+                case MsgObject.Action.CharaReplaceHair:
+                    Character_ReplaceHair(message);
+                    break;
+
+                case MsgObject.Action.CharaReplaceOutfit:
+                    Character_ReplaceOutfit(message);
                     break;
 
 
@@ -113,7 +125,10 @@ namespace PluginLibrary
         public virtual void Character_LoadFemale(MsgObject message){}
         public virtual void Character_LoadMale(MsgObject message){}
         public virtual void Character_ReplaceAll(MsgObject message){}
+        public virtual void Character_ReplaceFace(MsgObject message){}
         public virtual void Character_ReplaceBody(MsgObject message){}
+        public virtual void Character_ReplaceHair(MsgObject message){}
+        public virtual void Character_ReplaceOutfit(MsgObject message){ }
 
         public virtual void Outfit_Save(MsgObject message){}
         public virtual void Outfit_Load(MsgObject message){}
