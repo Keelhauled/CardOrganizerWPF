@@ -10,6 +10,7 @@ using static BepInEx.Logger;
 using BepInEx.Logging;
 using MessagePack;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace CardOrganizerKK
 {
@@ -18,7 +19,7 @@ namespace CardOrganizerKK
         static class LoadFilePatch
         {
             static HarmonyInstance harmony;
-            static MethodInfo patch;
+            static MethodInfo transpiler;
             static MethodInfo original;
 
             public static bool doPatch = false;
@@ -41,27 +42,49 @@ namespace CardOrganizerKK
             public static void Patch()
             {
                 harmony = HarmonyInstance.Create("keelhauled.cardorganizerkk.loadfilepatch.harmony");
-                patch = AccessTools.Method(typeof(LoadFilePatch), nameof(PatchMethod));
-                original = AccessTools.Method(typeof(ChaFileControl), nameof(ChaFileControl.LoadCharaFile), new Type[]{ typeof(string), typeof(byte), typeof(bool), typeof(bool) });
-                harmony.Patch(original, new HarmonyMethod(patch), null);
+                original = AccessTools.Method(typeof(OCIChar), nameof(OCIChar.ChangeChara));
+                transpiler = AccessTools.Method(typeof(LoadFilePatch), nameof(PatchTranspiler));
+                harmony.Patch(original, null, null, new HarmonyMethod(transpiler));
             }
 
             public static void RemovePatch()
             {
-                harmony.RemovePatch(original, patch);
+                harmony.RemovePatch(original, transpiler);
             }
 
-            public static bool PatchMethod(ChaFileControl __instance, ref string filename, ref byte sex, bool __result)
+            public static IEnumerable<CodeInstruction> PatchTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
             {
-                Log(LogLevel.Message, "MESSAGE");
+                var codes = new List<CodeInstruction>(instructions);
 
-                if(doPatch)
+                for(int i = 0; i < codes.Count; i++)
                 {
-                    __result = __instance.LoadFileLimited(filename, sex, loadFace, loadBody, loadHair, parameter, loadCoord);
-                    return false;
+                    if(codes[i].ToString() == "callvirt Boolean LoadCharaFile(System.String, Byte, Boolean, Boolean)")
+                    {
+                        codes[i] = new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(LoadFilePatch), nameof(CheckPatch)));
+                        codes[i+1] = new CodeInstruction(OpCodes.Nop);
+
+                        break;
+                    }
                 }
 
-                return true;
+                foreach(var item in codes)
+                {
+                    Console.WriteLine(item);
+                }
+
+                return codes;
+            }
+
+            public static void CheckPatch(ChaFileControl chara, string path, byte sex, bool noLoadPng, bool noLoadStatus)
+            {
+                if(doPatch)
+                {
+                    chara.LoadFileLimited(path, sex, loadFace, loadBody, loadHair, parameter, loadCoord);
+                }
+                else
+                {
+                    chara.LoadCharaFile(path, sex, noLoadPng, noLoadStatus);
+                }
             }
         }
 
