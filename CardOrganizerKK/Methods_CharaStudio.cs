@@ -67,11 +67,6 @@ namespace CardOrganizerKK
                     }
                 }
 
-                foreach(var item in codes)
-                {
-                    Console.WriteLine(item);
-                }
-
                 return codes;
             }
 

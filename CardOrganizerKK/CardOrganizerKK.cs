@@ -79,6 +79,7 @@ namespace CardOrganizerKK
         void OnDestroy()
         {
             RPCClient_Plugin.StopServer();
+            DisableCharaList.RemovePatches();
         }
     }
 }
