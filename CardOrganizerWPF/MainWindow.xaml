@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CardOrganizerWPF"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
-        Title="CardOrganizer" MinHeight="500" MinWidth="500">
+        Title="{Binding WindowTitle.Value}" MinHeight="500" MinWidth="500">
 
     <Window.InputBindings>
         <KeyBinding Key="Home" Command="{Binding ScrollToTop}"/>
@@ -38,7 +38,18 @@
     </Window.Resources>
 
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
-        <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Save"/>
+    <StackPanel>
+        <Menu>
+            <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Setter Property="Command" Value="{Binding DataContext.SetTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
+                        <Setter Property="CommandParameter" Value="{Binding}" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
+            <MenuItem Header="Save" Click="Button_Click_Save"/>
+        </Menu>
 
         <TabControl x:Name="tabControlMain" SelectedIndex="{Binding SavedTab.Value}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">
 
@@ -222,5 +233,6 @@
             </TabItem>
 
         </TabControl>
+    </StackPanel>
     </Grid>
 </Window>

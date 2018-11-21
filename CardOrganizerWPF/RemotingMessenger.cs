@@ -5,47 +5,52 @@ namespace CardOrganizerWPF
 {
     class RemotingMessenger : MarshalByRefObject, IMessenger
     {
-        private static Object lockObj;
-        private Queue<byte[]> messages;
-        private int register;
+        private static Object lockObj = new Object();
+        private Dictionary<string, Queue<byte[]>> messages;
 
         public RemotingMessenger()
         {
-            messages = new Queue<byte[]>();
-            lockObj = new Object();
-            register = 0;
+            messages = new Dictionary<string, Queue<byte[]>>();
         }
 
-        public int Register()
+        public void SendMessage(string process, byte[] message)
         {
             lock(lockObj)
             {
-                register += 1;
-            }
-            return register;
-        }
-
-        public void SendMessage(int id, byte[] message)
-        {
-            lock(messages)
-            {
-                messages.Enqueue(message);
-            }
-        }
-
-        public byte[] GetMessage()
-        {
-            lock(messages)
-            {
-                return messages.Count > 0 ? messages.Dequeue() : null;  
+                if(messages.TryGetValue(process, out Queue<byte[]> queue))
+                {
+                    queue.Enqueue(message);
+                }
+                else
+                {
+                    var newQueue = new Queue<byte[]>();
+                    messages.Add(process, newQueue);
+                    newQueue.Enqueue(message);
+                }
             }
         }
 
-        public void ClearMessage()
+        public byte[] GetMessage(string process)
         {
-            lock(messages)
+            lock(lockObj)
             {
-                messages.Clear();
+                if(messages.TryGetValue(process, out Queue<byte[]> queue))
+                {
+                    return queue.Count > 0 ? queue.Dequeue() : null;
+                }
+            }
+
+            return null;
+        }
+
+        public void ClearMessage(string process)
+        {
+            lock(lockObj)
+            {
+                if(messages.TryGetValue(process, out Queue<byte[]> queue))
+                {
+                    queue.Clear();
+                }
             }
         }
     }

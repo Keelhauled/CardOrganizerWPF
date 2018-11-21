@@ -153,9 +153,9 @@ namespace CardOrganizerWPF
             AddImage(message.path);
         }
 
-        public void SaveCard()
+        public void SaveCard(string process)
         {
-            RPCClient_UI.SendMessage(MsgObject.UseMsg(saveMsg, folderPath));
+            RPCClient_UI.SendMessage(MsgObject.Create(saveMsg, process, folderPath));
         }
 
         #region Scrolling Methods

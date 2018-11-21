@@ -4,40 +4,22 @@ using MessagePack;
 [MessagePackObject(true)]
 public class MsgObject
 {
-    public Type type;
     public Action action;
     public string path;
-    public int sex;
+    public string process;
 
-    public static MsgObject QuitMsg()
+    public static MsgObject Create(Action action, string process, string path)
     {
-        return new MsgObject{ type = Type.Quit };
-    }
-
-    public static MsgObject AddMsg(string path)
-    {
-        return new MsgObject{ type = Type.Add, path = path };
-    }
-
-    public static MsgObject UseMsg(Action action, string path)
-    {
-        return new MsgObject{ type = Type.Use, action = action, path = path};
+        return new MsgObject{ action = action, process = process, path = path };
     }
 
     public void Print()
     {
         Console.WriteLine(new string('=', 40));
-        Console.WriteLine($"Type: {type}");
         Console.WriteLine($"Action: {action}");
+        Console.WriteLine($"Process: {process}");
         Console.WriteLine($"Path: {path}");
         Console.WriteLine(new string('=', 40));
-    }
-
-    public enum Type
-    {
-        Quit,
-        Use,
-        Add,
     }
 
     public enum Action
