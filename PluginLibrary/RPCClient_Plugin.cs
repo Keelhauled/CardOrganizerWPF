@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using MessagePack;
 
@@ -11,12 +13,14 @@ namespace PluginLibrary
         private static string serverName;
         private static int serverPort;
         private static volatile bool threadRunning = false;
+        private static string process;
 
         public static void Init(string name, int port, Action<MsgObject> action)
         {
             messageAction = action;
             serverName = name;
             serverPort = port;
+            process = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
 
             StartServer();
         }
@@ -50,11 +54,10 @@ namespace PluginLibrary
                 var requiredType = typeof(IMessenger);
                 var url = $"tcp://localhost:{serverPort}/{serverName}";
                 remoteObject = (IMessenger)Activator.GetObject(requiredType, url);
-                remoteObject.Register();
 
                 Console.WriteLine("[CardOrganizer] Starting client");
                 threadRunning = true;
-                remoteObject.ClearMessage();
+                remoteObject.ClearMessage(process);
             }
             catch(Exception)
             {
@@ -65,7 +68,7 @@ namespace PluginLibrary
             {
                 try
                 {
-                    var msg = remoteObject.GetMessage();
+                    var msg = remoteObject.GetMessage(process);
                     if(msg != null)
                     {
                         var message = MessagePackSerializer.Deserialize<MsgObject>(msg);

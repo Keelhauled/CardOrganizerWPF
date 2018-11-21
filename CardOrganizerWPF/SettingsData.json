@@ -12,6 +12,7 @@
 	{
 		"Honey Select":
 		{
+			"Name": "Honey Select",
 			"Server": "HS",
 			"Path": "",
 			"Tab": "0",
@@ -22,11 +23,17 @@
 				"Chara2": {"Header": "Male", "Path": "chara\\male", "Save": "0"},
 				"Outfit1": {"Header": "Outfit (F)", "Path": "coordinate\\female", "Save": "0"},
 				"Outfit2": {"Header": "Outfit (M)", "Path": "coordinate\\male", "Save": "0"}
-			}
+			},
+			"ProcessList":
+			[
+				"StudioNeo64.exe",
+				"HoneySelect64.exe"
+			]
 		},
 
 		"Koikatu":
 		{
+			"Name": "Koikatu",
 			"Server": "KK",
 			"Path": "",
 			"Tab": "0",
@@ -37,7 +44,12 @@
 				"Chara2": {"Header": "Male", "Path": "chara\\male", "Save": "0"},
 				"Outfit1": {"Header": "Outfit", "Path": "coordinate", "Save": "0"},
 				"Outfit2": {"Header": "", "Path": "", "Save": "0"}
-			}
+			},
+			"ProcessList":
+			[
+				"CharaStudio.exe",
+				"Koikatu.exe",
+			]
 		}
 	},
 

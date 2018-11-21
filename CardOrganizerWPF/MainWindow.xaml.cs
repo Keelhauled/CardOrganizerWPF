@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
@@ -14,9 +15,12 @@ namespace CardOrganizerWPF
     public partial class MainWindow : Window
     {
         #region Initialization
+        public Prop<string> WindowTitle { get; set; } = new Prop<string>();
         public Prop<int> SavedTab { get; set; } = new Prop<int>();
         public ICommand ScrollToTop { get; set; }
         public ICommand ScrollToBottom { get; set; }
+        public ICommand SetTarget { get; set; }
+        public ObservableCollection<string> ProcessList { get; set; } = new ObservableCollection<string>();
 
         public CardTypeTab TabScene { get; set; }
         public CardTypeTab TabChara1 { get; set; }
@@ -40,6 +44,8 @@ namespace CardOrganizerWPF
             }
         }
 
+        private string defaultTitle = "CardOrganizer";
+        private string currentTarget = "";
         private string markedTab = "";
         private SynchronizationContext uiContext;
         private Settings.GameData gameData;
@@ -49,12 +55,19 @@ namespace CardOrganizerWPF
             InitializeComponent();
             DataContext = this;
             uiContext = SynchronizationContext.Current;
+            WindowTitle.Value = "CardOrganizer";
 
             Settings.LoadData();
             SettingsLoad();
 
             ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
             ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
+
+            SetTarget = new DelegateCommand(x =>
+            {
+                currentTarget = x.ToString();
+                WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
+            });
 
             //var args = Environment.GetCommandLineArgs();
             //if(args.Length > 0 && Settings.data.Games.TryGetValue(args[0], out Settings.GameData data))
@@ -99,6 +112,14 @@ namespace CardOrganizerWPF
                 int serverPort = 9125;
                 new RPCServer(serverName, serverPort);
                 RPCClient_UI.Start(serverName, serverPort);
+
+                foreach(var exe in gameData.ProcessList)
+                {
+                    ProcessList.Add(exe);
+                }
+
+                currentTarget = ProcessList.First();
+                WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
 
                 TabScene.SetGame(gameData, gameData.Category.Scene);
                 TabChara1.SetGame(gameData, gameData.Category.Chara1);
@@ -184,7 +205,7 @@ namespace CardOrganizerWPF
         #region Card Methods
         private void Button_Click_Save(object sender, RoutedEventArgs e)
         {
-            SelectedTab.SaveCard();
+            SelectedTab.SaveCard(currentTarget);
         }
 
         private void Scenes_MenuItem_Click_Load(object sender, RoutedEventArgs e)
@@ -255,7 +276,7 @@ namespace CardOrganizerWPF
         private void UseCard(RoutedEventArgs e, MsgObject.Action action)
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
-            RPCClient_UI.SendMessage(MsgObject.UseMsg(action, thumb.Path));
+            RPCClient_UI.SendMessage(MsgObject.Create(action, currentTarget, thumb.Path));
         }
 
         private void MenuItem_Click_Delete(object sender, RoutedEventArgs e)

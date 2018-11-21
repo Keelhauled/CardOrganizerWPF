@@ -1,7 +1,6 @@
 ﻿public interface IMessenger
 {
-    int Register();
-    void SendMessage(int id, byte[] message);
-    byte[] GetMessage();
-    void ClearMessage();
+    void SendMessage(string process, byte[] message);
+    byte[] GetMessage(string process);
+    void ClearMessage(string process);
 }
