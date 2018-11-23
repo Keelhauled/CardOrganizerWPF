@@ -55,7 +55,7 @@ namespace CardOrganizerWPF
             InitializeComponent();
             DataContext = this;
             uiContext = SynchronizationContext.Current;
-            WindowTitle.Value = "CardOrganizer";
+            WindowTitle.Value = defaultTitle;
 
             Settings.LoadData();
             SettingsLoad();

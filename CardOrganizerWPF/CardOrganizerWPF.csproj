@@ -143,9 +143,6 @@
   <ItemGroup>
     <None Include="Resources\MHW-Odogaron_Icon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\houtengeki_odogaron_small.jpg" />
-  </ItemGroup>
   <Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
