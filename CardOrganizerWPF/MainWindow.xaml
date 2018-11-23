@@ -38,8 +38,8 @@
     </Window.Resources>
 
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
-    <StackPanel>
-        <Menu>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
             <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
                 <MenuItem.ItemContainerStyle>
                     <Style TargetType="{x:Type MenuItem}">
@@ -51,7 +51,7 @@
             <MenuItem Header="Save" Click="Button_Click_Save"/>
         </Menu>
 
-        <TabControl x:Name="tabControlMain" SelectedIndex="{Binding SavedTab.Value}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">
+        <TabControl DockPanel.Dock="Bottom" x:Name="tabControlMain" SelectedIndex="{Binding SavedTab.Value}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">
 
             <TabItem DataContext="{Binding TabScene}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
                 <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlScenes"
@@ -233,6 +233,6 @@
             </TabItem>
 
         </TabControl>
-    </StackPanel>
+    </DockPanel>
     </Grid>
 </Window>
