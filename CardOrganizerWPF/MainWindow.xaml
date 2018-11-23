@@ -38,201 +38,201 @@
     </Window.Resources>
 
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
-                <MenuItem.ItemContainerStyle>
-                    <Style TargetType="{x:Type MenuItem}">
-                        <Setter Property="Command" Value="{Binding DataContext.SetTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
-                        <Setter Property="CommandParameter" Value="{Binding}" />
-                    </Style>
-                </MenuItem.ItemContainerStyle>
-            </MenuItem>
-            <MenuItem Header="Save" Click="Button_Click_Save"/>
-        </Menu>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Command" Value="{Binding DataContext.SetTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem Header="Save" Click="Button_Click_Save"/>
+            </Menu>
 
-        <TabControl DockPanel.Dock="Bottom" x:Name="tabControlMain" SelectedIndex="{Binding SavedTab.Value}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">
+            <TabControl DockPanel.Dock="Bottom" x:Name="tabControlMain" SelectedIndex="{Binding SavedTab.Value}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">
 
-            <TabItem DataContext="{Binding TabScene}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
-                <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlScenes"
-                            SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
-                            SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
-                                              ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="3">
-                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                   Width="320" Height="180" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                    <Image.ContextMenu>
-                                                        <ContextMenu>
-                                                            <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
-                                                            <MenuItem Header="Import" Click="Scenes_MenuItem_Click_Import"/>
-                                                            <MenuItem Header="Import Characters" Click="Scenes_MenuItem_Click_ImportCharaOnly"/>
-                                                            <Separator/>
-                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                        </ContextMenu>
-                                                    </Image.ContextMenu>
-                                                </Image>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </local:ExtScrollViewer>
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
-            </TabItem>
+                <TabItem DataContext="{Binding TabScene}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlScenes"
+                                SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
+                                SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
+                                                  ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="3">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                                       Width="320" Height="180" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                        <Image.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
+                                                                <MenuItem Header="Import" Click="Scenes_MenuItem_Click_Import"/>
+                                                                <MenuItem Header="Import Characters" Click="Scenes_MenuItem_Click_ImportCharaOnly"/>
+                                                                <Separator/>
+                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                            </ContextMenu>
+                                                        </Image.ContextMenu>
+                                                    </Image>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </local:ExtScrollViewer>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                </TabItem>
 
-            <TabItem DataContext="{Binding TabChara1}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
-                <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersF"
-                            SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
-                            SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
-                                              ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="3">
-                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                <TabItem DataContext="{Binding TabChara1}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersF"
+                                SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
+                                SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
+                                                  ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="3">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                                           Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                        <Image.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
+                                                                <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
+                                                                <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace"/>
+                                                                <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
+                                                                <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair"/>
+                                                                <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit"/>
+                                                                <Separator/>
+                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                            </ContextMenu>
+                                                        </Image.ContextMenu>
+                                                    </Image>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </local:ExtScrollViewer>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                </TabItem>
+
+                <TabItem DataContext="{Binding TabChara2}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersM"
+                                SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
+                                SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
+                                                  ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="3">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
                                                        Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                    <Image.ContextMenu>
-                                                        <ContextMenu>
-                                                            <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
-                                                            <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
-                                                            <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace"/>
-                                                            <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
-                                                            <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair"/>
-                                                            <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit"/>
-                                                            <Separator/>
-                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                        </ContextMenu>
-                                                    </Image.ContextMenu>
-                                                </Image>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </local:ExtScrollViewer>
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
-            </TabItem>
+                                                        <Image.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
+                                                                <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
+                                                                <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace"/>
+                                                                <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
+                                                                <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair"/>
+                                                                <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit"/>
+                                                                <Separator/>
+                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                            </ContextMenu>
+                                                        </Image.ContextMenu>
+                                                    </Image>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </local:ExtScrollViewer>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                </TabItem>
 
-            <TabItem DataContext="{Binding TabChara2}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
-                <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersM"
-                            SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
-                            SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
-                                              ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="3">
-                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                   Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                    <Image.ContextMenu>
-                                                        <ContextMenu>
-                                                            <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
-                                                            <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
-                                                            <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace"/>
-                                                            <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
-                                                            <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair"/>
-                                                            <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit"/>
-                                                            <Separator/>
-                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                        </ContextMenu>
-                                                    </Image.ContextMenu>
-                                                </Image>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </local:ExtScrollViewer>
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
-            </TabItem>
+                <TabItem DataContext="{Binding TabOutfit1}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsF"
+                                SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
+                                SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
+                                                  ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="3">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                                       Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                        <Image.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
+                                                                <MenuItem Header="Load Accessories" Click="Outfits_MenuItem_Click_LoadAccOnly"/>
+                                                                <MenuItem Header="Load Clothing" Click="Outfits_MenuItem_Click_LoadClothOnly"/>
+                                                                <Separator/>
+                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                            </ContextMenu>
+                                                        </Image.ContextMenu>
+                                                    </Image>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </local:ExtScrollViewer>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                </TabItem>
 
-            <TabItem DataContext="{Binding TabOutfit1}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
-                <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsF"
-                            SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
-                            SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
-                                              ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="3">
-                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                   Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                    <Image.ContextMenu>
-                                                        <ContextMenu>
-                                                            <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
-                                                            <MenuItem Header="Load Accessories" Click="Outfits_MenuItem_Click_LoadAccOnly"/>
-                                                            <MenuItem Header="Load Clothing" Click="Outfits_MenuItem_Click_LoadClothOnly"/>
-                                                            <Separator/>
-                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                        </ContextMenu>
-                                                    </Image.ContextMenu>
-                                                </Image>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </local:ExtScrollViewer>
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
-            </TabItem>
+                <TabItem DataContext="{Binding TabOutfit2}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsM"
+                                SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
+                                SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
+                                                  ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="3">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
+                                                       Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                        <Image.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
+                                                                <Separator/>
+                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                            </ContextMenu>
+                                                        </Image.ContextMenu>
+                                                    </Image>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </local:ExtScrollViewer>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                </TabItem>
 
-            <TabItem DataContext="{Binding TabOutfit2}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
-                <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsM"
-                            SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
-                            SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
-                                              ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="3">
-                                                <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                   Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                                                    <Image.ContextMenu>
-                                                        <ContextMenu>
-                                                            <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
-                                                            <Separator/>
-                                                            <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                            <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                        </ContextMenu>
-                                                    </Image.ContextMenu>
-                                                </Image>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </local:ExtScrollViewer>
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
-            </TabItem>
-
-        </TabControl>
-    </DockPanel>
+            </TabControl>
+        </DockPanel>
     </Grid>
 </Window>
