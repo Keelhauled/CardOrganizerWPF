@@ -11,6 +11,7 @@ namespace CardOrganizerWPF
         {
             Type requiredType = typeof(IMessenger);
             remoteObject = (IMessenger)Activator.GetObject(requiredType, $"tcp://localhost:{port}/{name}");
+            remoteObject.ClearMessage("");
         }
 
         public static void SendMessage(MsgObject message)
