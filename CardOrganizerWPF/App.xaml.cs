@@ -5,7 +5,7 @@ namespace CardOrganizerWPF
 {
     public partial class App : Application
     {
-        [STAThread()]
+        [STAThread]
         public static void Main()
         {
             using(var mutex = new SingleGlobalInstance(1000))
