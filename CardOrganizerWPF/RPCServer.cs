@@ -11,7 +11,7 @@ namespace CardOrganizerWPF
     {
         static TcpChannel tcpChan;
 
-        public RPCServer(string name, int port)
+        public static void Start(string name, int port)
         {
             var serverProv = new BinaryServerFormatterSinkProvider{ TypeFilterLevel = TypeFilterLevel.Full };
             //RemotingConfiguration.CustomErrorsMode = CustomErrorsModes.Off;
