@@ -26,8 +26,8 @@
 			},
 			"ProcessList":
 			[
-				"StudioNeo64.exe",
-				"HoneySelect64.exe"
+				{ "Name": "StudioNeo64.exe", "PartialReplaceEnabled": "Collapsed" },
+				{ "Name": "HoneySelect64.exe", "PartialReplaceEnabled": "Collapsed" }
 			]
 		},
 
@@ -47,8 +47,8 @@
 			},
 			"ProcessList":
 			[
-				"CharaStudio.exe",
-				"Koikatu.exe",
+				{ "Name": "CharaStudio.exe", "PartialReplaceEnabled": "Collapsed" },
+				{ "Name": "Koikatu.exe", "PartialReplaceEnabled": "Visible" }
 			]
 		}
 	},

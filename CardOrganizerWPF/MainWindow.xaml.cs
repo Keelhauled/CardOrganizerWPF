@@ -21,6 +21,7 @@ namespace CardOrganizerWPF
         public ICommand ScrollToBottom { get; set; }
         public ICommand SetTarget { get; set; }
         public ObservableCollection<string> ProcessList { get; set; } = new ObservableCollection<string>();
+        public Prop<Visibility> PartialReplaceEnabled { get; set; } = new Prop<Visibility>();
 
         public CardTypeTab TabScene { get; set; }
         public CardTypeTab TabChara1 { get; set; }
@@ -60,13 +61,14 @@ namespace CardOrganizerWPF
             Settings.LoadData();
             SettingsLoad();
 
-            ScrollToTop = new DelegateCommand(x => SelectedTab.ScrollToTop());
-            ScrollToBottom = new DelegateCommand(x => SelectedTab.ScrollToBottom());
+            ScrollToTop = new DelegateCommand((x) => SelectedTab.ScrollToTop());
+            ScrollToBottom = new DelegateCommand((x) => SelectedTab.ScrollToBottom());
 
-            SetTarget = new DelegateCommand(x =>
+            SetTarget = new DelegateCommand((x) =>
             {
                 currentTarget = x.ToString();
                 WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
+                PartialReplaceEnabled.Value = gameData.ProcessList.First((y) => y.Name == currentTarget).PartialReplaceEnabled;
             });
 
             //var args = Environment.GetCommandLineArgs();
@@ -113,13 +115,15 @@ namespace CardOrganizerWPF
                 new RPCServer(serverName, serverPort);
                 RPCClient_UI.Start(serverName, serverPort);
 
-                foreach(var exe in gameData.ProcessList)
+                foreach(var process in gameData.ProcessList)
                 {
-                    ProcessList.Add(exe);
+                    ProcessList.Add(process.Name);
                 }
 
-                currentTarget = ProcessList.First();
+                currentTarget = gameData.ProcessList.First().Name;
                 WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
+                PartialReplaceEnabled.Value = gameData.ProcessList.First().PartialReplaceEnabled;
+
 
                 TabScene.SetGame(gameData, gameData.Category.Scene);
                 TabChara1.SetGame(gameData, gameData.Category.Chara1);

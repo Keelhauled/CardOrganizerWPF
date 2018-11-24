@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Windows;
 using Newtonsoft.Json;
 
 namespace CardOrganizerWPF
@@ -71,7 +72,13 @@ namespace CardOrganizerWPF
             public string Path;
             public int Tab;
             public CategoryData Category;
-            public List<string> ProcessList;
+            public List<ProcessData> ProcessList;
+        }
+
+        public class ProcessData
+        {
+            public string Name;
+            public Visibility PartialReplaceEnabled;
         }
 
         public class WindowData
