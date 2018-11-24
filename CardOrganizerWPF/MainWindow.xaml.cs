@@ -45,6 +45,8 @@ namespace CardOrganizerWPF
             }
         }
 
+        private string serverName = "CardOrganizerServer";
+        private int serverPort = 9125;
         private string defaultTitle = "CardOrganizer";
         private string currentTarget = "";
         private string markedTab = "";
@@ -71,17 +73,19 @@ namespace CardOrganizerWPF
                 PartialReplaceEnabled.Value = gameData.ProcessList.First((y) => y.Name == currentTarget).PartialReplaceEnabled;
             });
 
-            //var args = Environment.GetCommandLineArgs();
-            //if(args.Length > 0 && Settings.data.Games.TryGetValue(args[0], out Settings.GameData data))
-            //{
-            //    gameData = data;
-            //}
-
             TabScene = new CardTypeTab(tabControlScenes, MsgObject.Action.SceneSave);
             TabChara1 = new CardTypeTab(tabControlCharactersF, MsgObject.Action.CharaSave);
             TabChara2 = new CardTypeTab(tabControlCharactersM, MsgObject.Action.CharaSave);
             TabOutfit1 = new CardTypeTab(tabControlOutfitsF, MsgObject.Action.OutfitSave);
             TabOutfit2 = new CardTypeTab(tabControlOutfitsM, MsgObject.Action.OutfitSave);
+
+            var args = Environment.GetCommandLineArgs();
+            if(args.Length > 0)
+            {
+                var comparer = StringComparer.OrdinalIgnoreCase;
+                var caseInsen = new Dictionary<string, Settings.GameData>(Settings.data.Games, comparer);
+                caseInsen.TryGetValue(args[1], out gameData);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -108,33 +112,28 @@ namespace CardOrganizerWPF
                     }
                 }
 
-                // cancel if path is not good
-
-                string serverName = $"CardOrganizerServer.{gameData.Server}";
-                int serverPort = 9125;
-                new RPCServer(serverName, serverPort);
-                RPCClient_UI.Start(serverName, serverPort);
-
-                foreach(var process in gameData.ProcessList)
+                if(!string.IsNullOrWhiteSpace(gameData.Path)) // check if paths in category exist here
                 {
-                    ProcessList.Add(process.Name);
+                    string name = $"{serverName}.{gameData.Server}";
+                    RPCServer.Start(name, serverPort);
+                    RPCClient_UI.Start(name, serverPort);
+
+                    gameData.ProcessList.ForEach((x) => ProcessList.Add(x.Name));
+                    currentTarget = gameData.ProcessList.First().Name;
+                    WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
+                    PartialReplaceEnabled.Value = gameData.ProcessList.First().PartialReplaceEnabled;
+
+                    TabScene.SetGame(gameData, gameData.Category.Scene);
+                    TabChara1.SetGame(gameData, gameData.Category.Chara1);
+                    TabChara2.SetGame(gameData, gameData.Category.Chara2);
+                    TabOutfit1.SetGame(gameData, gameData.Category.Outfit1);
+                    TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
+
+                    SavedTab.Value = gameData.Tab != -1 ? gameData.Tab : 0;
+                    Closing += (x, y) => SettingsSave();
+
+                    return; 
                 }
-
-                currentTarget = gameData.ProcessList.First().Name;
-                WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
-                PartialReplaceEnabled.Value = gameData.ProcessList.First().PartialReplaceEnabled;
-
-
-                TabScene.SetGame(gameData, gameData.Category.Scene);
-                TabChara1.SetGame(gameData, gameData.Category.Chara1);
-                TabChara2.SetGame(gameData, gameData.Category.Chara2);
-                TabOutfit1.SetGame(gameData, gameData.Category.Outfit1);
-                TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
-
-                SavedTab.Value = gameData.Tab != -1 ? gameData.Tab : 0;
-                Closing += (x, y) => SettingsSave();
-
-                return;
             }
 
             Close();
