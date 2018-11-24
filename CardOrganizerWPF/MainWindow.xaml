@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CardOrganizerWPF"
+        xmlns:controls="clr-namespace:CardOrganizerWPF.Controls"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         x:Name="MainWin"
@@ -35,7 +36,7 @@
             <TextBlock ContextMenu="{StaticResource TabContext}" Text="{Binding Value.Title}"/>
         </DataTemplate>
 
-        <local:ImgConverter x:Key="imgConverter" />
+        <controls:ImgConverter x:Key="imgConverter" />
     </Window.Resources>
 
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
@@ -60,7 +61,7 @@
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
                             <DataTemplate>
-                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                <controls:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
                                     <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
                                                   ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                         <ItemsControl.ItemTemplate>
@@ -83,7 +84,7 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                </local:ExtScrollViewer>
+                                </controls:ExtScrollViewer>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
@@ -95,7 +96,7 @@
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
                             <DataTemplate>
-                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                <controls:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
                                     <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
                                                   ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                         <ItemsControl.ItemTemplate>
@@ -121,7 +122,7 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                </local:ExtScrollViewer>
+                                </controls:ExtScrollViewer>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
@@ -133,7 +134,7 @@
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
                             <DataTemplate>
-                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                <controls:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
                                     <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
                                                   ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                         <ItemsControl.ItemTemplate>
@@ -159,7 +160,7 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                </local:ExtScrollViewer>
+                                </controls:ExtScrollViewer>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
@@ -171,7 +172,7 @@
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
                             <DataTemplate>
-                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                <controls:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
                                     <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
                                                   ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                         <ItemsControl.ItemTemplate>
@@ -194,7 +195,7 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                </local:ExtScrollViewer>
+                                </controls:ExtScrollViewer>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
@@ -206,7 +207,7 @@
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
                             <DataTemplate>
-                                <local:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                                <controls:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
                                     <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
                                                   ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                         <ItemsControl.ItemTemplate>
@@ -227,7 +228,7 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                </local:ExtScrollViewer>
+                                </controls:ExtScrollViewer>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace CardOrganizerWPF
+namespace CardOrganizerWPF.Controls
 {
     public partial class InputBox : Window
     {

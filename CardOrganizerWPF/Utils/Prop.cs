@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace CardOrganizerWPF
+namespace CardOrganizerWPF.Utils
 {
     public class Prop<T> : INotifyPropertyChanged
     {

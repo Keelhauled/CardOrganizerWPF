@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-namespace CardOrganizerWPF
+namespace CardOrganizerWPF.Controls
 {
     public class ExtScrollViewer : ScrollViewer
     {
