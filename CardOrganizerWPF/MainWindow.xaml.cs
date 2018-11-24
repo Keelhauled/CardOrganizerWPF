@@ -9,6 +9,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
+using CardOrganizerWPF.Remoting;
+using CardOrganizerWPF.Controls;
+using CardOrganizerWPF.Utils;
 
 namespace CardOrganizerWPF
 {
@@ -80,7 +83,7 @@ namespace CardOrganizerWPF
             TabOutfit2 = new CardTypeTab(tabControlOutfitsM, MsgObject.Action.OutfitSave);
 
             var args = Environment.GetCommandLineArgs();
-            if(args.Length > 0)
+            if(args.Length > 1)
             {
                 var comparer = StringComparer.OrdinalIgnoreCase;
                 var caseInsen = new Dictionary<string, Settings.GameData>(Settings.data.Games, comparer);

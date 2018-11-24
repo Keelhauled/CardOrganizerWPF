@@ -5,7 +5,7 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
 
-namespace CardOrganizerWPF
+namespace CardOrganizerWPF.Utils
 {
     class SingleGlobalInstance : IDisposable
     {

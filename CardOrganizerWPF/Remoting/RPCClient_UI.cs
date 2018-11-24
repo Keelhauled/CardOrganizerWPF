@@ -1,7 +1,7 @@
 ﻿using System;
 using MessagePack;
 
-namespace CardOrganizerWPF
+namespace CardOrganizerWPF.Remoting
 {
     static class RPCClient_UI
     {

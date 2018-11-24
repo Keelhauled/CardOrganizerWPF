@@ -5,9 +5,9 @@ using System.Runtime.Remoting;
 using System.Collections;
 using System.Runtime.Serialization.Formatters;
 
-namespace CardOrganizerWPF
+namespace CardOrganizerWPF.Remoting
 {
-    class RPCServer
+    static class RPCServer
     {
         static TcpChannel tcpChan;
 

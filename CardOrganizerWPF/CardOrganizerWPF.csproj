@@ -81,9 +81,9 @@
     <Compile Include="Controls\SelectList.xaml.cs">
       <DependentUpon>SelectList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RPCClient_UI.cs" />
-    <Compile Include="RemotingMessenger.cs" />
-    <Compile Include="RPCServer.cs" />
+    <Compile Include="Remoting\RPCClient_UI.cs" />
+    <Compile Include="Remoting\RemotingMessenger.cs" />
+    <Compile Include="Remoting\RPCServer.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utils\SingleGlobalInstance.cs" />
     <Compile Include="Utils\Extensions.cs" />

@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using CardOrganizerWPF.Controls;
+using CardOrganizerWPF.Remoting;
+using CardOrganizerWPF.Utils;
 using DrWPF.Windows.Data;
 
 namespace CardOrganizerWPF

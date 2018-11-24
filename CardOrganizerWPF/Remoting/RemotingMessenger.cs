@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CardOrganizerWPF
+namespace CardOrganizerWPF.Remoting
 {
     class RemotingMessenger : MarshalByRefObject, IMessenger
     {

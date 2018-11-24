@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardOrganizerWPF
+namespace CardOrganizerWPF.Utils
 {
     public static class ListExtension
     {
