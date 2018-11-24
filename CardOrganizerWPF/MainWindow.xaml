@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CardOrganizerWPF"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
+        x:Name="MainWin"
         Title="{Binding WindowTitle.Value}" MinHeight="500" MinWidth="500">
 
     <Window.InputBindings>
@@ -106,10 +107,10 @@
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
                                                                 <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
-                                                                <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace"/>
-                                                                <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
-                                                                <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair"/>
-                                                                <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit"/>
+                                                                <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
                                                                 <Separator/>
                                                                 <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
                                                                 <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
@@ -144,10 +145,10 @@
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
                                                                 <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
-                                                                <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace"/>
-                                                                <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody"/>
-                                                                <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair"/>
-                                                                <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit"/>
+                                                                <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
                                                                 <Separator/>
                                                                 <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
                                                                 <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
