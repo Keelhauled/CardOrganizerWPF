@@ -55,9 +55,9 @@ namespace PluginLibrary
                 var url = $"tcp://localhost:{serverPort}/{serverName}";
                 remoteObject = (IMessenger)Activator.GetObject(requiredType, url);
 
-                Console.WriteLine("[CardOrganizer] Starting client");
                 threadRunning = true;
                 remoteObject.ClearMessage(process);
+                Console.WriteLine("[CardOrganizer] Starting client");
             }
             catch(Exception)
             {

@@ -50,12 +50,15 @@ namespace CardOrganizerWPF
             Header.Value = catData.Header;
             folderPath = Path.Combine(gameData.Path, catData.Path);
             dataManager = new CardDataManager(folderPath);
-            GetCategoriesFromData(Categories);
-            SavedCategory.Value = catData.Save != -1 ? catData.Save : 0;
 
-            watcher = new FileSystemWatcher(folderPath);
-            watcher.Created += FileCreated;
-            watcher.EnableRaisingEvents = true;
+            GetCategoriesFromData(() =>
+            {
+                SavedCategory.Value = catData.Save != -1 ? catData.Save : 0;
+
+                watcher = new FileSystemWatcher(folderPath);
+                watcher.Created += FileCreated;
+                watcher.EnableRaisingEvents = true;
+            });
         }
 
         public List<string> FindDuplicatesInData()
@@ -97,48 +100,62 @@ namespace CardOrganizerWPF
             uiContext.Post((x) => AddImage(e.FullPath), null);
         }
 
-        private void GetCategoriesFromData(ObservableSortedDictionary<string, Category> categories)
+        private void GetCategoriesFromData(Action callback)
         {
-            var files = Directory.GetFiles(folderPath, "*.png");
-            var sorted = files.Select(x => new KeyValuePair<string, DateTime>(x, File.GetLastWriteTime(x))).ToList();
-            sorted.Sort((KeyValuePair<string, DateTime> a, KeyValuePair<string, DateTime> b) => b.Value.CompareTo(a.Value));
-
-            var undefined = new Category(Category.DEFAULT_CATEGORY_NAME);
-            categories.Add(Category.DEFAULT_CATEGORY_NAME, undefined);
-            var dataCategories = dataManager.GetCategories();
-
-            foreach(var file in sorted)
+            new Thread(() =>
             {
-                bool found = false;
-                var thumb = new Thumbnail(file.Key, file.Value);
+                var files = Directory.GetFiles(folderPath, "*.png");
+                var sorted = files.Select(x => new KeyValuePair<string, DateTime>(x, File.GetLastWriteTime(x))).ToList();
+                sorted.Sort((KeyValuePair<string, DateTime> a, KeyValuePair<string, DateTime> b) => b.Value.CompareTo(a.Value));
 
-                foreach(var category in dataCategories)
+                var newCategories = new Dictionary<string, Category>();
+                var undefined = new Category(Category.DEFAULT_CATEGORY_NAME);
+                newCategories.Add(Category.DEFAULT_CATEGORY_NAME, undefined);
+                var dataCategories = dataManager.GetCategories();
+
+                foreach(var file in sorted)
                 {
-                    if(found) break;
+                    bool found = false;
+                    var thumb = new Thumbnail(file.Key, file.Value);
 
-                    if(!categories.TryGetValue(category.categoryName, out Category currentCategory))
-                    {
-                        currentCategory = new Category(category.categoryName);
-                        categories.Add(currentCategory.Title, currentCategory);
-                    }
-
-                    foreach(var card in category.cards)
+                    foreach(var category in dataCategories)
                     {
                         if(found) break;
 
-                        if(Path.Combine(folderPath, card) == file.Key)
+                        if(!newCategories.TryGetValue(category.categoryName, out Category currentCategory))
                         {
-                            currentCategory.AddImage(thumb);
-                            found = true;
+                            currentCategory = new Category(category.categoryName);
+                            newCategories.Add(currentCategory.Title, currentCategory);
                         }
+
+                        foreach(var card in category.cards)
+                        {
+                            if(found) break;
+
+                            if(Path.Combine(folderPath, card) == file.Key)
+                            {
+                                currentCategory.AddImage(thumb);
+                                found = true;
+                            }
+                        }
+                    }
+
+                    if(!found)
+                    {
+                        undefined.AddImage(thumb);
                     }
                 }
 
-                if(!found)
+                uiContext.Post((x) =>
                 {
-                    undefined.AddImage(thumb);
-                }
-            }
+                    foreach(var cat in newCategories)
+                    {
+                        Categories.Add(cat.Key, cat.Value);
+                    }
+
+                    callback();
+                }, null);
+            }).Start();
         }
 
         public Category GetSelectedCategory()
