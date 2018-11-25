@@ -41,8 +41,13 @@
 
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
         <DockPanel>
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" Background="WhiteSmoke" BorderBrush="Black" BorderThickness="0,0,0,0">
                 <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Header="{Binding}" controls:MenuItemExtensions.GroupName="Group1" IsCheckable="True"/>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="{x:Type MenuItem}">
                             <Setter Property="Command" Value="{Binding DataContext.SetTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
@@ -51,6 +56,13 @@
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
                 <MenuItem Header="Save" Click="Button_Click_Save"/>
+                <MenuItem Header="Settings">
+                    <MenuItem Header="Thumbnail size" Margin="0">
+                        <MenuItem Header="90%" Click="ThumbSize90_MenuItem_Click"></MenuItem>
+                        <MenuItem Header="100%" Click="ThumbSize100_MenuItem_Click"></MenuItem>
+                        <MenuItem Header="110%" Click="ThumbSize110_MenuItem_Click"></MenuItem>
+                    </MenuItem>
+                </MenuItem>
             </Menu>
 
             <TabControl DockPanel.Dock="Bottom" x:Name="tabControlMain" SelectedIndex="{Binding SavedTab.Value}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">
@@ -96,7 +108,7 @@
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
                                                     <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                       Width="320" Height="180" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                       Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
@@ -137,7 +149,7 @@
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
                                                     <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                           Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                           Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
@@ -181,7 +193,7 @@
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
                                                     <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                       Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                       Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
@@ -225,7 +237,7 @@
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
                                                     <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                       Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                       Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
@@ -266,7 +278,7 @@
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
                                                     <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                       Width="252" Height="352" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                       Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
