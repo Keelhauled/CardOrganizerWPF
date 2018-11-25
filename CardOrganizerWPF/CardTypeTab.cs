@@ -15,10 +15,12 @@ namespace CardOrganizerWPF
 {
     public class CardTypeTab
     {
-        public Prop<bool> Enabled { get; set; } = new Prop<bool>();
+        public Prop<Visibility> Enabled { get; set; } = new Prop<Visibility>();
         public Prop<string> Header { get; set; } = new Prop<string>();
         public Prop<int> SavedCategory { get; set; } = new Prop<int>();
         public ObservableSortedDictionary<string, Category> Categories { get; set; }
+        public Prop<double> ProgressMax { get; set; } = new Prop<double>(1);
+        public Prop<double> ProgressVal { get; set; } = new Prop<double>(0);
 
         private string folderPath;
         private CardDataManager dataManager;
@@ -32,7 +34,7 @@ namespace CardOrganizerWPF
             uiContext = SynchronizationContext.Current;
             Categories = new ObservableSortedDictionary<string, Category>();
             SavedCategory.Value = -1;
-            Enabled.Value = false;
+            Enabled.Value = Visibility.Collapsed;
             Header.Value = "null";
             this.tabControl = tabControl;
             this.saveMsg = saveMsg;
@@ -46,7 +48,7 @@ namespace CardOrganizerWPF
                 return;
             }
 
-            Enabled.Value = true;
+            Enabled.Value = Visibility.Visible;
             Header.Value = catData.Header;
             folderPath = Path.Combine(gameData.Path, catData.Path);
             dataManager = new CardDataManager(folderPath);
@@ -108,11 +110,14 @@ namespace CardOrganizerWPF
                 var sorted = files.Select(x => new KeyValuePair<string, DateTime>(x, File.GetLastWriteTime(x))).ToList();
                 sorted.Sort((KeyValuePair<string, DateTime> a, KeyValuePair<string, DateTime> b) => b.Value.CompareTo(a.Value));
 
+                uiContext.Post((x) => ProgressMax.Value = files.Length, null);
+
                 var newCategories = new Dictionary<string, Category>();
                 var undefined = new Category(Category.DEFAULT_CATEGORY_NAME);
                 newCategories.Add(Category.DEFAULT_CATEGORY_NAME, undefined);
                 var dataCategories = dataManager.GetCategories();
 
+                int count = 0;
                 foreach(var file in sorted)
                 {
                     bool found = false;
@@ -144,6 +149,9 @@ namespace CardOrganizerWPF
                     {
                         undefined.AddImage(thumb);
                     }
+
+                    ++count;
+                    uiContext.Post((x) => ProgressVal.Value = count, null);
                 }
 
                 uiContext.Post((x) =>
@@ -153,6 +161,7 @@ namespace CardOrganizerWPF
                         Categories.Add(cat.Key, cat.Value);
                     }
 
+                    ProgressVal.Value = 0;
                     callback();
                 }, null);
             }).Start();

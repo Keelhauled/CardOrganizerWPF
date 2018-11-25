@@ -33,7 +33,7 @@
         </ContextMenu>
 
         <DataTemplate x:Key="CategoryName">
-            <TextBlock ContextMenu="{StaticResource TabContext}" Text="{Binding Value.Title}"/>
+            <TextBlock ContextMenu="{StaticResource TabContext}" Text="{Binding Value.Title}" Margin="10,2"/>
         </DataTemplate>
 
         <controls:ImgConverter x:Key="imgConverter" />
@@ -55,7 +55,35 @@
 
             <TabControl DockPanel.Dock="Bottom" x:Name="tabControlMain" SelectedIndex="{Binding SavedTab.Value}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">
 
-                <TabItem DataContext="{Binding TabScene}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="4,4,0,0" Margin="2,0">
+                                        <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="0"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="LightSkyBlue" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+
+                <TabItem DataContext="{Binding TabScene}" Visibility="{Binding Enabled.Value}">
+                    <TabItem.Header>
+                        <Grid Width="75">
+                            <ProgressBar Background="Transparent" Minimum="0" Maximum="{Binding ProgressMax.Value}" Value="{Binding ProgressVal.Value}"/>
+                            <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
+                        </Grid>
+                    </TabItem.Header>
                     <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlScenes"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
@@ -90,7 +118,13 @@
                     </TabControl>
                 </TabItem>
 
-                <TabItem DataContext="{Binding TabChara1}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                <TabItem DataContext="{Binding TabChara1}" Visibility="{Binding Enabled.Value}">
+                    <TabItem.Header>
+                        <Grid Width="75">
+                            <ProgressBar Background="Transparent" Minimum="0" Maximum="{Binding ProgressMax.Value}" Value="{Binding ProgressVal.Value}"/>
+                            <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
+                        </Grid>
+                    </TabItem.Header>
                     <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersF"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
@@ -128,7 +162,13 @@
                     </TabControl>
                 </TabItem>
 
-                <TabItem DataContext="{Binding TabChara2}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                <TabItem DataContext="{Binding TabChara2}" Visibility="{Binding Enabled.Value}">
+                    <TabItem.Header>
+                        <Grid Width="75">
+                            <ProgressBar Background="Transparent" Minimum="0" Maximum="{Binding ProgressMax.Value}" Value="{Binding ProgressVal.Value}"/>
+                            <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
+                        </Grid>
+                    </TabItem.Header>
                     <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersM"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
@@ -166,7 +206,13 @@
                     </TabControl>
                 </TabItem>
 
-                <TabItem DataContext="{Binding TabOutfit1}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                <TabItem DataContext="{Binding TabOutfit1}" Visibility="{Binding Enabled.Value}">
+                    <TabItem.Header>
+                        <Grid Width="75">
+                            <ProgressBar Background="Transparent" Minimum="0" Maximum="{Binding ProgressMax.Value}" Value="{Binding ProgressVal.Value}"/>
+                            <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
+                        </Grid>
+                    </TabItem.Header>
                     <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsF"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
@@ -201,7 +247,13 @@
                     </TabControl>
                 </TabItem>
 
-                <TabItem DataContext="{Binding TabOutfit2}" Header="{Binding Header.Value}" IsEnabled="{Binding Enabled.Value}">
+                <TabItem DataContext="{Binding TabOutfit2}" Visibility="{Binding Enabled.Value}">
+                    <TabItem.Header>
+                        <Grid Width="75">
+                            <ProgressBar Background="Transparent" Minimum="0" Maximum="{Binding ProgressMax.Value}" Value="{Binding ProgressVal.Value}"/>
+                            <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
+                        </Grid>
+                    </TabItem.Header>
                     <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsM"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
