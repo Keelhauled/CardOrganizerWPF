@@ -22,6 +22,8 @@ namespace CardOrganizerWPF
         public Prop<double> ProgressMax { get; set; } = new Prop<double>(1);
         public Prop<double> ProgressVal { get; set; } = new Prop<double>(0);
 
+        private double defaultThumbWidth;
+        private double defaultThumbHeight;
         private string folderPath;
         private CardDataManager dataManager;
         private TabControl tabControl;
@@ -29,7 +31,7 @@ namespace CardOrganizerWPF
         private FileSystemWatcher watcher;
         private SynchronizationContext uiContext;
 
-        public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg)
+        public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg, double width, double height)
         {
             uiContext = SynchronizationContext.Current;
             Categories = new ObservableSortedDictionary<string, Category>();
@@ -38,6 +40,8 @@ namespace CardOrganizerWPF
             Header.Value = "null";
             this.tabControl = tabControl;
             this.saveMsg = saveMsg;
+            defaultThumbWidth = width;
+            defaultThumbHeight = height;
         }
 
         public void SetGame(Settings.GameData gameData, Settings.Category catData)
@@ -56,6 +60,7 @@ namespace CardOrganizerWPF
             GetCategoriesFromData(() =>
             {
                 SavedCategory.Value = catData.Save != -1 ? catData.Save : 0;
+                SetImageSize(1);
 
                 watcher = new FileSystemWatcher(folderPath);
                 watcher.Created += FileCreated;
@@ -185,6 +190,18 @@ namespace CardOrganizerWPF
         public void SaveCard(string process)
         {
             RPCClient_UI.SendMessage(MsgObject.Create(saveMsg, process, folderPath));
+        }
+
+        public void SetImageSize(double multiplier)
+        {
+            foreach(var cat in Categories.Values)
+            {
+                foreach(var img in cat.Images)
+                {
+                    img.ImageWidth.Value = defaultThumbWidth * multiplier;
+                    img.ImageHeight.Value = defaultThumbHeight * multiplier;
+                }
+            }
         }
 
         #region Scrolling Methods
@@ -457,6 +474,8 @@ namespace CardOrganizerWPF
     {
         public string Path { get; set; }
         public DateTime Date { get; set; }
+        public Prop<double> ImageWidth { get; set; } = new Prop<double>();
+        public Prop<double> ImageHeight { get; set; } = new Prop<double>();
 
         public Thumbnail(string path, DateTime date)
         {

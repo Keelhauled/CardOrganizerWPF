@@ -25,6 +25,7 @@ namespace CardOrganizerWPF
         public ICommand SetTarget { get; set; }
         public ObservableCollection<string> ProcessList { get; set; } = new ObservableCollection<string>();
         public Prop<Visibility> PartialReplaceEnabled { get; set; } = new Prop<Visibility>();
+        public double ThumbMult { get; set; } = 1;
 
         public CardTypeTab TabScene { get; set; }
         public CardTypeTab TabChara1 { get; set; }
@@ -47,6 +48,11 @@ namespace CardOrganizerWPF
                 }
             }
         }
+
+        private double sceneWidth = 320;
+        private double sceneHeight = 180;
+        private double cardWidth = 252 * 0.9;
+        private double cardHeight = 352 * 0.9;
 
         private string serverName = "CardOrganizerServer";
         private int serverPort = 9125;
@@ -76,11 +82,11 @@ namespace CardOrganizerWPF
                 PartialReplaceEnabled.Value = gameData.ProcessList.First((y) => y.Name == currentTarget).PartialReplaceEnabled;
             });
 
-            TabScene = new CardTypeTab(tabControlScenes, MsgObject.Action.SceneSave);
-            TabChara1 = new CardTypeTab(tabControlCharactersF, MsgObject.Action.CharaSave);
-            TabChara2 = new CardTypeTab(tabControlCharactersM, MsgObject.Action.CharaSave);
-            TabOutfit1 = new CardTypeTab(tabControlOutfitsF, MsgObject.Action.OutfitSave);
-            TabOutfit2 = new CardTypeTab(tabControlOutfitsM, MsgObject.Action.OutfitSave);
+            TabScene = new CardTypeTab(tabControlScenes, MsgObject.Action.SceneSave, sceneWidth, sceneHeight);
+            TabChara1 = new CardTypeTab(tabControlCharactersF, MsgObject.Action.CharaSave, cardWidth, cardHeight);
+            TabChara2 = new CardTypeTab(tabControlCharactersM, MsgObject.Action.CharaSave, cardWidth, cardHeight);
+            TabOutfit1 = new CardTypeTab(tabControlOutfitsF, MsgObject.Action.OutfitSave, cardWidth, cardHeight);
+            TabOutfit2 = new CardTypeTab(tabControlOutfitsM, MsgObject.Action.OutfitSave, cardWidth, cardHeight);
 
             var args = Environment.GetCommandLineArgs();
             if(args.Length > 1)
@@ -305,6 +311,30 @@ namespace CardOrganizerWPF
             // it doesn't matter if there is a space after ','
             string argument = "/select, \"" + thumb.Path + "\"";
             Process.Start("explorer.exe", argument);
+        }
+
+        private void ThumbSize90_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            SetImageSizes(0.9);
+        }
+
+        private void ThumbSize100_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            SetImageSizes(1.0);
+        }
+
+        private void ThumbSize110_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            SetImageSizes(1.1);
+        }
+
+        private void SetImageSizes(double mult)
+        {
+            TabScene.SetImageSize(mult);
+            TabChara1.SetImageSize(mult);
+            TabChara2.SetImageSize(mult);
+            TabOutfit1.SetImageSize(mult);
+            TabOutfit2.SetImageSize(mult);
         }
         #endregion
 

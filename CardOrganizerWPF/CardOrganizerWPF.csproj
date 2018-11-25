@@ -78,6 +78,7 @@
     </Compile>
     <None Include="packages.config" />
     <EmbeddedResource Include="SettingsData.json" />
+    <Compile Include="Controls\MenuItemExtensions.cs" />
     <Compile Include="Controls\SelectList.xaml.cs">
       <DependentUpon>SelectList.xaml</DependentUpon>
     </Compile>
