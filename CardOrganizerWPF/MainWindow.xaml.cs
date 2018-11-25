@@ -177,8 +177,8 @@ namespace CardOrganizerWPF
 
             gameData.Category.Scene.Save = tabControlScenes.SelectedIndex;
             gameData.Category.Chara1.Save = tabControlCharactersF.SelectedIndex;
-            gameData.Category.Chara2.Save = tabControlOutfitsF.SelectedIndex;
-            gameData.Category.Outfit1.Save = tabControlCharactersM.SelectedIndex;
+            gameData.Category.Chara2.Save = tabControlCharactersM.SelectedIndex;
+            gameData.Category.Outfit1.Save = tabControlOutfitsF.SelectedIndex;
             gameData.Category.Outfit2.Save = tabControlOutfitsM.SelectedIndex;
             gameData.Tab = tabControlMain.SelectedIndex;
 
