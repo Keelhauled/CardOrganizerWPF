@@ -36,7 +36,9 @@
             <TextBlock ContextMenu="{StaticResource TabContext}" Text="{Binding Value.Title}" Margin="10,2"/>
         </DataTemplate>
 
-        <controls:ImgConverter x:Key="imgConverter" />
+        <controls:ImgConverter x:Key="imgConverter"/>
+        
+        <controls:SliderConverter x:Key="sliderConverter"/>
     </Window.Resources>
 
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
@@ -45,22 +47,36 @@
                 <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
-                            <MenuItem Header="{Binding}" controls:MenuItemExtensions.GroupName="Group1" IsCheckable="True"/>
+                            <MenuItem Name="MenuItem" Header="{Binding}" controls:MenuItemExtensions.GroupName="Group1" IsCheckable="True"/>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                    <Setter TargetName="MenuItem" Property="IsChecked" Value="True" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </MenuItem.ItemTemplate>
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="{x:Type MenuItem}">
-                            <Setter Property="Command" Value="{Binding DataContext.SetTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
+                            <Setter Property="Command" Value="{Binding DataContext.SetTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}"/>
                             <Setter Property="CommandParameter" Value="{Binding}" />
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
                 <MenuItem Header="Save" Click="Button_Click_Save"/>
                 <MenuItem Header="Settings">
-                    <MenuItem Header="Thumbnail size" Margin="0">
-                        <MenuItem Header="90%" Click="ThumbSize90_MenuItem_Click"></MenuItem>
-                        <MenuItem Header="100%" Click="ThumbSize100_MenuItem_Click"></MenuItem>
-                        <MenuItem Header="110%" Click="ThumbSize110_MenuItem_Click"></MenuItem>
+                    <MenuItem Header="Thumbnail size">
+                        <MenuItem>
+                            <MenuItem.Template>
+                                <ControlTemplate>
+                                    <Grid Background="WhiteSmoke">
+                                        <StackPanel Orientation="Horizontal" Margin="0.5">
+                                            <Slider x:Name="imageSizeSlider" Margin="0,1,0,0" Width="125" Minimum="0.5" Maximum="1.5" Value="{Binding ImageMultiplier.Value}" ValueChanged="ImageSizeSlider_ValueChanged"/>
+                                            <TextBlock Margin="4,3,0,0" Text="{Binding Path=Value, ElementName=imageSizeSlider, Converter={StaticResource sliderConverter}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </ControlTemplate>
+                            </MenuItem.Template>
+                        </MenuItem>
                     </MenuItem>
                 </MenuItem>
             </Menu>
@@ -96,7 +112,7 @@
                             <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
                         </Grid>
                     </TabItem.Header>
-                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlScenes"
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlScene"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
@@ -107,8 +123,8 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                       Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlScene}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlScene}}">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
@@ -137,7 +153,7 @@
                             <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
                         </Grid>
                     </TabItem.Header>
-                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersF"
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlChara1"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
@@ -148,8 +164,8 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                           Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlChara1}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlChara1}}">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
@@ -181,7 +197,7 @@
                             <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
                         </Grid>
                     </TabItem.Header>
-                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlCharactersM"
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlChara2"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
@@ -192,8 +208,8 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                       Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlChara2}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlChara2}}">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
@@ -225,7 +241,7 @@
                             <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
                         </Grid>
                     </TabItem.Header>
-                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsF"
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfit1"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
@@ -236,8 +252,8 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                       Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlOutfit1}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlOutfit1}}">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
@@ -266,7 +282,7 @@
                             <TextBlock Text="{Binding Header.Value}" TextAlignment="Center" Margin="3"/>
                         </Grid>
                     </TabItem.Header>
-                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfitsM"
+                    <TabControl ItemTemplate="{StaticResource CategoryName}" Drop="TabControl_Drop" AllowDrop="True" x:Name="tabControlOutfit2"
                                 SelectedIndex="{Binding SavedCategory.Value}" ItemsSource="{Binding Categories}" Padding="0"
                                 SelectionChanged="CategoryTab_SelectionChanged" PreviewMouseDown="CategoryTab_PreviewMouseDown">
                         <TabControl.ContentTemplate>
@@ -277,8 +293,8 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}"
-                                                       Width="{Binding ImageWidth.Value}" Height="{Binding ImageHeight.Value}" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlOutfit2}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlOutfit2}}">
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>

@@ -72,6 +72,7 @@
     <Compile Include="Controls\ConfirmBox.xaml.cs">
       <DependentUpon>ConfirmBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SliderConverter.cs" />
     <Compile Include="Controls\ImgConverter.cs" />
     <Compile Include="Controls\InputBox.xaml.cs">
       <DependentUpon>InputBox.xaml</DependentUpon>

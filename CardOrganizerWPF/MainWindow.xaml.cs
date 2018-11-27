@@ -25,7 +25,7 @@ namespace CardOrganizerWPF
         public ICommand SetTarget { get; set; }
         public ObservableCollection<string> ProcessList { get; set; } = new ObservableCollection<string>();
         public Prop<Visibility> PartialReplaceEnabled { get; set; } = new Prop<Visibility>();
-        public double ThumbMult { get; set; } = 1;
+        public Prop<double> ImageMultiplier { get; set; } = new Prop<double>(1);
 
         public CardTypeTab TabScene { get; set; }
         public CardTypeTab TabChara1 { get; set; }
@@ -37,15 +37,19 @@ namespace CardOrganizerWPF
         {
             get
             {
-                switch(tabControlMain.SelectedIndex)
+                if(tabControlMain != null)
                 {
-                    case 0: return TabScene;
-                    case 1: return TabChara1;
-                    case 2: return TabChara2;
-                    case 3: return TabOutfit1;
-                    case 4: return TabOutfit2;
-                    default: return null;
+                    switch(tabControlMain.SelectedIndex)
+                    {
+                        case 0: return TabScene;
+                        case 1: return TabChara1;
+                        case 2: return TabChara2;
+                        case 3: return TabOutfit1;
+                        case 4: return TabOutfit2;
+                    } 
                 }
+
+                return null;
             }
         }
 
@@ -82,11 +86,11 @@ namespace CardOrganizerWPF
                 PartialReplaceEnabled.Value = gameData.ProcessList.First((y) => y.Name == currentTarget).PartialReplaceEnabled;
             });
 
-            TabScene = new CardTypeTab(tabControlScenes, MsgObject.Action.SceneSave, sceneWidth, sceneHeight);
-            TabChara1 = new CardTypeTab(tabControlCharactersF, MsgObject.Action.CharaSave, cardWidth, cardHeight);
-            TabChara2 = new CardTypeTab(tabControlCharactersM, MsgObject.Action.CharaSave, cardWidth, cardHeight);
-            TabOutfit1 = new CardTypeTab(tabControlOutfitsF, MsgObject.Action.OutfitSave, cardWidth, cardHeight);
-            TabOutfit2 = new CardTypeTab(tabControlOutfitsM, MsgObject.Action.OutfitSave, cardWidth, cardHeight);
+            TabScene = new CardTypeTab(tabControlScene, MsgObject.Action.SceneSave, sceneWidth, sceneHeight);
+            TabChara1 = new CardTypeTab(tabControlChara1, MsgObject.Action.CharaSave, cardWidth, cardHeight);
+            TabChara2 = new CardTypeTab(tabControlChara2, MsgObject.Action.CharaSave, cardWidth, cardHeight);
+            TabOutfit1 = new CardTypeTab(tabControlOutfit1, MsgObject.Action.OutfitSave, cardWidth, cardHeight);
+            TabOutfit2 = new CardTypeTab(tabControlOutfit2, MsgObject.Action.OutfitSave, cardWidth, cardHeight);
 
             var args = Environment.GetCommandLineArgs();
             if(args.Length > 1)
@@ -181,11 +185,11 @@ namespace CardOrganizerWPF
                 data.Window.Maximized = false;
             }
 
-            gameData.Category.Scene.Save = tabControlScenes.SelectedIndex;
-            gameData.Category.Chara1.Save = tabControlCharactersF.SelectedIndex;
-            gameData.Category.Chara2.Save = tabControlCharactersM.SelectedIndex;
-            gameData.Category.Outfit1.Save = tabControlOutfitsF.SelectedIndex;
-            gameData.Category.Outfit2.Save = tabControlOutfitsM.SelectedIndex;
+            gameData.Category.Scene.Save = tabControlScene.SelectedIndex;
+            gameData.Category.Chara1.Save = tabControlChara1.SelectedIndex;
+            gameData.Category.Chara2.Save = tabControlChara2.SelectedIndex;
+            gameData.Category.Outfit1.Save = tabControlOutfit1.SelectedIndex;
+            gameData.Category.Outfit2.Save = tabControlOutfit2.SelectedIndex;
             gameData.Tab = tabControlMain.SelectedIndex;
 
             Settings.Save();
@@ -313,28 +317,9 @@ namespace CardOrganizerWPF
             Process.Start("explorer.exe", argument);
         }
 
-        private void ThumbSize90_MenuItem_Click(object sender, RoutedEventArgs e)
+        private void ImageSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            SetImageSizes(0.9);
-        }
-
-        private void ThumbSize100_MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            SetImageSizes(1.0);
-        }
-
-        private void ThumbSize110_MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            SetImageSizes(1.1);
-        }
-
-        private void SetImageSizes(double mult)
-        {
-            TabScene.SetImageSize(mult);
-            TabChara1.SetImageSize(mult);
-            TabChara2.SetImageSize(mult);
-            TabOutfit1.SetImageSize(mult);
-            TabOutfit2.SetImageSize(mult);
+            SelectedTab?.SetImageSize(e.NewValue);
         }
         #endregion
 
@@ -433,6 +418,7 @@ namespace CardOrganizerWPF
         private void TabControlMain_SelectionChanged(object sender, RoutedEventArgs e)
         {
             markedTab = "";
+            ImageMultiplier.Value = SelectedTab.ImageMultiplier;
         }
 
         private void TabControl_Drop(object sender, DragEventArgs e)
