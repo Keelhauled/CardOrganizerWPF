@@ -105,13 +105,17 @@ namespace CardOrganizerWPF
         {
             if(gameData == null)
             {
-                var list = new SelectList("Choose a profile", Settings.data.Games.Keys.ToList());
+                var list = new SelectList("Choose a profile", Settings.data.Games.Keys.ToList(), Settings.data.LastProfile);
                 list.Top = Top + (Height / 2) - (list.Height / 2);
                 list.Left = Left + (Width / 2) - (list.Width / 2);
+
                 if(list.ShowDialog() == true)
                 {
                     gameData = Settings.data.Games[list.Selected];
+                    Settings.data.LastProfile = list.Selected;
+                    Settings.Save();
                 }
+
             }
 
             if(gameData != null)
@@ -142,7 +146,9 @@ namespace CardOrganizerWPF
                     TabOutfit1.SetGame(gameData, gameData.Category.Outfit1);
                     TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
 
+                    ImageMultiplier.Value = SelectedTab.ImageMultiplier;
                     SavedTab.Value = gameData.Tab != -1 ? gameData.Tab : 0;
+
                     Closing += (x, y) => SettingsSave();
 
                     return; 
@@ -184,21 +190,14 @@ namespace CardOrganizerWPF
                 data.Window.Width = Width;
                 data.Window.Maximized = false;
             }
-
-            gameData.Category.Scene.Save = tabControlScene.SelectedIndex;
-            gameData.Category.Chara1.Save = tabControlChara1.SelectedIndex;
-            gameData.Category.Chara2.Save = tabControlChara2.SelectedIndex;
-            gameData.Category.Outfit1.Save = tabControlOutfit1.SelectedIndex;
-            gameData.Category.Outfit2.Save = tabControlOutfit2.SelectedIndex;
+            
             gameData.Tab = tabControlMain.SelectedIndex;
-
+            TabScene.SaveData();
+            TabChara1.SaveData();
+            TabChara2.SaveData();
+            TabOutfit1.SaveData();
+            TabOutfit2.SaveData();
             Settings.Save();
-
-            TabScene.SaveCardData();
-            TabChara1.SaveCardData();
-            TabChara2.SaveCardData();
-            TabOutfit1.SaveCardData();
-            TabOutfit2.SaveCardData();
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)

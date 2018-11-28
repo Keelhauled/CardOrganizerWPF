@@ -10,12 +10,10 @@ namespace CardOrganizerWPF.Controls
         {
             if(value != null && value is double sliderValue)
             {
-                return sliderValue.ToString("F2");
+                return (sliderValue * 100).ToString("F0") + "%";
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
