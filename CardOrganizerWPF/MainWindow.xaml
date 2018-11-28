@@ -47,20 +47,15 @@
                 <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
-                            <MenuItem Name="MenuItem" Header="{Binding}" controls:MenuItemExtensions.GroupName="Group1" IsCheckable="True"/>
+                            <MenuItem x:Name="processListMenuItem" Header="{Binding}" controls:MenuItemExtensions.GroupName="Group1" IsCheckable="True"
+                                      Command="{Binding DataContext.SetTarget, ElementName=MainWin}" CommandParameter="{Binding}"/>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                    <Setter TargetName="MenuItem" Property="IsChecked" Value="True" />
+                                    <Setter TargetName="processListMenuItem" Property="IsChecked" Value="True" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
                     </MenuItem.ItemTemplate>
-                    <MenuItem.ItemContainerStyle>
-                        <Style TargetType="{x:Type MenuItem}">
-                            <Setter Property="Command" Value="{Binding DataContext.SetTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}"/>
-                            <Setter Property="CommandParameter" Value="{Binding}" />
-                        </Style>
-                    </MenuItem.ItemContainerStyle>
                 </MenuItem>
                 <MenuItem Header="Save" Click="Button_Click_Save"/>
                 <MenuItem Header="Settings">
@@ -70,7 +65,7 @@
                                 <ControlTemplate>
                                     <Grid Background="WhiteSmoke">
                                         <StackPanel Orientation="Horizontal" Margin="0.5">
-                                            <Slider x:Name="imageSizeSlider" Margin="0,1,0,0" Width="125" Minimum="0.5" Maximum="1.5" Value="{Binding ImageMultiplier.Value}" ValueChanged="ImageSizeSlider_ValueChanged"/>
+                                            <Slider x:Name="imageSizeSlider" Margin="0,1,0,0" Width="150" Minimum="0.5" Maximum="1.5" Value="{Binding ImageMultiplier.Value}" ValueChanged="ImageSizeSlider_ValueChanged"/>
                                             <TextBlock Margin="4,3,0,0" Text="{Binding Path=Value, ElementName=imageSizeSlider, Converter={StaticResource sliderConverter}}"/>
                                         </StackPanel>
                                     </Grid>

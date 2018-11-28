@@ -26,10 +26,8 @@ namespace CardOrganizerWPF.Controls
 
                 return image;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -32,23 +32,34 @@ namespace CardOrganizerWPF
                 try
                 {
                     var json = File.ReadAllText(dataPath);
-                    data = JsonConvert.DeserializeObject<Settings>(json);
-                    Console.WriteLine("Loading custom settings.");
+                    var fileData = JsonConvert.DeserializeObject<Settings>(json);
+                    var resourceData = GetResourceData();
+
+                    if(fileData.Version == resourceData.Version)
+                    {
+                        data = fileData;
+                        Console.WriteLine("Loading custom settings.");
+                    }
+                    else
+                    {
+                        data = resourceData;
+                        Console.WriteLine("Custom settings are for an old version. Loading default settings.");
+                    }
                 }
                 catch(Exception)
                 {
+                    data = GetResourceData();
                     Console.WriteLine("Failed to deserialize settings data. Loading default settings.");
-                    LoadResourceData();
                 }
             }
             else
             {
+                data = GetResourceData();
                 Console.WriteLine("Loading default settings.");
-                LoadResourceData();
             }
         }
 
-        static void LoadResourceData()
+        static Settings GetResourceData()
         {
             string resourceName = $"{nameof(CardOrganizerWPF)}.{dataFileName}";
             using(var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
@@ -56,14 +67,16 @@ namespace CardOrganizerWPF
                 using(var reader = new StreamReader(stream))
                 {
                     string json = reader.ReadToEnd();
-                    data = JsonConvert.DeserializeObject<Settings>(json);
+                    return JsonConvert.DeserializeObject<Settings>(json);
                 }
             }
         }
 
+        public string Version;
+        public string LastProfile;
+        public double ScrollSpeed;
         public WindowData Window;
         public Dictionary<string, GameData> Games;
-        public double ScrollSpeed;
 
         public class GameData
         {
@@ -104,6 +117,7 @@ namespace CardOrganizerWPF
             public string Header;
             public string Path;
             public int Save;
+            public double ImageMult;
         }
     }
 }

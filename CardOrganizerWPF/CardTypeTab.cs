@@ -25,7 +25,7 @@ namespace CardOrganizerWPF
         private double _imageWidth, _imageHeight;
         public Prop<double> ImageWidth { get; set; } = new Prop<double>();
         public Prop<double> ImageHeight { get; set; } = new Prop<double>();
-        public double ImageMultiplier { get; set; } = 1;
+        public double ImageMultiplier { get; set; }
 
         private string folderPath;
         private CardDataManager dataManager;
@@ -33,6 +33,8 @@ namespace CardOrganizerWPF
         private MsgObject.Action saveMsg;
         private FileSystemWatcher watcher;
         private SynchronizationContext uiContext;
+        private Settings.Category catData;
+        private bool initialized = false;
 
         public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg, double width, double height)
         {
@@ -58,13 +60,16 @@ namespace CardOrganizerWPF
                 return;
             }
 
+            this.catData = catData;
             Enabled.Value = Visibility.Visible;
             Header.Value = catData.Header;
             folderPath = Path.Combine(gameData.Path, catData.Path);
             dataManager = new CardDataManager(folderPath);
+            SetImageSize(catData.ImageMult);
 
             GetCategoriesFromData(() =>
             {
+                initialized = true;
                 SavedCategory.Value = catData.Save != -1 ? catData.Save : 0;
 
                 watcher = new FileSystemWatcher(folderPath);
@@ -115,7 +120,7 @@ namespace CardOrganizerWPF
 
         private void GetCategoriesFromData(Action callback)
         {
-            new Thread(() =>
+            var thread = new Thread(() =>
             {
                 var files = Directory.GetFiles(folderPath, "*.png");
                 var sorted = files.Select(x => new KeyValuePair<string, DateTime>(x, File.GetLastWriteTime(x))).ToList();
@@ -175,17 +180,32 @@ namespace CardOrganizerWPF
                     ProgressVal.Value = 0;
                     callback();
                 }, null);
-            }).Start();
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public Category GetSelectedCategory()
         {
-            return Categories.Values.ToList()[tabControl.SelectedIndex == -1 ? 0 : tabControl.SelectedIndex];
+            if(tabControl.SelectedIndex != -1)
+                return Categories.ElementAt(tabControl.SelectedIndex).Value;
+
+            return null;
         }
 
-        public void SaveCardData()
+        public void SaveData()
         {
-            dataManager?.SaveData(folderPath);
+            if(Enabled.Value == Visibility.Visible)
+            {
+                catData.ImageMult = ImageMultiplier;
+
+                if(initialized)
+                {
+                    catData.Save = tabControl.SelectedIndex;
+                    dataManager.SaveData(folderPath);
+                }
+            }
         }
 
         public void SaveCard(string process)

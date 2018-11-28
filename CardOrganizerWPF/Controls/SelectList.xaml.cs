@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 
@@ -7,13 +8,13 @@ namespace CardOrganizerWPF.Controls
     public partial class SelectList : Window
     {
         public string TitleText { get; set; }
-        public List<string> GameList { get; set; }
+        public List<string> ItemList { get; set; }
         public ICommand EnterKeyCommand { get; set; }
         public ICommand EscKeyCommand { get; set; }
 
         public string Selected => listBox.SelectedValue.ToString();
 
-        public SelectList(string titleText, List<string> gameList)
+        public SelectList(string titleText, List<string> itemList, string selected = "")
         {
             InitializeComponent();
             DataContext = this;
@@ -22,7 +23,19 @@ namespace CardOrganizerWPF.Controls
             EscKeyCommand = new DelegateCommand((x) => DialogResult = false);
 
             TitleText = titleText;
-            GameList = gameList;
+            ItemList = itemList;
+
+            if(!string.IsNullOrWhiteSpace(selected))
+            {
+                Loaded += (sender, args) =>
+                {
+                    for(int i = 0; i < listBox.Items.Count; i++)
+                    {
+                        if(listBox.Items[i] is string name && name == selected)
+                            listBox.SelectedIndex = i;
+                    }
+                }; 
+            }
         }
 
         private void CheckResult()
