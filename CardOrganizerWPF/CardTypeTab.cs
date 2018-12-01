@@ -16,8 +16,8 @@ namespace CardOrganizerWPF
     public class CardTypeTab
     {
         public Prop<Visibility> Enabled { get; set; } = new Prop<Visibility>();
-        public Prop<string> Header { get; set; } = new Prop<string>();
-        public Prop<int> SavedCategory { get; set; } = new Prop<int>();
+        public Prop<string> Header { get; set; } = new Prop<string>("");
+        public Prop<int> SavedCategory { get; set; } = new Prop<int>(-1);
         public ObservableSortedDictionary<string, Category> Categories { get; set; }
         public Prop<double> ProgressMax { get; set; } = new Prop<double>(1);
         public Prop<double> ProgressVal { get; set; } = new Prop<double>(0);
@@ -35,15 +35,14 @@ namespace CardOrganizerWPF
         private SynchronizationContext uiContext;
         private Settings.Category catData;
         private bool initialized = false;
+        private volatile bool stopThread = false;
 
         public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg, double width, double height)
         {
             uiContext = SynchronizationContext.Current;
             watcher = new FileSystemWatcher();
             Categories = new ObservableSortedDictionary<string, Category>();
-            SavedCategory.Value = -1;
             Enabled.Value = Visibility.Collapsed;
-            Header.Value = "null";
             this.tabControl = tabControl;
             this.saveMsg = saveMsg;
 
@@ -55,19 +54,20 @@ namespace CardOrganizerWPF
 
         public void SetGame(Settings.GameData gameData, Settings.Category catData)
         {
-            if(initialized)
-            {
-                initialized = false;
-                ScrollViewer = null;
-                watcher.EnableRaisingEvents = false;
-                watcher.Created -= FileCreated;
-                Categories.Clear();
-            }
+            initialized = false;
+            ScrollViewer = null;
+            watcher.EnableRaisingEvents = false;
+            watcher.Created -= FileCreated;
+            Categories.Clear();
+            ProgressVal.Value = 0;
+            dataManager = null;
+            folderPath = "";
 
             if(string.IsNullOrWhiteSpace(catData.Header))
             {
                 Header.Value = "Disabled";
                 Enabled.Value = Visibility.Collapsed;
+                initialized = true;
                 return;
             }
             
@@ -130,6 +130,12 @@ namespace CardOrganizerWPF
             uiContext.Post((x) => AddImage(e.FullPath), null);
         }
 
+        public void StopThread()
+        {
+            if(!initialized)
+                stopThread = true;
+        }
+
         private void GetCategoriesFromData(Action callback)
         {
             var thread = new Thread(() =>
@@ -148,6 +154,8 @@ namespace CardOrganizerWPF
                 int count = 0;
                 foreach(var file in sorted)
                 {
+                    if(stopThread) break;
+
                     bool found = false;
                     var thumb = new Thumbnail(file.Key, file.Value);
 
@@ -182,15 +190,20 @@ namespace CardOrganizerWPF
                     uiContext.Post((x) => ProgressVal.Value = count, null);
                 }
 
-                uiContext.Post((x) =>
+                if(!stopThread)
                 {
-                    foreach(var cat in newCategories)
+                    uiContext.Post((x) =>
                     {
-                        Categories.Add(cat.Key, cat.Value);
-                    }
-                        
-                    callback();
-                }, null);
+                        foreach(var cat in newCategories)
+                        {
+                            Categories.Add(cat.Key, cat.Value);
+                        }
+
+                        callback();
+                    }, null); 
+                }
+
+                stopThread = false;
             });
 
             thread.IsBackground = true;
@@ -205,7 +218,18 @@ namespace CardOrganizerWPF
             return null;
         }
 
-        public void SaveData()
+        public void SaveCardData()
+        {
+            if(Enabled.Value == Visibility.Visible)
+            {
+                if(initialized)
+                {
+                    dataManager?.SaveData(folderPath);
+                }
+            }
+        }
+
+        public void SaveSettingsData()
         {
             if(Enabled.Value == Visibility.Visible)
             {
@@ -214,7 +238,6 @@ namespace CardOrganizerWPF
                 if(initialized)
                 {
                     catData.Save = tabControl.SelectedIndex;
-                    dataManager.SaveData(folderPath);
                 }
             }
         }
@@ -250,7 +273,7 @@ namespace CardOrganizerWPF
                 }
                 catch(InvalidOperationException)
                 {
-                    Console.WriteLine("Can't find scrollViewer");
+                    //Console.WriteLine("Can't find scrollViewer");
                 }
 
                 return null;
@@ -267,7 +290,7 @@ namespace CardOrganizerWPF
                 if(selectedCategory != null)
                 {
                     selectedCategory.SavedScrollPosition = ScrollViewer.VerticalOffset;
-                    Console.WriteLine($"Scroll position saved: {selectedCategory.Title} = {ScrollViewer.VerticalOffset}"); 
+                    //Console.WriteLine($"Scroll position saved: {selectedCategory.Title} = {ScrollViewer.VerticalOffset}"); 
                 }
             }
         }
@@ -280,7 +303,7 @@ namespace CardOrganizerWPF
                 if(selectedCategory != null)
                 {
                     ScrollViewer.ScrollToVerticalOffset(selectedCategory.SavedScrollPosition);
-                    Console.WriteLine($"Scroll position loaded: {selectedCategory.Title} = {selectedCategory.SavedScrollPosition}");
+                    //Console.WriteLine($"Scroll position loaded: {selectedCategory.Title} = {selectedCategory.SavedScrollPosition}");
                 }
             }
         }

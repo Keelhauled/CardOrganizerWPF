@@ -12,6 +12,7 @@ using Ookii.Dialogs.Wpf;
 using CardOrganizerWPF.Remoting;
 using CardOrganizerWPF.Controls;
 using CardOrganizerWPF.Utils;
+using System.ComponentModel;
 
 namespace CardOrganizerWPF
 {
@@ -23,13 +24,13 @@ namespace CardOrganizerWPF
         public Prop<Visibility> PartialReplaceEnabled { get; set; } = new Prop<Visibility>();
         public Prop<double> ImageMultiplier { get; set; } = new Prop<double>(1);
 
-        public ObservableCollection<string> ProfileList { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> ProcessList { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> ProfileList { get; set; }
+        public ObservableCollection<string> ProcessList { get; set; }
 
         public ICommand ScrollToTop { get; set; }
         public ICommand ScrollToBottom { get; set; }
-        public ICommand SetTarget { get; set; }
-        public ICommand SetProfile { get; set; }
+        public ICommand TargetSwitched { get; set; }
+        public ICommand ProfileSwitched { get; set; }
 
         public CardTypeTab TabScene { get; set; }
         public CardTypeTab TabChara1 { get; set; }
@@ -66,7 +67,6 @@ namespace CardOrganizerWPF
         private int serverPort = 9125;
         private string defaultTitle = "CardOrganizer";
         private string currentTarget = "";
-        private string currentProfile = "";
         private string markedTab = "";
         private SynchronizationContext uiContext;
         private Settings.GameData gameData;
@@ -84,37 +84,11 @@ namespace CardOrganizerWPF
             ScrollToTop = new DelegateCommand((x) => SelectedTab.ScrollToTop());
             ScrollToBottom = new DelegateCommand((x) => SelectedTab.ScrollToBottom());
 
-            SetTarget = new DelegateCommand((x) =>
-            {
-                currentTarget = x.ToString();
-                WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
-                PartialReplaceEnabled.Value = gameData.ProcessList.First((y) => y.Name == currentTarget).PartialReplaceEnabled;
-            });
+            ProcessList = new ObservableCollection<string>();
+            TargetSwitched = new DelegateCommand(TargetSwitch);
 
-            Settings.data.Games.Keys.ToList().ForEach((x) => ProfileList.Add(x));
-            gameData = Settings.data.Games.First().Value;
-
-            SetProfile = new DelegateCommand((x) =>
-            {
-                currentProfile = x.ToString();
-                Console.WriteLine(currentProfile);
-
-                gameData = Settings.data.Games[currentProfile];
-
-                gameData.ProcessList.ForEach((y) => ProcessList.Add(y.Name));
-                currentTarget = gameData.ProcessList.First().Name;
-                WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
-                PartialReplaceEnabled.Value = gameData.ProcessList.First().PartialReplaceEnabled;
-
-                TabScene.SetGame(gameData, gameData.Category.Scene);
-                TabChara1.SetGame(gameData, gameData.Category.Chara1);
-                TabChara2.SetGame(gameData, gameData.Category.Chara2);
-                TabOutfit1.SetGame(gameData, gameData.Category.Outfit1);
-                TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
-
-                ImageMultiplier.Value = SelectedTab.ImageMultiplier;
-                SavedTab.Value = gameData.Tab != -1 ? gameData.Tab : 0;
-            });
+            ProfileList = new ObservableCollection<string>(Settings.data.Games.Keys);
+            ProfileSwitched = new DelegateCommand(ProfileSwitch);
 
             TabScene = new CardTypeTab(tabControlScene, MsgObject.Action.SceneSave, sceneWidth, sceneHeight);
             TabChara1 = new CardTypeTab(tabControlChara1, MsgObject.Action.CharaSave, cardWidth, cardHeight);
@@ -131,27 +105,42 @@ namespace CardOrganizerWPF
             }
         }
 
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            SaveSettings(true);
+            SaveCardData();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //if(gameData == null)
-            //{
-            //    var list = new SelectList("Choose a profile", Settings.data.Games.Keys.ToList(), Settings.data.LastProfile);
-            //    list.Top = Top + (Height / 2) - (list.Height / 2);
-            //    list.Left = Left + (Width / 2) - (list.Width / 2);
+            if(!string.IsNullOrWhiteSpace(Settings.data.LastProfile))
+            {
+                gameData = Settings.data.Games[Settings.data.LastProfile];
+            }
 
-            //    if(list.ShowDialog() == true)
-            //    {
-            //        gameData = Settings.data.Games[list.Selected];
-            //        Settings.data.LastProfile = list.Selected;
-            //        Settings.Save();
-            //    }
-            //}
+            if(gameData == null)
+            {
+                var list = new SelectList("Choose a profile", Settings.data.Games.Keys);
+                list.Top = Top + (Height / 2) - (list.Height / 2);
+                list.Left = Left + (Width / 2) - (list.Width / 2);
+
+                if(list.ShowDialog() == true)
+                {
+                    gameData = Settings.data.Games[list.Selected];
+                    Settings.data.LastProfile = list.Selected;
+                }
+            }
 
             if(gameData != null)
             {
                 if(string.IsNullOrWhiteSpace(gameData.Path))
                 {
-                    var dialog = new VistaFolderBrowserDialog();
+                    var dialog = new VistaFolderBrowserDialog
+                    {
+                        Description = $"Select userdata folder for {gameData.Name}",
+                        UseDescriptionForTitle = true
+                    };
+
                     if(dialog.ShowDialog(this) == true)
                     {
                         gameData.Path = dialog.SelectedPath;
@@ -165,9 +154,10 @@ namespace CardOrganizerWPF
                     RPCClient_UI.Start(name, serverPort);
 
                     gameData.ProcessList.ForEach((x) => ProcessList.Add(x.Name));
-                    currentTarget = gameData.ProcessList.First().Name;
+                    var process = gameData.ProcessList[gameData.SavedProcess];
+                    currentTarget = process.Name;
                     WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
-                    PartialReplaceEnabled.Value = gameData.ProcessList.First().PartialReplaceEnabled;
+                    PartialReplaceEnabled.Value = process.PartialReplaceEnabled;
 
                     TabScene.SetGame(gameData, gameData.Category.Scene);
                     TabChara1.SetGame(gameData, gameData.Category.Chara1);
@@ -178,13 +168,74 @@ namespace CardOrganizerWPF
                     ImageMultiplier.Value = SelectedTab.ImageMultiplier;
                     SavedTab.Value = gameData.Tab != -1 ? gameData.Tab : 0;
 
-                    Closing += (x, y) => SettingsSave();
+                    Closing += Window_Closing;
 
                     return; 
                 }
             }
 
             Close();
+        }
+
+        private void ProfileSwitch(object sender)
+        {
+            string newProfile = sender.ToString();
+            SaveSettings(false);
+
+            var newGameData = Settings.data.Games[newProfile];
+
+            if(newGameData.Name != gameData.Name)
+            {
+                if(string.IsNullOrWhiteSpace(newGameData.Path))
+                {
+                    var dialog = new VistaFolderBrowserDialog
+                    {
+                        Description = $"Select userdata folder for {newGameData.Name}",
+                        UseDescriptionForTitle = true
+                    };
+                    if(dialog.ShowDialog(this) == true)
+                    {
+                        newGameData.Path = dialog.SelectedPath;
+                    }
+                }
+
+                if(!string.IsNullOrWhiteSpace(newGameData.Path)) // check if paths in category exist here
+                {
+                    TabScene.StopThread();
+                    TabChara1.StopThread();
+                    TabChara2.StopThread();
+                    TabOutfit1.StopThread();
+                    TabOutfit2.StopThread();
+
+                    Settings.data.LastProfile = newProfile;
+                    SaveSettings(false);
+                    gameData = newGameData;
+
+                    ProcessList.Clear();
+                    gameData.ProcessList.ForEach((y) => ProcessList.Add(y.Name));
+                    var process = gameData.ProcessList[gameData.SavedProcess];
+                    currentTarget = process.Name;
+                    WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
+                    PartialReplaceEnabled.Value = process.PartialReplaceEnabled;
+
+                    TabScene.SetGame(gameData, gameData.Category.Scene);
+                    TabChara1.SetGame(gameData, gameData.Category.Chara1);
+                    TabChara2.SetGame(gameData, gameData.Category.Chara2);
+                    TabOutfit1.SetGame(gameData, gameData.Category.Outfit1);
+                    TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
+
+                    ImageMultiplier.Value = SelectedTab.ImageMultiplier;
+                    SavedTab.Value = gameData.Tab != -1 ? gameData.Tab : 0;
+                }
+            }
+        }
+
+        private void TargetSwitch(object sender)
+        {
+            currentTarget = sender.ToString();
+            WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
+            PartialReplaceEnabled.Value = gameData.ProcessList.First((y) => y.Name == currentTarget).PartialReplaceEnabled;
+            SaveSettings(false);
         }
 
         private void SettingsLoad()
@@ -198,7 +249,7 @@ namespace CardOrganizerWPF
                 WindowState = WindowState.Maximized;
         }
 
-        private void SettingsSave()
+        private void SaveSettings(bool saveFile)
         {
             var data = Settings.data;
 
@@ -219,14 +270,27 @@ namespace CardOrganizerWPF
                 data.Window.Width = Width;
                 data.Window.Maximized = false;
             }
-            
+
             gameData.Tab = tabControlMain.SelectedIndex;
-            TabScene.SaveData();
-            TabChara1.SaveData();
-            TabChara2.SaveData();
-            TabOutfit1.SaveData();
-            TabOutfit2.SaveData();
-            Settings.Save();
+            gameData.SavedProcess = ProcessList.IndexOf(currentTarget);
+
+            TabScene.SaveSettingsData();
+            TabChara1.SaveSettingsData();
+            TabChara2.SaveSettingsData();
+            TabOutfit1.SaveSettingsData();
+            TabOutfit2.SaveSettingsData();
+
+            if(saveFile)
+                Settings.Save();
+        }
+
+        private void SaveCardData()
+        {
+            TabScene.SaveCardData();
+            TabChara1.SaveCardData();
+            TabChara2.SaveCardData();
+            TabOutfit1.SaveCardData();
+            TabOutfit2.SaveCardData();
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
