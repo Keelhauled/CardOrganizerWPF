@@ -44,6 +44,21 @@
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
         <DockPanel>
             <Menu DockPanel.Dock="Top" Background="WhiteSmoke" BorderBrush="Black" BorderThickness="0,0,0,0">
+                
+                <MenuItem Header="Profile" ItemsSource="{Binding ProfileList}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem x:Name="profileListMenuItem" Header="{Binding}" controls:MenuItemExtensions.GroupName="Group1" IsCheckable="True"
+                                      Command="{Binding DataContext.SetProfile, ElementName=MainWin}" CommandParameter="{Binding}"/>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                    <Setter TargetName="profileListMenuItem" Property="IsChecked" Value="True" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
+                </MenuItem>
+                
                 <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
@@ -57,7 +72,9 @@
                         </DataTemplate>
                     </MenuItem.ItemTemplate>
                 </MenuItem>
+                
                 <MenuItem Header="Save" Click="Button_Click_Save"/>
+                
                 <MenuItem Header="Settings">
                     <MenuItem Header="Thumbnail size">
                         <MenuItem>
@@ -74,6 +91,7 @@
                         </MenuItem>
                     </MenuItem>
                 </MenuItem>
+                
             </Menu>
 
             <TabControl DockPanel.Dock="Bottom" x:Name="tabControlMain" SelectedIndex="{Binding SavedTab.Value}" Padding="0,4,0,0" SelectionChanged="TabControlMain_SelectionChanged">

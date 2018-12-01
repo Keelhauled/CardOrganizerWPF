@@ -39,6 +39,7 @@ namespace CardOrganizerWPF
         public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg, double width, double height)
         {
             uiContext = SynchronizationContext.Current;
+            watcher = new FileSystemWatcher();
             Categories = new ObservableSortedDictionary<string, Category>();
             SavedCategory.Value = -1;
             Enabled.Value = Visibility.Collapsed;
@@ -54,12 +55,22 @@ namespace CardOrganizerWPF
 
         public void SetGame(Settings.GameData gameData, Settings.Category catData)
         {
+            if(initialized)
+            {
+                initialized = false;
+                ScrollViewer = null;
+                watcher.EnableRaisingEvents = false;
+                watcher.Created -= FileCreated;
+                Categories.Clear();
+            }
+
             if(string.IsNullOrWhiteSpace(catData.Header))
             {
                 Header.Value = "Disabled";
+                Enabled.Value = Visibility.Collapsed;
                 return;
             }
-
+            
             this.catData = catData;
             Enabled.Value = Visibility.Visible;
             Header.Value = catData.Header;
@@ -70,9 +81,10 @@ namespace CardOrganizerWPF
             GetCategoriesFromData(() =>
             {
                 initialized = true;
+                ProgressVal.Value = 0;
                 SavedCategory.Value = catData.Save != -1 ? catData.Save : 0;
-
-                watcher = new FileSystemWatcher(folderPath);
+                
+                watcher.Path = folderPath;
                 watcher.Created += FileCreated;
                 watcher.EnableRaisingEvents = true;
             });
@@ -126,7 +138,7 @@ namespace CardOrganizerWPF
                 var sorted = files.Select(x => new KeyValuePair<string, DateTime>(x, File.GetLastWriteTime(x))).ToList();
                 sorted.Sort((KeyValuePair<string, DateTime> a, KeyValuePair<string, DateTime> b) => b.Value.CompareTo(a.Value));
 
-                uiContext.Post((x) => ProgressMax.Value = files.Length, null);
+                if(files.Length > 0) uiContext.Post((x) => ProgressMax.Value = files.Length, null);
 
                 var newCategories = new Dictionary<string, Category>();
                 var undefined = new Category(Category.DEFAULT_CATEGORY_NAME);
@@ -176,8 +188,7 @@ namespace CardOrganizerWPF
                     {
                         Categories.Add(cat.Key, cat.Value);
                     }
-
-                    ProgressVal.Value = 0;
+                        
                     callback();
                 }, null);
             });
@@ -228,15 +239,24 @@ namespace CardOrganizerWPF
             {
                 if(_scrollViewer != null) return _scrollViewer;
 
-                DataTemplate template = tabControl.ContentTemplate;
-                if(template.IsSealed)
+                try
                 {
-                    ContentPresenter cp = tabControl.Template.FindName("PART_SelectedContentHost", tabControl) as ContentPresenter;
-                    return _scrollViewer = template.FindName("scrollViewer", cp) as ExtScrollViewer;
+                    DataTemplate template = tabControl.ContentTemplate;
+                    if(template.IsSealed)
+                    {
+                        ContentPresenter cp = tabControl.Template.FindName("PART_SelectedContentHost", tabControl) as ContentPresenter;
+                        return _scrollViewer = template.FindName("scrollViewer", cp) as ExtScrollViewer;
+                    }
+                }
+                catch(InvalidOperationException)
+                {
+                    Console.WriteLine("Can't find scrollViewer");
                 }
 
                 return null;
             }
+
+            set { _scrollViewer = null; }
         }
 
         public void SaveScrollPosition()

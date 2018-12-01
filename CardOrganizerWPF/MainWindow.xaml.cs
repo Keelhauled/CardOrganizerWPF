@@ -20,12 +20,16 @@ namespace CardOrganizerWPF
         #region Initialization
         public Prop<string> WindowTitle { get; set; } = new Prop<string>();
         public Prop<int> SavedTab { get; set; } = new Prop<int>();
+        public Prop<Visibility> PartialReplaceEnabled { get; set; } = new Prop<Visibility>();
+        public Prop<double> ImageMultiplier { get; set; } = new Prop<double>(1);
+
+        public ObservableCollection<string> ProfileList { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> ProcessList { get; set; } = new ObservableCollection<string>();
+
         public ICommand ScrollToTop { get; set; }
         public ICommand ScrollToBottom { get; set; }
         public ICommand SetTarget { get; set; }
-        public ObservableCollection<string> ProcessList { get; set; } = new ObservableCollection<string>();
-        public Prop<Visibility> PartialReplaceEnabled { get; set; } = new Prop<Visibility>();
-        public Prop<double> ImageMultiplier { get; set; } = new Prop<double>(1);
+        public ICommand SetProfile { get; set; }
 
         public CardTypeTab TabScene { get; set; }
         public CardTypeTab TabChara1 { get; set; }
@@ -62,6 +66,7 @@ namespace CardOrganizerWPF
         private int serverPort = 9125;
         private string defaultTitle = "CardOrganizer";
         private string currentTarget = "";
+        private string currentProfile = "";
         private string markedTab = "";
         private SynchronizationContext uiContext;
         private Settings.GameData gameData;
@@ -86,6 +91,31 @@ namespace CardOrganizerWPF
                 PartialReplaceEnabled.Value = gameData.ProcessList.First((y) => y.Name == currentTarget).PartialReplaceEnabled;
             });
 
+            Settings.data.Games.Keys.ToList().ForEach((x) => ProfileList.Add(x));
+            gameData = Settings.data.Games.First().Value;
+
+            SetProfile = new DelegateCommand((x) =>
+            {
+                currentProfile = x.ToString();
+                Console.WriteLine(currentProfile);
+
+                gameData = Settings.data.Games[currentProfile];
+
+                gameData.ProcessList.ForEach((y) => ProcessList.Add(y.Name));
+                currentTarget = gameData.ProcessList.First().Name;
+                WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
+                PartialReplaceEnabled.Value = gameData.ProcessList.First().PartialReplaceEnabled;
+
+                TabScene.SetGame(gameData, gameData.Category.Scene);
+                TabChara1.SetGame(gameData, gameData.Category.Chara1);
+                TabChara2.SetGame(gameData, gameData.Category.Chara2);
+                TabOutfit1.SetGame(gameData, gameData.Category.Outfit1);
+                TabOutfit2.SetGame(gameData, gameData.Category.Outfit2);
+
+                ImageMultiplier.Value = SelectedTab.ImageMultiplier;
+                SavedTab.Value = gameData.Tab != -1 ? gameData.Tab : 0;
+            });
+
             TabScene = new CardTypeTab(tabControlScene, MsgObject.Action.SceneSave, sceneWidth, sceneHeight);
             TabChara1 = new CardTypeTab(tabControlChara1, MsgObject.Action.CharaSave, cardWidth, cardHeight);
             TabChara2 = new CardTypeTab(tabControlChara2, MsgObject.Action.CharaSave, cardWidth, cardHeight);
@@ -103,20 +133,19 @@ namespace CardOrganizerWPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if(gameData == null)
-            {
-                var list = new SelectList("Choose a profile", Settings.data.Games.Keys.ToList(), Settings.data.LastProfile);
-                list.Top = Top + (Height / 2) - (list.Height / 2);
-                list.Left = Left + (Width / 2) - (list.Width / 2);
+            //if(gameData == null)
+            //{
+            //    var list = new SelectList("Choose a profile", Settings.data.Games.Keys.ToList(), Settings.data.LastProfile);
+            //    list.Top = Top + (Height / 2) - (list.Height / 2);
+            //    list.Left = Left + (Width / 2) - (list.Width / 2);
 
-                if(list.ShowDialog() == true)
-                {
-                    gameData = Settings.data.Games[list.Selected];
-                    Settings.data.LastProfile = list.Selected;
-                    Settings.Save();
-                }
-
-            }
+            //    if(list.ShowDialog() == true)
+            //    {
+            //        gameData = Settings.data.Games[list.Selected];
+            //        Settings.data.LastProfile = list.Selected;
+            //        Settings.Save();
+            //    }
+            //}
 
             if(gameData != null)
             {
