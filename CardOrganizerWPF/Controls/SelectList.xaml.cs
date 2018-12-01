@@ -14,7 +14,7 @@ namespace CardOrganizerWPF.Controls
 
         public string Selected => listBox.SelectedValue.ToString();
 
-        public SelectList(string titleText, List<string> itemList, string selected = "")
+        public SelectList(string titleText, IEnumerable<string> itemList)
         {
             InitializeComponent();
             DataContext = this;
@@ -23,19 +23,7 @@ namespace CardOrganizerWPF.Controls
             EscKeyCommand = new DelegateCommand((x) => DialogResult = false);
 
             TitleText = titleText;
-            ItemList = itemList;
-
-            if(!string.IsNullOrWhiteSpace(selected))
-            {
-                Loaded += (sender, args) =>
-                {
-                    for(int i = 0; i < listBox.Items.Count; i++)
-                    {
-                        if(listBox.Items[i] is string name && name == selected)
-                            listBox.SelectedIndex = i;
-                    }
-                }; 
-            }
+            ItemList = new List<string>(itemList);
         }
 
         private void CheckResult()

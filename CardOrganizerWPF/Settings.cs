@@ -86,6 +86,7 @@ namespace CardOrganizerWPF
             public int Tab;
             public CategoryData Category;
             public List<ProcessData> ProcessList;
+            public int SavedProcess;
         }
 
         public class ProcessData

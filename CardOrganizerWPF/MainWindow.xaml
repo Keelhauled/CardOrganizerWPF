@@ -48,13 +48,7 @@
                 <MenuItem Header="Profile" ItemsSource="{Binding ProfileList}">
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
-                            <MenuItem x:Name="profileListMenuItem" Header="{Binding}" controls:MenuItemExtensions.GroupName="Group1" IsCheckable="True"
-                                      Command="{Binding DataContext.SetProfile, ElementName=MainWin}" CommandParameter="{Binding}"/>
-                            <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                    <Setter TargetName="profileListMenuItem" Property="IsChecked" Value="True" />
-                                </DataTrigger>
-                            </DataTemplate.Triggers>
+                            <MenuItem Header="{Binding}" Command="{Binding DataContext.ProfileSwitched, ElementName=MainWin}" CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </MenuItem.ItemTemplate>
                 </MenuItem>
@@ -62,13 +56,7 @@
                 <MenuItem Header="Target" ItemsSource="{Binding ProcessList}">
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
-                            <MenuItem x:Name="processListMenuItem" Header="{Binding}" controls:MenuItemExtensions.GroupName="Group1" IsCheckable="True"
-                                      Command="{Binding DataContext.SetTarget, ElementName=MainWin}" CommandParameter="{Binding}"/>
-                            <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                    <Setter TargetName="processListMenuItem" Property="IsChecked" Value="True" />
-                                </DataTrigger>
-                            </DataTemplate.Triggers>
+                            <MenuItem Header="{Binding}" Command="{Binding DataContext.TargetSwitched, ElementName=MainWin}" CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </MenuItem.ItemTemplate>
                 </MenuItem>

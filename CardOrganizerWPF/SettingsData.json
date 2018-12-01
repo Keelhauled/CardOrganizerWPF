@@ -1,5 +1,5 @@
 ﻿{
-	"Version": "5",
+	"Version": "1",
 	"LastProfile": "",
 	"ScrollSpeed": "128",
 
@@ -32,7 +32,8 @@
 			[
 				{ "Name": "StudioNeo64.exe", "PartialReplaceEnabled": "Collapsed" },
 				{ "Name": "HoneySelect64.exe", "PartialReplaceEnabled": "Collapsed" }
-			]
+			],
+			"SavedProcess": "0"
 		},
 
 		"Koikatu":
@@ -53,7 +54,8 @@
 			[
 				{ "Name": "CharaStudio.exe", "PartialReplaceEnabled": "Collapsed" },
 				{ "Name": "Koikatu.exe", "PartialReplaceEnabled": "Visible" }
-			]
+			],
+			"SavedProcess": "0"
 		}
 	}
 }

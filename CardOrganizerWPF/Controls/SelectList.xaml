@@ -24,13 +24,11 @@
                 </ListBox.InputBindings>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <ListBoxItem>
-                            <TextBlock Text="{Binding}">
-                                <TextBlock.InputBindings>
-                                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EnterKeyCommand, ElementName=listBox}"/>
-                                </TextBlock.InputBindings>
-                            </TextBlock>
-                        </ListBoxItem>
+                        <TextBlock Text="{Binding}">
+                            <TextBlock.InputBindings>
+                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EnterKeyCommand, ElementName=listBox}"/>
+                            </TextBlock.InputBindings>
+                        </TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
