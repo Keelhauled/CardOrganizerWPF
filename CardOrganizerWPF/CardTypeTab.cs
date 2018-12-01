@@ -244,14 +244,25 @@ namespace CardOrganizerWPF
             if(ScrollViewer != null)
             {
                 var selectedCategory = GetSelectedCategory();
-                selectedCategory.SavedScrollPosition = ScrollViewer.VerticalOffset;
-                Console.WriteLine($"Scroll position saved: {selectedCategory.Title} = {ScrollViewer.VerticalOffset}");
+                if(selectedCategory != null)
+                {
+                    selectedCategory.SavedScrollPosition = ScrollViewer.VerticalOffset;
+                    Console.WriteLine($"Scroll position saved: {selectedCategory.Title} = {ScrollViewer.VerticalOffset}"); 
+                }
             }
         }
 
         public void ScrollToSavePosition()
         {
-            ScrollViewer?.ScrollToVerticalOffset(GetSelectedCategory().SavedScrollPosition);
+            if(ScrollViewer != null)
+            {
+                var selectedCategory = GetSelectedCategory();
+                if(selectedCategory != null)
+                {
+                    ScrollViewer.ScrollToVerticalOffset(selectedCategory.SavedScrollPosition);
+                    Console.WriteLine($"Scroll position loaded: {selectedCategory.Title} = {selectedCategory.SavedScrollPosition}");
+                }
+            }
         }
 
         public void ScrollToBottom()
