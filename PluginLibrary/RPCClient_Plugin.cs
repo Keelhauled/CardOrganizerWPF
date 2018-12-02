@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using MessagePack;
 
@@ -9,20 +7,33 @@ namespace PluginLibrary
     static class RPCClient_Plugin
     {
         private static IMessenger remoteObject;
-        private static Action<MsgObject> messageAction;
+        private static Action<MsgObject, string> messageAction;
         private static string serverName;
         private static int serverPort;
         private static volatile bool threadRunning = false;
-        private static string process;
+        private static string mainId;
+        private static string subId;
+        private static string id = "";
+        private static object lockObj;
 
-        public static void Init(string name, int port, Action<MsgObject> action)
+        public static void Init(string name, int port, string mainid, Action<MsgObject, string> action)
         {
+            lockObj = new object();
             messageAction = action;
             serverName = name;
             serverPort = port;
-            process = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
+            mainId = mainid;
 
             StartServer();
+        }
+
+        public static void ChangeId(string newId)
+        {
+            lock(lockObj)
+            {
+                subId = newId;
+                id = $"{mainId}_{subId}"; 
+            }
         }
 
         public static void StartServer()
@@ -33,7 +44,7 @@ namespace PluginLibrary
             }
             else
             {
-                Console.WriteLine("[CardOrganizer] Server already running");
+                Console.WriteLine("[CardOrganizer] Client already running");
             }
         }
 
@@ -56,7 +67,7 @@ namespace PluginLibrary
                 remoteObject = (IMessenger)Activator.GetObject(requiredType, url);
 
                 threadRunning = true;
-                remoteObject.ClearMessage(process);
+                lock(lockObj) remoteObject.ClearMessage(id);
                 Console.WriteLine("[CardOrganizer] Starting client");
             }
             catch(Exception)
@@ -68,12 +79,15 @@ namespace PluginLibrary
             {
                 try
                 {
-                    var msg = remoteObject.GetMessage(process);
-                    if(msg != null)
+                    lock(lockObj)
                     {
-                        var message = MessagePackSerializer.Deserialize<MsgObject>(msg);
-                        message.Print();
-                        messageAction(message);
+                        var msg = remoteObject.GetMessage(id);
+                        if(msg != null)
+                        {
+                            var message = MessagePackSerializer.Deserialize<MsgObject>(msg);
+                            message.Print();
+                            messageAction(message, subId);
+                        }
                     }
 
                     Thread.Sleep(100);

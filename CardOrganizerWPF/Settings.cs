@@ -85,11 +85,11 @@ namespace CardOrganizerWPF
             public string Path;
             public int Tab;
             public CategoryData Category;
-            public List<ProcessData> ProcessList;
-            public int SavedProcess;
+            public List<SceneData> SceneList;
+            public int SavedScene;
         }
 
-        public class ProcessData
+        public class SceneData
         {
             public string Name;
             public Visibility PartialReplaceEnabled;

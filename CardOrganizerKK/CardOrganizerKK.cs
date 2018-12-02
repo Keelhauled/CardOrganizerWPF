@@ -1,8 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using BepInEx;
 using PluginLibrary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CardOrganizerKK
 {
@@ -40,46 +41,54 @@ namespace CardOrganizerKK
 
         void Awake()
         {
+            SceneManager.sceneLoaded += SceneLoaded;
             if(DisableLists.Value) DisableCharaList.Patch();
 
             var gameobject = new GameObject(nameof(CardOrganizerKK));
             gameobject.transform.SetParent(gameObject.transform);
-            var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
-            var studio = gameobject.AddComponent<Methods_CharaStudio>();
-            var freeh = gameobject.AddComponent<Methods_FreeHSelect>();
-            var maker = gameobject.AddComponent<Methods_Maker>();
-            var hscene = gameobject.AddComponent<Methods_HScene>();
 
-            Action<MsgObject> action = (message) =>
+            var scenes = new Dictionary<string, CardHandler>
             {
-                dispatcher.Enqueue(() =>
-                {
-                    if(FindObjectOfType<StudioScene>())
-                    {
-                        studio.UseCard(message);
-                    }
-                    else if(FindObjectOfType<FreeHScene>() && !FindObjectOfType<FreeHCharaSelect>())
-                    {
-                        freeh.UseCard(message);
-                    }
-                    else if(FindObjectOfType<CustomScene>())
-                    {
-                        maker.UseCard(message);
-                    }
-                    else if(FindObjectOfType<HSceneProc>())
-                    {
-                        hscene.UseCard(message);
-                    }
-                });
+                { "Maker", gameobject.AddComponent<Methods_Maker>() },
+                { "Studio", gameobject.AddComponent<Methods_CharaStudio>() },
+                { "FreeH", gameobject.AddComponent<Methods_HScene>() },
+                { "FreeHSelect", gameobject.AddComponent<Methods_FreeHSelect>() }
             };
 
-            RPCClient_Plugin.Init("CardOrganizerServer.KK", 9125, action);
+            RPCClient_Plugin.Init("CardOrganizerServer", 9125, "KK", (message, id) => {
+                gameobject.AddComponent<UnityMainThreadDispatcher>().Enqueue(() => scenes[id].UseCard(message));
+            });
         }
 
         void OnDestroy()
         {
             RPCClient_Plugin.StopServer();
             DisableCharaList.RemovePatches();
+            SceneManager.sceneLoaded -= SceneLoaded;
+        }
+
+        void SceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if(FindObjectOfType<StudioScene>())
+            {
+                RPCClient_Plugin.ChangeId("Studio");
+            }
+            else if(FindObjectOfType<FreeHScene>() && !FindObjectOfType<FreeHCharaSelect>())
+            {
+                RPCClient_Plugin.ChangeId("FreeHSelect");
+            }
+            else if(FindObjectOfType<CustomScene>())
+            {
+                RPCClient_Plugin.ChangeId("Maker");
+            }
+            else if(FindObjectOfType<HSceneProc>())
+            {
+                RPCClient_Plugin.ChangeId("FreeH");
+            }
+            else
+            {
+                RPCClient_Plugin.ChangeId("");
+            }
         }
     }
 }

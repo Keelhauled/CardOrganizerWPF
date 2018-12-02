@@ -28,12 +28,13 @@
 				"Outfit1": {"Header": "Outfit (F)", "Path": "coordinate\\female", "Save": "0", "ImageMult": "1"},
 				"Outfit2": {"Header": "Outfit (M)", "Path": "coordinate\\male", "Save": "0", "ImageMult": "1"}
 			},
-			"ProcessList":
+			"SceneList":
 			[
-				{ "Name": "StudioNeo64.exe", "PartialReplaceEnabled": "Collapsed" },
-				{ "Name": "HoneySelect64.exe", "PartialReplaceEnabled": "Collapsed" }
+				{ "Name": "StudioNeo", "PartialReplaceEnabled": "Collapsed" },
+				{ "Name": "Maker", "PartialReplaceEnabled": "Collapsed" },
+				{ "Name": "HScene", "PartialReplaceEnabled": "Collapsed" }
 			],
-			"SavedProcess": "0"
+			"SavedScene": "0"
 		},
 
 		"Koikatu":
@@ -50,12 +51,14 @@
 				"Outfit1": {"Header": "Outfit", "Path": "coordinate", "Save": "0", "ImageMult": "1"},
 				"Outfit2": {"Header": "", "Path": "", "Save": "0", "ImageMult": "1"}
 			},
-			"ProcessList":
+			"SceneList":
 			[
-				{ "Name": "CharaStudio.exe", "PartialReplaceEnabled": "Collapsed" },
-				{ "Name": "Koikatu.exe", "PartialReplaceEnabled": "Visible" }
+				{ "Name": "Studio", "PartialReplaceEnabled": "Collapsed" },
+				{ "Name": "Maker", "PartialReplaceEnabled": "Visible" },
+				{ "Name": "FreeHSelect", "PartialReplaceEnabled": "Collapsed" },
+				{ "Name": "FreeH", "PartialReplaceEnabled": "Collapsed" },
 			],
-			"SavedProcess": "0"
+			"SavedScene": "0"
 		}
 	}
 }

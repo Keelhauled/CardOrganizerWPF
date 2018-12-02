@@ -58,6 +58,11 @@ namespace CardOrganizerWPF
             }
         }
 
+        private string Id
+        {
+            get { return $"{gameData.Server}_{currentTarget}"; }
+        }
+
         private double sceneWidth = 320;
         private double sceneHeight = 180;
         private double cardWidth = 252 * 0.9;
@@ -149,12 +154,11 @@ namespace CardOrganizerWPF
 
                 if(!string.IsNullOrWhiteSpace(gameData.Path)) // check if paths in category exist here
                 {
-                    string name = $"{serverName}.{gameData.Server}";
-                    RPCServer.Start(name, serverPort);
-                    RPCClient_UI.Start(name, serverPort);
+                    RPCServer.Start(serverName, serverPort);
+                    RPCClient_UI.Start(serverName, serverPort);
 
-                    gameData.ProcessList.ForEach((x) => ProcessList.Add(x.Name));
-                    var process = gameData.ProcessList[gameData.SavedProcess];
+                    gameData.SceneList.ForEach((x) => ProcessList.Add(x.Name));
+                    var process = gameData.SceneList[gameData.SavedScene];
                     currentTarget = process.Name;
                     WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
                     PartialReplaceEnabled.Value = process.PartialReplaceEnabled;
@@ -212,8 +216,8 @@ namespace CardOrganizerWPF
                     gameData = newGameData;
 
                     ProcessList.Clear();
-                    gameData.ProcessList.ForEach((y) => ProcessList.Add(y.Name));
-                    var process = gameData.ProcessList[gameData.SavedProcess];
+                    gameData.SceneList.ForEach((y) => ProcessList.Add(y.Name));
+                    var process = gameData.SceneList[gameData.SavedScene];
                     currentTarget = process.Name;
                     WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
                     PartialReplaceEnabled.Value = process.PartialReplaceEnabled;
@@ -234,7 +238,7 @@ namespace CardOrganizerWPF
         {
             currentTarget = sender.ToString();
             WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
-            PartialReplaceEnabled.Value = gameData.ProcessList.First((y) => y.Name == currentTarget).PartialReplaceEnabled;
+            PartialReplaceEnabled.Value = gameData.SceneList.First((x) => x.Name == currentTarget).PartialReplaceEnabled;
             SaveSettings(false);
         }
 
@@ -272,7 +276,7 @@ namespace CardOrganizerWPF
             }
 
             gameData.Tab = tabControlMain.SelectedIndex;
-            gameData.SavedProcess = ProcessList.IndexOf(currentTarget);
+            gameData.SavedScene = ProcessList.IndexOf(currentTarget);
 
             TabScene.SaveSettingsData();
             TabChara1.SaveSettingsData();
@@ -313,7 +317,7 @@ namespace CardOrganizerWPF
         #region Card Methods
         private void Button_Click_Save(object sender, RoutedEventArgs e)
         {
-            SelectedTab.SaveCard(currentTarget);
+            SelectedTab.SaveCard(Id);
         }
 
         private void Scenes_MenuItem_Click_Load(object sender, RoutedEventArgs e)
@@ -384,7 +388,7 @@ namespace CardOrganizerWPF
         private void UseCard(RoutedEventArgs e, MsgObject.Action action)
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
-            RPCClient_UI.SendMessage(MsgObject.Create(action, currentTarget, thumb.Path));
+            RPCClient_UI.SendMessage(MsgObject.Create(action, Id, thumb.Path));
         }
 
         private void MenuItem_Click_Delete(object sender, RoutedEventArgs e)

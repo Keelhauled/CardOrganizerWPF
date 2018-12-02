@@ -242,9 +242,9 @@ namespace CardOrganizerWPF
             }
         }
 
-        public void SaveCard(string process)
+        public void SaveCard(string id)
         {
-            RPCClient_UI.SendMessage(MsgObject.Create(saveMsg, process, folderPath));
+            RPCClient_UI.SendMessage(MsgObject.Create(saveMsg, id, folderPath));
         }
 
         public void SetImageSize(double multiplier)
