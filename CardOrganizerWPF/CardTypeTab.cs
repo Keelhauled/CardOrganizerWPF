@@ -22,7 +22,6 @@ namespace CardOrganizerWPF
         public Prop<double> ProgressMax { get; set; } = new Prop<double>(1);
         public Prop<double> ProgressVal { get; set; } = new Prop<double>(0);
 
-        private double _imageWidth, _imageHeight;
         public Prop<double> ImageWidth { get; set; } = new Prop<double>();
         public Prop<double> ImageHeight { get; set; } = new Prop<double>();
         public double ImageMultiplier { get; set; }
@@ -37,7 +36,7 @@ namespace CardOrganizerWPF
         private bool initialized = false;
         private volatile bool stopThread = false;
 
-        public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg, double width, double height)
+        public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg)
         {
             uiContext = SynchronizationContext.Current;
             watcher = new FileSystemWatcher();
@@ -45,11 +44,6 @@ namespace CardOrganizerWPF
             Enabled.Value = Visibility.Collapsed;
             this.tabControl = tabControl;
             this.saveMsg = saveMsg;
-
-            _imageWidth = width;
-            _imageHeight = height;
-            ImageWidth.Value = _imageWidth * ImageMultiplier;
-            ImageHeight.Value = _imageHeight * ImageMultiplier;
         }
 
         public void SetGame(Settings.GameData gameData, Settings.Category catData)
@@ -82,7 +76,7 @@ namespace CardOrganizerWPF
             {
                 initialized = true;
                 ProgressVal.Value = 0;
-                SavedCategory.Value = catData.Save != -1 ? catData.Save : 0;
+                SavedCategory.Value = catData.SavedCat != -1 ? catData.SavedCat : 0;
                 
                 watcher.Path = folderPath;
                 watcher.Created += FileCreated;
@@ -237,7 +231,7 @@ namespace CardOrganizerWPF
 
                 if(initialized)
                 {
-                    catData.Save = tabControl.SelectedIndex;
+                    catData.SavedCat = tabControl.SelectedIndex;
                 }
             }
         }
@@ -250,8 +244,8 @@ namespace CardOrganizerWPF
         public void SetImageSize(double multiplier)
         {
             ImageMultiplier = multiplier;
-            ImageWidth.Value = _imageWidth * multiplier;
-            ImageHeight.Value = _imageHeight * multiplier;
+            ImageWidth.Value = catData.ImageWidth * multiplier;
+            ImageHeight.Value = catData.ImageHeight * multiplier;
         }
 
         #region Scrolling Methods

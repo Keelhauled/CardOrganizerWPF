@@ -62,12 +62,7 @@ namespace CardOrganizerWPF
         {
             get { return $"{gameData.Server}_{currentTarget}"; }
         }
-
-        private double sceneWidth = 320;
-        private double sceneHeight = 180;
-        private double cardWidth = 252 * 0.9;
-        private double cardHeight = 352 * 0.9;
-
+        
         private string serverName = "CardOrganizerServer";
         private int serverPort = 9125;
         private string defaultTitle = "CardOrganizer";
@@ -95,11 +90,11 @@ namespace CardOrganizerWPF
             ProfileList = new ObservableCollection<string>(Settings.data.Games.Keys);
             ProfileSwitched = new DelegateCommand(ProfileSwitch);
 
-            TabScene = new CardTypeTab(tabControlScene, MsgObject.Action.SceneSave, sceneWidth, sceneHeight);
-            TabChara1 = new CardTypeTab(tabControlChara1, MsgObject.Action.CharaSave, cardWidth, cardHeight);
-            TabChara2 = new CardTypeTab(tabControlChara2, MsgObject.Action.CharaSave, cardWidth, cardHeight);
-            TabOutfit1 = new CardTypeTab(tabControlOutfit1, MsgObject.Action.OutfitSave, cardWidth, cardHeight);
-            TabOutfit2 = new CardTypeTab(tabControlOutfit2, MsgObject.Action.OutfitSave, cardWidth, cardHeight);
+            TabScene = new CardTypeTab(tabControlScene, MsgObject.Action.SceneSave);
+            TabChara1 = new CardTypeTab(tabControlChara1, MsgObject.Action.CharaSave);
+            TabChara2 = new CardTypeTab(tabControlChara2, MsgObject.Action.CharaSave);
+            TabOutfit1 = new CardTypeTab(tabControlOutfit1, MsgObject.Action.OutfitSave);
+            TabOutfit2 = new CardTypeTab(tabControlOutfit2, MsgObject.Action.OutfitSave);
 
             var args = Environment.GetCommandLineArgs();
             if(args.Length > 1)

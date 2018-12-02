@@ -22,11 +22,11 @@
 			"Tab": "0",
 			"Category":
 			{
-				"Scene": {"Header": "Scene", "Path": "studioneo\\scene", "Save": "0", "ImageMult": "1"},
-				"Chara1": {"Header": "Female", "Path": "chara\\female", "Save": "0", "ImageMult": "1"},
-				"Chara2": {"Header": "Male", "Path": "chara\\male", "Save": "0", "ImageMult": "1"},
-				"Outfit1": {"Header": "Outfit (F)", "Path": "coordinate\\female", "Save": "0", "ImageMult": "1"},
-				"Outfit2": {"Header": "Outfit (M)", "Path": "coordinate\\male", "Save": "0", "ImageMult": "1"}
+				"Scene": {"Header": "Scene", "Path": "studioneo\\scene", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "320", "ImageHeight": "180"},
+				"Chara1": {"Header": "Female", "Path": "chara\\female", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Chara2": {"Header": "Male", "Path": "chara\\male", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Outfit1": {"Header": "Outfit (F)", "Path": "coordinate\\female", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Outfit2": {"Header": "Outfit (M)", "Path": "coordinate\\male", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"}
 			},
 			"SceneList":
 			[
@@ -45,11 +45,11 @@
 			"Tab": "0",
 			"Category":
 			{
-				"Scene": {"Header": "Scene", "Path": "studio\\scene", "Save": "0", "ImageMult": "1"},
-				"Chara1": {"Header": "Female", "Path": "chara\\female", "Save": "0", "ImageMult": "1"},
-				"Chara2": {"Header": "Male", "Path": "chara\\male", "Save": "0", "ImageMult": "1"},
-				"Outfit1": {"Header": "Outfit", "Path": "coordinate", "Save": "0", "ImageMult": "1"},
-				"Outfit2": {"Header": "", "Path": "", "Save": "0", "ImageMult": "1"}
+				"Scene": {"Header": "Scene", "Path": "studio\\scene", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "320", "ImageHeight": "180"},
+				"Chara1": {"Header": "Female", "Path": "chara\\female", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Chara2": {"Header": "Male", "Path": "chara\\male", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Outfit1": {"Header": "Outfit", "Path": "coordinate", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Outfit2": {"Header": "", "Path": "", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "0", "ImageHeight": "0"}
 			},
 			"SceneList":
 			[

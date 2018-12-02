@@ -117,8 +117,10 @@ namespace CardOrganizerWPF
         {
             public string Header;
             public string Path;
-            public int Save;
+            public int SavedCat;
             public double ImageMult;
+            public double ImageWidth;
+            public double ImageHeight;
         }
     }
 }
