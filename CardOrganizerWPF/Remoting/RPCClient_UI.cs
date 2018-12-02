@@ -17,7 +17,7 @@ namespace CardOrganizerWPF.Remoting
         public static void SendMessage(MsgObject message)
         {
             var bytes = MessagePackSerializer.Serialize(message);
-            remoteObject.SendMessage(message.process, bytes);
+            remoteObject.SendMessage(message.id, bytes);
         }
     }
 }

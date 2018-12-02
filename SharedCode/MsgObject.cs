@@ -6,18 +6,18 @@ public class MsgObject
 {
     public Action action;
     public string path;
-    public string process;
+    public string id;
 
-    public static MsgObject Create(Action action, string process, string path)
+    public static MsgObject Create(Action action, string id, string path)
     {
-        return new MsgObject{ action = action, process = process, path = path };
+        return new MsgObject{ action = action, id = id, path = path };
     }
 
     public void Print()
     {
         Console.WriteLine(new string('=', 40));
         Console.WriteLine($"Action: {action}");
-        Console.WriteLine($"Process: {process}");
+        Console.WriteLine($"ID: {id}");
         Console.WriteLine($"Path: {path}");
         Console.WriteLine(new string('=', 40));
     }

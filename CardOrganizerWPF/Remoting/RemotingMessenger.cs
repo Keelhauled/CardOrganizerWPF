@@ -13,28 +13,28 @@ namespace CardOrganizerWPF.Remoting
             messages = new Dictionary<string, Queue<byte[]>>();
         }
 
-        public void SendMessage(string process, byte[] message)
+        public void SendMessage(string id, byte[] message)
         {
             lock(lockObj)
             {
-                if(messages.TryGetValue(process, out Queue<byte[]> queue))
+                if(messages.TryGetValue(id, out Queue<byte[]> queue))
                 {
                     queue.Enqueue(message);
                 }
                 else
                 {
                     var newQueue = new Queue<byte[]>();
-                    messages.Add(process, newQueue);
+                    messages.Add(id, newQueue);
                     newQueue.Enqueue(message);
                 }
             }
         }
 
-        public byte[] GetMessage(string process)
+        public byte[] GetMessage(string id)
         {
             lock(lockObj)
             {
-                if(messages.TryGetValue(process, out Queue<byte[]> queue))
+                if(messages.TryGetValue(id, out Queue<byte[]> queue))
                 {
                     return queue.Count > 0 ? queue.Dequeue() : null;
                 }
@@ -43,11 +43,11 @@ namespace CardOrganizerWPF.Remoting
             return null;
         }
 
-        public void ClearMessage(string process)
+        public void ClearMessage(string id)
         {
             lock(lockObj)
             {
-                if(messages.TryGetValue(process, out Queue<byte[]> queue))
+                if(messages.TryGetValue(id, out Queue<byte[]> queue))
                 {
                     queue.Clear();
                 }
