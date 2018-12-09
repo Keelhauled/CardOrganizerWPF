@@ -30,9 +30,9 @@
 			},
 			"SceneList":
 			[
-				{ "Name": "StudioNeo", "PartialReplaceEnabled": "Collapsed" },
-				{ "Name": "Maker", "PartialReplaceEnabled": "Collapsed" },
-				{ "Name": "HScene", "PartialReplaceEnabled": "Collapsed" }
+				{ "Name": "StudioNeo", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" },
+				{ "Name": "Maker", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" },
+				{ "Name": "HScene", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" }
 			],
 			"SavedScene": "0"
 		},
@@ -53,10 +53,10 @@
 			},
 			"SceneList":
 			[
-				{ "Name": "Studio", "PartialReplaceEnabled": "Collapsed" },
-				{ "Name": "Maker", "PartialReplaceEnabled": "Visible" },
-				{ "Name": "FreeHSelect", "PartialReplaceEnabled": "Collapsed" },
-				{ "Name": "FreeH", "PartialReplaceEnabled": "Collapsed" },
+				{ "Name": "Studio", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" },
+				{ "Name": "Maker", "PartialReplaceEnabled": "Visible", "SpecialLoadEnabled": "Collapsed" },
+				{ "Name": "FreeHSelect", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Visible" },
+				{ "Name": "FreeH", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" },
 			],
 			"SavedScene": "0"
 		}
