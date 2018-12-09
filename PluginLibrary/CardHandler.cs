@@ -7,11 +7,6 @@ namespace PluginLibrary
 {
     public abstract class CardHandler : MonoBehaviour
     {
-        void Awake()
-        {
-            DontDestroyOnLoad(this);
-        }
-
         public string GetTimeNow()
         {
             return DateTime.Now.ToString("yyyy_MMdd_HHmm_ss_fff");
