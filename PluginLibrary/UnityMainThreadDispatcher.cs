@@ -25,11 +25,6 @@ public class UnityMainThreadDispatcher : MonoBehaviour
 {
     private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 
-    void Start()
-    {
-        DontDestroyOnLoad(this);
-    }
-
     public void Update()
     {
         lock(_executionQueue)
@@ -67,10 +62,5 @@ public class UnityMainThreadDispatcher : MonoBehaviour
     {
         a();
         yield return null;
-    }
-
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
     }
 }
