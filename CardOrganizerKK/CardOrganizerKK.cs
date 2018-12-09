@@ -46,6 +46,7 @@ namespace CardOrganizerKK
 
             var gameobject = new GameObject(nameof(CardOrganizerKK));
             gameobject.transform.SetParent(gameObject.transform);
+            var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
 
             var scenes = new Dictionary<string, CardHandler>
             {
@@ -56,7 +57,7 @@ namespace CardOrganizerKK
             };
 
             RPCClient_Plugin.Init("CardOrganizerServer", 9125, "KK", (message, id) => {
-                gameobject.AddComponent<UnityMainThreadDispatcher>().Enqueue(() => scenes[id].UseCard(message));
+                dispatcher.Enqueue(() => scenes[id].UseCard(message));
             });
         }
 
