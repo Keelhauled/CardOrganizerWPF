@@ -21,6 +21,13 @@ namespace CardOrganizerKK
             DelayAction(() => SetupCharacter(message.path, ResultType.Player));
         }
 
+        public override void Character_LoadSpecial(MsgObject message)
+        {
+            Log(LogLevel.Message, $"Load partner [{Path.GetFileName(message.path)}]");
+            PlayLoadSound();
+            DelayAction(() => SetupCharacter(message.path, ResultType.Partner));
+        }
+
         void SetupCharacter(string path, ResultType type)
         {
             var chaFileControl = new ChaFileControl();

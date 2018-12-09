@@ -22,6 +22,7 @@ namespace CardOrganizerWPF
         public Prop<string> WindowTitle { get; set; } = new Prop<string>();
         public Prop<int> SavedTab { get; set; } = new Prop<int>();
         public Prop<Visibility> PartialReplaceEnabled { get; set; } = new Prop<Visibility>();
+        public Prop<Visibility> SpecialLoadEnabled { get; set; } = new Prop<Visibility>();
         public Prop<double> ImageMultiplier { get; set; } = new Prop<double>(1);
 
         public ObservableCollection<string> ProfileList { get; set; }
@@ -153,10 +154,11 @@ namespace CardOrganizerWPF
                     RPCClient_UI.Start(serverName, serverPort);
 
                     gameData.SceneList.ForEach((x) => ProcessList.Add(x.Name));
-                    var process = gameData.SceneList[gameData.SavedScene];
-                    currentTarget = process.Name;
+                    var scene = gameData.SceneList[gameData.SavedScene];
+                    currentTarget = scene.Name;
                     WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
-                    PartialReplaceEnabled.Value = process.PartialReplaceEnabled;
+                    PartialReplaceEnabled.Value = scene.PartialReplaceEnabled;
+                    SpecialLoadEnabled.Value = scene.SpecialLoadEnabled;
 
                     TabScene.SetGame(gameData, gameData.Category.Scene);
                     TabChara1.SetGame(gameData, gameData.Category.Chara1);
@@ -212,10 +214,11 @@ namespace CardOrganizerWPF
 
                     ProcessList.Clear();
                     gameData.SceneList.ForEach((y) => ProcessList.Add(y.Name));
-                    var process = gameData.SceneList[gameData.SavedScene];
-                    currentTarget = process.Name;
+                    var scene = gameData.SceneList[gameData.SavedScene];
+                    currentTarget = scene.Name;
                     WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
-                    PartialReplaceEnabled.Value = process.PartialReplaceEnabled;
+                    PartialReplaceEnabled.Value = scene.PartialReplaceEnabled;
+                    SpecialLoadEnabled.Value = scene.SpecialLoadEnabled;
 
                     TabScene.SetGame(gameData, gameData.Category.Scene);
                     TabChara1.SetGame(gameData, gameData.Category.Chara1);
@@ -233,7 +236,9 @@ namespace CardOrganizerWPF
         {
             currentTarget = sender.ToString();
             WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
-            PartialReplaceEnabled.Value = gameData.SceneList.First((x) => x.Name == currentTarget).PartialReplaceEnabled;
+            var scene = gameData.SceneList.First((x) => x.Name == currentTarget);
+            PartialReplaceEnabled.Value = scene.PartialReplaceEnabled;
+            SpecialLoadEnabled.Value = scene.SpecialLoadEnabled;
             SaveSettings(false);
         }
 
@@ -338,6 +343,11 @@ namespace CardOrganizerWPF
         private void Characters_MenuItem_Click_LoadM(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaLoadMale);
+        }
+
+        private void Characters_MenuItem_Click_LoadSpecial(object sender, RoutedEventArgs e)
+        {
+            UseCard(e, MsgObject.Action.CharaLoadSpecial);
         }
 
         private void Characters_MenuItem_Click_Replace(object sender, RoutedEventArgs e)

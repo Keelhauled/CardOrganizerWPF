@@ -170,6 +170,7 @@
                                                         <Image.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
+                                                                <MenuItem Header="Load partner" Click="Characters_MenuItem_Click_LoadSpecial" Visibility="{Binding DataContext.SpecialLoadEnabled.Value, Source={x:Reference MainWin}}"/>
                                                                 <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
                                                                 <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
                                                                 <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>

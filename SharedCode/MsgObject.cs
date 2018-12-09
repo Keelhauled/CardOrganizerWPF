@@ -32,6 +32,7 @@ public class MsgObject
         CharaSave,
         CharaLoadFemale,
         CharaLoadMale,
+        CharaLoadSpecial,
         CharaReplaceAll,
         CharaReplaceFace,
         CharaReplaceBody,

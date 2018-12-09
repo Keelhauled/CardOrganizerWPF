@@ -93,6 +93,7 @@ namespace CardOrganizerWPF
         {
             public string Name;
             public Visibility PartialReplaceEnabled;
+            public Visibility SpecialLoadEnabled;
         }
 
         public class WindowData

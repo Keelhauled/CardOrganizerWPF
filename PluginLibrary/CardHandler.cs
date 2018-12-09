@@ -59,6 +59,10 @@ namespace PluginLibrary
                     Character_LoadMale(message);
                     break;
 
+                case MsgObject.Action.CharaLoadSpecial:
+                    Character_LoadSpecial(message);
+                    break;
+
                 case MsgObject.Action.CharaReplaceAll:
                     Character_ReplaceAll(message);
                     break;
@@ -119,11 +123,12 @@ namespace PluginLibrary
         public virtual void Character_Save(MsgObject message){}
         public virtual void Character_LoadFemale(MsgObject message){}
         public virtual void Character_LoadMale(MsgObject message){}
+        public virtual void Character_LoadSpecial(MsgObject message){}
         public virtual void Character_ReplaceAll(MsgObject message){}
         public virtual void Character_ReplaceFace(MsgObject message){}
         public virtual void Character_ReplaceBody(MsgObject message){}
         public virtual void Character_ReplaceHair(MsgObject message){}
-        public virtual void Character_ReplaceOutfit(MsgObject message){ }
+        public virtual void Character_ReplaceOutfit(MsgObject message){}
 
         public virtual void Outfit_Save(MsgObject message){}
         public virtual void Outfit_Load(MsgObject message){}
