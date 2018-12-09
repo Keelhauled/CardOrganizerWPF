@@ -9,90 +9,11 @@ using Harmony;
 using static BepInEx.Logger;
 using BepInEx.Logging;
 using MessagePack;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace CardOrganizerKK
 {
     class Methods_CharaStudio : Methods_Common
     {
-        static class LoadFilePatch
-        {
-            static HarmonyInstance harmony;
-            static MethodInfo transpiler;
-            static MethodInfo original;
-
-            public static bool doPatch = false;
-            static bool loadFace = true;
-            static bool loadBody = true;
-            static bool loadHair = true;
-            static bool parameter = true;
-            static bool loadCoord = true;
-
-            public static void SetParam(bool dopatch, bool loadface, bool loadbody, bool loadhair, bool param, bool loadcoord)
-            {
-                doPatch = dopatch;
-                loadFace = loadface;
-                loadBody = loadbody;
-                loadHair = loadhair;
-                parameter = param;
-                loadCoord = loadcoord;
-            }
-
-            public static void Patch()
-            {
-                harmony = HarmonyInstance.Create("keelhauled.cardorganizerkk.loadfilepatch.harmony");
-                original = AccessTools.Method(typeof(OCIChar), nameof(OCIChar.ChangeChara));
-                transpiler = AccessTools.Method(typeof(LoadFilePatch), nameof(PatchTranspiler));
-                harmony.Patch(original, null, null, new HarmonyMethod(transpiler));
-            }
-
-            public static void RemovePatch()
-            {
-                harmony.RemovePatch(original, transpiler);
-            }
-
-            public static IEnumerable<CodeInstruction> PatchTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-            {
-                var codes = new List<CodeInstruction>(instructions);
-
-                for(int i = 0; i < codes.Count; i++)
-                {
-                    if(codes[i].ToString() == "callvirt Boolean LoadCharaFile(System.String, Byte, Boolean, Boolean)")
-                    {
-                        codes[i] = new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(LoadFilePatch), nameof(CheckPatch)));
-                        codes[i+1] = new CodeInstruction(OpCodes.Nop);
-
-                        break;
-                    }
-                }
-
-                return codes;
-            }
-
-            public static void CheckPatch(ChaFileControl chara, string path, byte sex, bool noLoadPng, bool noLoadStatus)
-            {
-                if(doPatch)
-                {
-                    chara.LoadFileLimited(path, sex, loadFace, loadBody, loadHair, parameter, loadCoord);
-                }
-                else
-                {
-                    chara.LoadCharaFile(path, sex, noLoadPng, noLoadStatus);
-                }
-            }
-        }
-
-        void Start()
-        {
-            LoadFilePatch.Patch();
-        }
-
-        void OnDestroy()
-        {
-            LoadFilePatch.RemovePatch();
-        }
-
         // Copied from Studio.SaveScene
         public override void Scene_Save(MsgObject message)
         {
@@ -282,42 +203,15 @@ namespace CardOrganizerKK
 
         public override void Character_ReplaceAll(MsgObject message)
         {
-            ReplaceChara(message.path, false, true, true, true, true, true);
-        }
-
-        public override void Character_ReplaceFace(MsgObject message)
-        {
-            ReplaceChara(message.path, true, true, false, false, false, false);
-        }
-
-        public override void Character_ReplaceBody(MsgObject message)
-        {
-            ReplaceChara(message.path, true, false, true, false, false, false);
-        }
-
-        public override void Character_ReplaceHair(MsgObject message)
-        {
-            ReplaceChara(message.path, true, false, false, true, false, false);
-        }
-
-        public override void Character_ReplaceOutfit(MsgObject message)
-        {
-            ReplaceChara(message.path, true, false, false, false, false, true);
-        }
-
-        void ReplaceChara(string path, bool doPatch, bool loadFace, bool loadBody, bool loadHair, bool parameter, bool loadCoord)
-        {
             var characters = GetSelectedCharacters();
             if(characters.Count > 0)
             {
-                Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} [{Path.GetFileName(path)}]");
+                Log(LogLevel.Message, $"Replace character{(characters.Count == 1 ? "" : "s")} [{Path.GetFileName(message.path)}]");
                 PlayLoadSound();
 
                 DelayAction(() =>
                 {
-                    LoadFilePatch.SetParam(doPatch, loadFace, loadBody, loadHair, parameter, loadCoord);
-                    foreach(var x in characters) x.ChangeChara(path);
-                    LoadFilePatch.doPatch = false;
+                    foreach(var x in characters) x.ChangeChara(message.path);
                     UpdateStateInfo();
                 });
             }
