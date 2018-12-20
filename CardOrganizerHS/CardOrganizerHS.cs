@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using IllusionPlugin;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using PluginLibrary;
+using UnityEngine.SceneManagement;
 
 namespace CardOrganizerHS
 {
@@ -25,28 +25,44 @@ namespace CardOrganizerHS
             var gameobject = new GameObject(Name);
             var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
 
-            var methods = new Dictionary<string, CardHandler>
+            var scenes = new Dictionary<string, CardHandler>
             {
-                { "Studio", gameobject.AddComponent<Methods_StudioNeo>() },
-                { "CustomScene", gameobject.AddComponent<Methods_Maker>() },
+                { "StudioNeo", gameobject.AddComponent<Methods_StudioNeo>() },
+                { "Maker", gameobject.AddComponent<Methods_Maker>() },
                 { "HScene", gameobject.AddComponent<Methods_HScene>() },
-                { "MapSelect", gameobject.AddComponent<Methods_MapSelect>() },
+                //{ "MapSelect", gameobject.AddComponent<Methods_MapSelect>() },
             };
 
-            Action<MsgObject> action = (message) =>
+            RPCClient_Plugin.Init("CardOrganizerServer", 9125, "HS", (message, id) => {
+                dispatcher.Enqueue(() => scenes[id].UseCard(message));
+            });
+        }
+
+        public void OnLevelWasLoaded(int level)
+        {
+            switch(SceneManager.GetActiveScene().name)
             {
-                dispatcher.Enqueue(() =>
+                case "Studio":
                 {
-                    if(methods.TryGetValue(SceneManager.GetActiveScene().name, out CardHandler manager))
-                        manager.UseCard(message);
-                });
-            };
+                    RPCClient_Plugin.ChangeId("StudioNeo");
+                    break;
+                }
 
-            RPCClient_Plugin.Init("CardOrganizerServer.HS", 9125, action);
+                case "HScene":
+                {
+                    RPCClient_Plugin.ChangeId("HScene");
+                    break;
+                }
+
+                case "CustomScene":
+                {
+                    RPCClient_Plugin.ChangeId("Maker");
+                    break;
+                }
+            }
         }
 
         public void OnApplicationQuit(){}
-        public void OnLevelWasLoaded(int level){}
         public void OnUpdate(){}
         public void OnLateUpdate(){}
         public void OnLevelWasInitialized(int level){}

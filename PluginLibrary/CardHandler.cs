@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +25,16 @@ namespace PluginLibrary
 
                 action();
             }
+        }
+
+        public void PrintOverrides()
+        {
+            Console.WriteLine(new string('=', 40));
+            foreach(var method in GetType().GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance))
+            {
+                Console.WriteLine(method.Name);
+            }
+            Console.WriteLine(new string('=', 40));
         }
 
         public void UseCard(MsgObject message)

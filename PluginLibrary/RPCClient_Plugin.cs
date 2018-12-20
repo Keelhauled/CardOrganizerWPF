@@ -32,7 +32,8 @@ namespace PluginLibrary
             lock(lockObj)
             {
                 subId = newId;
-                id = $"{mainId}_{subId}"; 
+                id = $"{mainId}_{subId}";
+                Console.WriteLine($"[CardOrganizer] Id changed to {newId}");
             }
         }
 
