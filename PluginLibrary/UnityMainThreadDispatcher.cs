@@ -25,14 +25,7 @@ public class UnityMainThreadDispatcher : MonoBehaviour
 {
     private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 
-    #if IPA
-    void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-    #endif
-
-    public void Update()
+    void Update()
     {
         lock(_executionQueue)
         {

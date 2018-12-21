@@ -1,28 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using IllusionPlugin;
 using UnityEngine;
 using PluginLibrary;
 using UnityEngine.SceneManagement;
+using BepInEx;
 
 namespace CardOrganizerHS
 {
-    class CardOrganizerHS : IEnhancedPlugin
+    [BepInPlugin("keelhauled.cardorganizerhs", "CardOrganizerHS", "1.0.0")]
+    class CardOrganizerHS : BaseUnityPlugin
     {
-        public string Name { get; } = "CardOrganizerHS";
-        public string Version { get; } = "1.0.0";
-
-        public string[] Filter { get; } = new string[]
+        public void Awake()
         {
-            "StudioNEO_32",
-            "StudioNEO_64",
-            "HoneySelect_32",
-            "HoneySelect_64",
-        };
-
-        public void OnApplicationStart()
-        {
-            var gameobject = new GameObject(Name);
+            var gameobject = new GameObject(nameof(CardOrganizerHS));
+            gameobject.transform.SetParent(gameObject.transform);
             var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
 
             var scenes = new Dictionary<string, CardHandler>
@@ -34,8 +25,14 @@ namespace CardOrganizerHS
             };
 
             RPCClient_Plugin.Init("CardOrganizerServer", 9125, "HS", (message, id) => {
+                if(!dispatcher) Console.WriteLine("[CardOrganizer] Dispatcher dead");
                 dispatcher.Enqueue(() => scenes[id].UseCard(message));
             });
+        }
+
+        void OnDestroy()
+        {
+            RPCClient_Plugin.StopServer();
         }
 
         public void OnLevelWasLoaded(int level)
@@ -61,11 +58,5 @@ namespace CardOrganizerHS
                 }
             }
         }
-
-        public void OnApplicationQuit(){}
-        public void OnUpdate(){}
-        public void OnLateUpdate(){}
-        public void OnLevelWasInitialized(int level){}
-        public void OnFixedUpdate(){}
     }
 }

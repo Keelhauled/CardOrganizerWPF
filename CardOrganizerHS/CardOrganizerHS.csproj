@@ -19,7 +19,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Games\HoneySelect\BepInEx\IPA\</OutputPath>
+    <OutputPath>..\..\..\Games\HoneySelect\BepInEx\</OutputPath>
     <DefineConstants>TRACE;DEBUG;IPA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,8 +37,8 @@
       <HintPath>..\..\..\Games\HoneySelect\StudioNEO_64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="IllusionPlugin">
-      <HintPath>..\..\..\Games\HoneySelect\MODDEV\IPA\IllusionInjector\bin\Debug\IllusionPlugin.dll</HintPath>
+    <Reference Include="BepInEx">
+      <HintPath>..\..\..\Games\HoneySelect\BepInEx\core\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MessagePackKK">
