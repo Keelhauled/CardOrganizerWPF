@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using BepInEx;
 using PluginLibrary;
@@ -41,7 +42,6 @@ namespace CardOrganizerKK
 
         void Awake()
         {
-            SceneManager.sceneLoaded += SceneLoaded;
             if(DisableLists.Value) DisableCharaList.Patch();
 
             var gameobject = new GameObject(nameof(CardOrganizerKK));
@@ -57,8 +57,12 @@ namespace CardOrganizerKK
             };
 
             RPCClient_Plugin.Init("CardOrganizerServer", 9125, "KK", (message, id) => {
+                if(!dispatcher) Console.WriteLine("[CardOrganizer] Dispatcher dead");
                 dispatcher.Enqueue(() => scenes[id].UseCard(message));
             });
+
+            SceneLoaded();
+            SceneManager.sceneLoaded += SceneLoaded;
         }
 
         void OnDestroy()
@@ -69,6 +73,11 @@ namespace CardOrganizerKK
         }
 
         void SceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            SceneLoaded();
+        }
+
+        void SceneLoaded()
         {
             if(FindObjectOfType<StudioScene>())
             {
