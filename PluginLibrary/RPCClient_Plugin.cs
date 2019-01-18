@@ -71,9 +71,10 @@ namespace PluginLibrary
                 lock(lockObj) remoteObject.ClearMessage(id);
                 Console.WriteLine("[CardOrganizer] Starting client");
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 Console.WriteLine("[CardOrganizer] Server not found");
+                Console.WriteLine(ex);
             }
 
             while(threadRunning)
@@ -99,8 +100,9 @@ namespace PluginLibrary
                                       "Must use a fixed Assembly-CSharp-firstpass.dll for this to work with scriptloader in KK\n" + ex);
                     threadRunning = false;
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
+                    Console.WriteLine(ex);
                     threadRunning = false;
                 }
             }

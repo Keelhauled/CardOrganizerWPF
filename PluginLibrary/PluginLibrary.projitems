@@ -13,5 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)PluginUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RPCClient_Plugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UnityMainThreadDispatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Watermark.cs" />
   </ItemGroup>
 </Project>
