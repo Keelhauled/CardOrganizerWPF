@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Archive", "Archive", "{A04F
 		Archive\TabControlEx.cs = Archive\TabControlEx.cs
 		Archive\TCPClientManager.cs = Archive\TCPClientManager.cs
 		Archive\TCPServerManager.cs = Archive\TCPServerManager.cs
+		Archive\Watermark.cs = Archive\Watermark.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardOrganizerPH", "CardOrganizerPH\CardOrganizerPH.csproj", "{E6739D5A-3574-45F8-8197-2BCBE412103A}"
@@ -43,6 +44,8 @@ Global
 		TraverseStandalone\TraverseStandalone.projitems*{76ccd4a0-fccb-484a-8a35-11be1339d2e4}*SharedItemsImports = 4
 		TraverseStandalone\TraverseStandalone.projitems*{80387c39-6e7d-4cd2-b29e-8d950cc25d2e}*SharedItemsImports = 13
 		PluginLibrary\PluginLibrary.projitems*{8478823c-c525-493d-bbb5-a9404be385ae}*SharedItemsImports = 13
+		PluginLibrary\PluginLibrary.projitems*{e6739d5a-3574-45f8-8197-2bcbe412103a}*SharedItemsImports = 4
+		SharedCode\SharedCode.projitems*{e6739d5a-3574-45f8-8197-2bcbe412103a}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
