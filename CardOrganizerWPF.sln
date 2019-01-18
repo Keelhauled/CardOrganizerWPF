@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Archive", "Archive", "{A04F
 		Archive\TCPServerManager.cs = Archive\TCPServerManager.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardOrganizerPH", "CardOrganizerPH\CardOrganizerPH.csproj", "{E6739D5A-3574-45F8-8197-2BCBE412103A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedCode\SharedCode.projitems*{29ba992b-dab2-4e00-8211-1131740569ba}*SharedItemsImports = 13
@@ -59,6 +61,10 @@ Global
 		{76CCD4A0-FCCB-484A-8A35-11BE1339D2E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76CCD4A0-FCCB-484A-8A35-11BE1339D2E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76CCD4A0-FCCB-484A-8A35-11BE1339D2E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6739D5A-3574-45F8-8197-2BCBE412103A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6739D5A-3574-45F8-8197-2BCBE412103A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6739D5A-3574-45F8-8197-2BCBE412103A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6739D5A-3574-45F8-8197-2BCBE412103A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
