@@ -12,7 +12,7 @@ namespace CardOrganizerPH
     {
         public void Awake()
         {
-            var gameobject = new GameObject(nameof(CardOrganizerPH));
+            var gameobject = new GameObject(GetType().Name);
             gameobject.transform.SetParent(gameObject.transform);
             var dispatcher = gameobject.AddComponent<UnityMainThreadDispatcher>();
 

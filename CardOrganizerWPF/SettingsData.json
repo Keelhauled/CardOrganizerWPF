@@ -1,5 +1,5 @@
 ﻿{
-	"Version": "1",
+	"Version": "4",
 	"LastProfile": "",
 	"ScrollSpeed": "128",
 
@@ -59,6 +59,27 @@
 				{ "Name": "FreeH", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" },
 			],
 			"SavedScene": "0"
-		}
+		},
+
+		"PlayHome":
+		{
+			"Name": "PlayHome",
+			"Server": "PH",
+			"Path": "",
+			"Tab": "0",
+			"Category":
+			{
+				"Scene": {"Header": "Scene", "Path": "studio\\scene", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "320", "ImageHeight": "180"},
+				"Chara1": {"Header": "Female", "Path": "chara\\female", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Chara2": {"Header": "Male", "Path": "chara\\male", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Outfit1": {"Header": "Outfit (F)", "Path": "coordinate\\female", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"},
+				"Outfit2": {"Header": "Outfit (M)", "Path": "coordinate\\male", "SavedCat": "0", "ImageMult": "1", "ImageWidth": "226.8", "ImageHeight": "317.7"}
+			},
+			"SceneList":
+			[
+				{ "Name": "HScene", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" }
+			],
+			"SavedScene": "0"
+		},
 	}
 }
