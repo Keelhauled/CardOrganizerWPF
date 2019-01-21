@@ -18,7 +18,8 @@ namespace CardOrganizerPH
 
             var scenes = new Dictionary<string, CardHandler>
             {
-                { "HScene", gameobject.AddComponent<Methods_HScene>() }
+                { "HScene", gameobject.AddComponent<Methods_HScene>() },
+                { "Studio", gameobject.AddComponent<Methods_Studio>() }
             };
 
             RPCClient_Plugin.Init("CardOrganizerServer", 9125, "PH", (message, id) => {
@@ -48,6 +49,12 @@ namespace CardOrganizerPH
                 case "H":
                 {
                     RPCClient_Plugin.ChangeId("HScene");
+                    break;
+                }
+
+                case "Studio":
+                {
+                    RPCClient_Plugin.ChangeId("Studio");
                     break;
                 }
             }

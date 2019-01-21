@@ -1,5 +1,5 @@
 ﻿{
-	"Version": "4",
+	"Version": "5",
 	"LastProfile": "",
 	"ScrollSpeed": "128",
 
@@ -77,7 +77,8 @@
 			},
 			"SceneList":
 			[
-				{ "Name": "HScene", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" }
+				{ "Name": "HScene", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" },
+				{ "Name": "Studio", "PartialReplaceEnabled": "Collapsed", "SpecialLoadEnabled": "Collapsed" }
 			],
 			"SavedScene": "0"
 		}

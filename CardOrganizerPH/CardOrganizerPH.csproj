@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="CardOrganizerPH.cs" />
     <Compile Include="Methods_HScene.cs" />
+    <Compile Include="Methods_Studio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
