@@ -105,6 +105,9 @@ namespace CardOrganizerWPF
 
         void FileCreated(object sender, FileSystemEventArgs e)
         {
+            string ext = Path.GetExtension(e.Name).ToLower();
+            if(ext != ".png") return;
+
             bool fileIsBusy = true;
             while(fileIsBusy)
             {
