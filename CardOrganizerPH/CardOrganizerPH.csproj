@@ -20,7 +20,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Games\PlayHome\BepInEx\scripts\</OutputPath>
+    <OutputPath>..\..\..\Games\PlayHome\BepInEx\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardOrganizerPH.cs" />
+    <Compile Include="Methods_Common.cs" />
     <Compile Include="Methods_HScene.cs" />
     <Compile Include="Methods_Studio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
