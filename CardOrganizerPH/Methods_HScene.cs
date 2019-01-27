@@ -10,7 +10,7 @@ namespace CardOrganizerPH
     {
         public override void Outfit_Load(MsgObject message)
         {
-            
+            FindObjectOfType<Female>().LoadCoordinate(message.path);
         }
     }
 }
