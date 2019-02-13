@@ -18,7 +18,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Games\Koikatu\BepInEx\</OutputPath>
+    <OutputPath>C:\Games\Koikatu\BepInEx\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,24 +33,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\Games\Koikatu\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>C:\Games\Koikatu\BepInEx\core\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\Games\Koikatu\CharaStudio_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>C:\Games\Koikatu\CharaStudio_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\Games\Koikatu\CharaStudio_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>C:\Games\Koikatu\CharaStudio_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\..\Games\Koikatu\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>C:\Games\Koikatu\BepInEx\core\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ConfigurationManager, Version=1.0.6832.18883, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Games\Koikatu\BepInEx\ConfigurationManager.dll</HintPath>
+      <HintPath>C:\Games\Koikatu\BepInEx\ConfigurationManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -64,7 +64,7 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Games\Koikatu\CharaStudio_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Games\Koikatu\CharaStudio_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

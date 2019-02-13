@@ -124,19 +124,24 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
-                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlScene}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlScene}}">
-                                                        <Image.ContextMenu>
-                                                            <ContextMenu>
-                                                                <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
-                                                                <MenuItem Header="Import" Click="Scenes_MenuItem_Click_Import"/>
-                                                                <MenuItem Header="Import Characters" Click="Scenes_MenuItem_Click_ImportCharaOnly"/>
-                                                                <Separator/>
-                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                            </ContextMenu>
-                                                        </Image.ContextMenu>
-                                                    </Image>
+                                                    <Grid>
+                                                        <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                               Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlScene}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlScene}}">
+                                                            <Image.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Load" Click="Scenes_MenuItem_Click_Load"/>
+                                                                    <MenuItem Header="Import" Click="Scenes_MenuItem_Click_Import"/>
+                                                                    <MenuItem Header="Import Characters" Click="Scenes_MenuItem_Click_ImportCharaOnly"/>
+                                                                    <Separator/>
+                                                                    <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                    <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                                </ContextMenu>
+                                                            </Image.ContextMenu>
+                                                        </Image>
+                                                        <Grid Background="White" Width="60" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                                            <TextBlock Text="{Binding Size}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Grid>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -165,23 +170,28 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
-                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlChara1}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlChara1}}">
-                                                        <Image.ContextMenu>
-                                                            <ContextMenu>
-                                                                <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
-                                                                <MenuItem Header="Load partner" Click="Characters_MenuItem_Click_LoadSpecial" Visibility="{Binding DataContext.SpecialLoadEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
-                                                                <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <Separator/>
-                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                            </ContextMenu>
-                                                        </Image.ContextMenu>
-                                                    </Image>
+                                                    <Grid>
+                                                        <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                               Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlChara1}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlChara1}}">
+                                                            <Image.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadF"/>
+                                                                    <MenuItem Header="Load partner" Click="Characters_MenuItem_Click_LoadSpecial" Visibility="{Binding DataContext.SpecialLoadEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
+                                                                    <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <Separator/>
+                                                                    <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                    <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                                </ContextMenu>
+                                                            </Image.ContextMenu>
+                                                        </Image>
+                                                        <Grid Background="White" Width="60" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                                            <TextBlock Text="{Binding Size}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Grid>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -210,22 +220,27 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
-                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlChara2}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlChara2}}">
-                                                        <Image.ContextMenu>
-                                                            <ContextMenu>
-                                                                <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
-                                                                <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
-                                                                <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
-                                                                <Separator/>
-                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                            </ContextMenu>
-                                                        </Image.ContextMenu>
-                                                    </Image>
+                                                    <Grid>
+                                                        <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                               Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlChara2}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlChara2}}">
+                                                            <Image.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Load" Click="Characters_MenuItem_Click_LoadM"/>
+                                                                    <MenuItem Header="Replace" Click="Characters_MenuItem_Click_Replace"/>
+                                                                    <MenuItem Header="Replace Face" Click="Characters_MenuItem_Click_ReplaceFace" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <MenuItem Header="Replace Body" Click="Characters_MenuItem_Click_ReplaceBody" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <MenuItem Header="Replace Hair" Click="Characters_MenuItem_Click_ReplaceHair" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <MenuItem Header="Replace Outfits" Click="Characters_MenuItem_Click_ReplaceOutfit" Visibility="{Binding DataContext.PartialReplaceEnabled.Value, Source={x:Reference MainWin}}"/>
+                                                                    <Separator/>
+                                                                    <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                    <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                                </ContextMenu>
+                                                            </Image.ContextMenu>
+                                                        </Image>
+                                                        <Grid Background="White" Width="60" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                                            <TextBlock Text="{Binding Size}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Grid>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -254,19 +269,24 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
-                                                       Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlOutfit1}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlOutfit1}}">
-                                                        <Image.ContextMenu>
-                                                            <ContextMenu>
-                                                                <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
-                                                                <MenuItem Header="Load Accessories" Click="Outfits_MenuItem_Click_LoadAccOnly"/>
-                                                                <MenuItem Header="Load Clothing" Click="Outfits_MenuItem_Click_LoadClothOnly"/>
-                                                                <Separator/>
-                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                            </ContextMenu>
-                                                        </Image.ContextMenu>
-                                                    </Image>
+                                                    <Grid>
+                                                        <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                               Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlOutfit1}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlOutfit1}}">
+                                                            <Image.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
+                                                                    <MenuItem Header="Load Accessories" Click="Outfits_MenuItem_Click_LoadAccOnly"/>
+                                                                    <MenuItem Header="Load Clothing" Click="Outfits_MenuItem_Click_LoadClothOnly"/>
+                                                                    <Separator/>
+                                                                    <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                    <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                                </ContextMenu>
+                                                            </Image.ContextMenu>
+                                                        </Image>
+                                                        <Grid Background="White" Width="60" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                                            <TextBlock Text="{Binding Size}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Grid>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -295,17 +315,22 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
-                                                    <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                                                    <Grid>
+                                                        <Image Source="{Binding Path=Path, Converter={StaticResource imgConverter}, IsAsync=true}" MouseLeftButtonDown="Image_MouseLeftButtonDown"
                                                        Width="{Binding DataContext.ImageWidth.Value, Source={x:Reference tabControlOutfit2}}" Height="{Binding DataContext.ImageHeight.Value, Source={x:Reference tabControlOutfit2}}">
-                                                        <Image.ContextMenu>
-                                                            <ContextMenu>
-                                                                <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
-                                                                <Separator/>
-                                                                <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
-                                                                <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
-                                                            </ContextMenu>
-                                                        </Image.ContextMenu>
-                                                    </Image>
+                                                            <Image.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Load" Click="Outfits_MenuItem_Click_Load"/>
+                                                                    <Separator/>
+                                                                    <MenuItem Header="Delete" Click="MenuItem_Click_Delete"/>
+                                                                    <MenuItem Header="Show in Explorer" Click="MenuItem_Click_Explorer"/>
+                                                                </ContextMenu>
+                                                            </Image.ContextMenu>
+                                                        </Image>
+                                                        <Grid Background="White" Width="60" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                                            <TextBlock Text="{Binding Size}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Grid>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
