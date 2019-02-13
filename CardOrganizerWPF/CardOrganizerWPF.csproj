@@ -87,6 +87,7 @@
     <Compile Include="Remoting\RemotingMessenger.cs" />
     <Compile Include="Remoting\RPCServer.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Utils\FileSizeFormat.cs" />
     <Compile Include="Utils\SingleGlobalInstance.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\Prop.cs" />

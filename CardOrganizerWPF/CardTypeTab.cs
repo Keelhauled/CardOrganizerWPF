@@ -138,8 +138,8 @@ namespace CardOrganizerWPF
             var thread = new Thread(() =>
             {
                 var files = Directory.GetFiles(folderPath, "*.png");
-                var sorted = files.Select(x => new KeyValuePair<string, DateTime>(x, File.GetLastWriteTime(x))).ToList();
-                sorted.Sort((KeyValuePair<string, DateTime> a, KeyValuePair<string, DateTime> b) => b.Value.CompareTo(a.Value));
+                var sorted = files.Select(x => new KeyValuePair<string, FileInfo>(x, new FileInfo(x))).ToList();
+                sorted.Sort((KeyValuePair<string, FileInfo> a, KeyValuePair<string, FileInfo> b) => b.Value.LastWriteTime.CompareTo(a.Value.LastWriteTime));
 
                 if(files.Length > 0) uiContext.Post((x) => ProgressMax.Value = files.Length, null);
 
@@ -154,7 +154,7 @@ namespace CardOrganizerWPF
                     if(stopThread) break;
 
                     bool found = false;
-                    var thumb = new Thumbnail(file.Key, file.Value);
+                    var thumb = new Thumbnail(file.Key, file.Value.LastWriteTime, file.Value.Length);
 
                     foreach(var category in dataCategories)
                     {
@@ -320,8 +320,9 @@ namespace CardOrganizerWPF
         public void AddImage(string path)
         {
             var category = GetSelectedCategory();
-            var time = File.GetLastWriteTime(path);
-            var thumb = new Thumbnail(path, time);
+            //var time = File.GetLastWriteTime(path);
+            var fileinfo = new FileInfo(path);
+            var thumb = new Thumbnail(path, fileinfo.LastWriteTime, fileinfo.Length);
             category.AddImageFirst(thumb);
             dataManager.AddImage(thumb, category.Title);
         }
@@ -541,11 +542,13 @@ namespace CardOrganizerWPF
     {
         public string Path { get; set; }
         public DateTime Date { get; set; }
+        public string Size { get; set; }
 
-        public Thumbnail(string path, DateTime date)
+        public Thumbnail(string path, DateTime date, long size)
         {
             Path = path;
             Date = date;
+            Size = FileSizeFormat.FormatBytes(size, 2);
         }
     }
 }
