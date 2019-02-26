@@ -82,7 +82,7 @@
       <DependentUpon>InputBox.xaml</DependentUpon>
     </Compile>
     <None Include="packages.config" />
-    <EmbeddedResource Include="SettingsData.json" />
+    <EmbeddedResource Include="CardOrganizerWPF.json" />
     <Compile Include="Controls\MenuItemExtensions.cs" />
     <Compile Include="Controls\SelectList.xaml.cs">
       <DependentUpon>SelectList.xaml</DependentUpon>
