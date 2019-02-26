@@ -11,7 +11,7 @@ namespace CardOrganizerWPF
     {
         public static Settings data;
         static string dataPath;
-        const string dataFileName = "SettingsData.json";
+        const string dataFileName = "CardOrganizerWPF.json";
 
         public static void Save()
         {
