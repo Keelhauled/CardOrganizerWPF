@@ -320,7 +320,6 @@ namespace CardOrganizerWPF
         public void AddImage(string path)
         {
             var category = GetSelectedCategory();
-            //var time = File.GetLastWriteTime(path);
             var fileinfo = new FileInfo(path);
             var thumb = new Thumbnail(path, fileinfo.LastWriteTime, fileinfo.Length);
             category.AddImageFirst(thumb);
