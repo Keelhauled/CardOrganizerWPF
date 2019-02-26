@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using CardOrganizerWPF.Controls;
-using CardOrganizerWPF.Remoting;
 using CardOrganizerWPF.Utils;
 using DrWPF.Windows.Data;
 
@@ -241,7 +240,7 @@ namespace CardOrganizerWPF
 
         public void SaveCard(string id)
         {
-            RPCClient_UI.SendMessage(MsgObject.Create(saveMsg, id, folderPath));
+            ServerPipe.SendMessage(MsgObject.Create(saveMsg, id, folderPath));
         }
 
         public void SetImageSize(double multiplier)

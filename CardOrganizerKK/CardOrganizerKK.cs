@@ -16,11 +16,6 @@ namespace CardOrganizerKK
                      "Changes take effect after game restart.")]
         ConfigWrapper<bool> DisableLists { get; }
 
-        [Browsable(true)]
-        [DisplayName("Reconnect to server")]
-        [CustomSettingDraw(nameof(ReconnectDrawer))]
-        string Reconnect { get; set; } = "";
-
         [DisplayName("Play sounds")]
         public static ConfigWrapper<bool> PlaySounds { get; private set; }
 
@@ -28,16 +23,6 @@ namespace CardOrganizerKK
         {
             DisableLists = new ConfigWrapper<bool>("DisableLists", this, true);
             PlaySounds = new ConfigWrapper<bool>("PlaySounds", this, true);
-        }
-
-        void ReconnectDrawer()
-        {
-            var text = RPCClient_Plugin.Status() ? "Connected" : "Reconnect";
-
-            if(GUILayout.Button(text, GUILayout.ExpandWidth(true)))
-            {
-                RPCClient_Plugin.StartServer();
-            }
         }
 
         void Awake()
@@ -56,7 +41,7 @@ namespace CardOrganizerKK
                 { "FreeHSelect", gameobject.AddComponent<Methods_FreeHSelect>() }
             };
 
-            RPCClient_Plugin.Init("CardOrganizerServer", 9125, "KK", (message, id) => {
+            PluginPipe.StartClient("CardOrganizerServer", (message, id) => {
                 if(!dispatcher) Console.WriteLine("[CardOrganizer] Dispatcher dead");
                 dispatcher.Enqueue(() => scenes[id].UseCard(message));
             });
@@ -67,7 +52,7 @@ namespace CardOrganizerKK
 
         void OnDestroy()
         {
-            RPCClient_Plugin.StopServer();
+            PluginPipe.StopClient();
             DisableCharaList.RemovePatches();
             SceneManager.sceneLoaded -= SceneLoaded;
         }
@@ -79,26 +64,26 @@ namespace CardOrganizerKK
 
         void SceneLoaded()
         {
-            if(FindObjectOfType<StudioScene>())
-            {
-                RPCClient_Plugin.ChangeId("Studio");
-            }
-            else if(FindObjectOfType<FreeHScene>() && !FindObjectOfType<FreeHCharaSelect>())
-            {
-                RPCClient_Plugin.ChangeId("FreeHSelect");
-            }
-            else if(FindObjectOfType<CustomScene>())
-            {
-                RPCClient_Plugin.ChangeId("Maker");
-            }
-            else if(FindObjectOfType<HSceneProc>())
-            {
-                RPCClient_Plugin.ChangeId("FreeH");
-            }
-            else
-            {
-                RPCClient_Plugin.ChangeId("");
-            }
+            //if(FindObjectOfType<StudioScene>())
+            //{
+            //    RPCClient_Plugin.ChangeId("Studio");
+            //}
+            //else if(FindObjectOfType<FreeHScene>() && !FindObjectOfType<FreeHCharaSelect>())
+            //{
+            //    RPCClient_Plugin.ChangeId("FreeHSelect");
+            //}
+            //else if(FindObjectOfType<CustomScene>())
+            //{
+            //    RPCClient_Plugin.ChangeId("Maker");
+            //}
+            //else if(FindObjectOfType<HSceneProc>())
+            //{
+            //    RPCClient_Plugin.ChangeId("FreeH");
+            //}
+            //else
+            //{
+            //    RPCClient_Plugin.ChangeId("");
+            //}
         }
     }
 }

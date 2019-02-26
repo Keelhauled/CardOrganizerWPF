@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
-using CardOrganizerWPF.Remoting;
 using CardOrganizerWPF.Controls;
 using CardOrganizerWPF.Utils;
 using System.ComponentModel;
@@ -150,8 +149,7 @@ namespace CardOrganizerWPF
 
                 if(!string.IsNullOrWhiteSpace(gameData.Path)) // check if paths in category exist here
                 {
-                    RPCServer.Start(serverName, serverPort);
-                    RPCClient_UI.Start(serverName, serverPort);
+                    ServerPipe.StartServer(serverName);
 
                     gameData.SceneList.ForEach((x) => ProcessList.Add(x.Name));
                     var scene = gameData.SceneList[gameData.SavedScene];
@@ -393,7 +391,7 @@ namespace CardOrganizerWPF
         private void UseCard(RoutedEventArgs e, MsgObject.Action action)
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
-            RPCClient_UI.SendMessage(MsgObject.Create(action, Id, thumb.Path));
+            ServerPipe.SendMessage(MsgObject.Create(action, Id, thumb.Path));
         }
 
         private void MenuItem_Click_Delete(object sender, RoutedEventArgs e)
