@@ -20,7 +20,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Games\PlayHome\BepInEx\</OutputPath>
+    <OutputPath>..\..\..\..\Games\PlayHome\BepInEx\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,15 +35,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\Games\PlayHome\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\..\Games\PlayHome\BepInEx\core\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\Games\PlayHome\PlayHomeStudio64bit_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\Games\PlayHome\PlayHome64bit_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\..\Games\PlayHome\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>..\..\..\..\Games\PlayHome\BepInEx\core\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MessagePackKK">
@@ -65,7 +65,7 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Games\PlayHome\PlayHomeStudio64bit_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\Games\PlayHome\PlayHome64bit_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
