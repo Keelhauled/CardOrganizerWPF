@@ -52,7 +52,6 @@ namespace CardOrganizerKK
 
         void OnDestroy()
         {
-            PluginPipe.StopClient();
             DisableCharaList.RemovePatches();
             SceneManager.sceneLoaded -= SceneLoaded;
         }

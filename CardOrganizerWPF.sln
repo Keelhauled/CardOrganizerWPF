@@ -33,19 +33,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Archive", "Archive", "{A04F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardOrganizerPH", "CardOrganizerPH\CardOrganizerPH.csproj", "{E6739D5A-3574-45F8-8197-2BCBE412103A}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NamedPipes", "NamedPipes\NamedPipes.shproj", "{CD033BD8-6B81-43E5-96AB-3DA4F26F8B08}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedCode\SharedCode.projitems*{29ba992b-dab2-4e00-8211-1131740569ba}*SharedItemsImports = 13
+		NamedPipes\NamedPipes.projitems*{38471da8-8e4d-4c5d-a465-7071edc54f44}*SharedItemsImports = 4
 		PluginLibrary\PluginLibrary.projitems*{38471da8-8e4d-4c5d-a465-7071edc54f44}*SharedItemsImports = 4
 		SharedCode\SharedCode.projitems*{38471da8-8e4d-4c5d-a465-7071edc54f44}*SharedItemsImports = 4
+		NamedPipes\NamedPipes.projitems*{3e5b6c30-a839-4d30-9cb8-cf4e8d168a1a}*SharedItemsImports = 4
 		SharedCode\SharedCode.projitems*{3e5b6c30-a839-4d30-9cb8-cf4e8d168a1a}*SharedItemsImports = 4
-		PluginLibrary\PluginLibrary.projitems*{76ccd4a0-fccb-484a-8a35-11be1339d2e4}*SharedItemsImports = 4
-		SharedCode\SharedCode.projitems*{76ccd4a0-fccb-484a-8a35-11be1339d2e4}*SharedItemsImports = 4
-		TraverseStandalone\TraverseStandalone.projitems*{76ccd4a0-fccb-484a-8a35-11be1339d2e4}*SharedItemsImports = 4
 		TraverseStandalone\TraverseStandalone.projitems*{80387c39-6e7d-4cd2-b29e-8d950cc25d2e}*SharedItemsImports = 13
 		PluginLibrary\PluginLibrary.projitems*{8478823c-c525-493d-bbb5-a9404be385ae}*SharedItemsImports = 13
-		PluginLibrary\PluginLibrary.projitems*{e6739d5a-3574-45f8-8197-2bcbe412103a}*SharedItemsImports = 4
-		SharedCode\SharedCode.projitems*{e6739d5a-3574-45f8-8197-2bcbe412103a}*SharedItemsImports = 4
+		NamedPipes\NamedPipes.projitems*{cd033bd8-6b81-43e5-96ab-3da4f26f8b08}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

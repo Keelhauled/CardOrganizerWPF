@@ -1,47 +1,48 @@
 ﻿using System;
 using System.IO;
-using System.IO.Pipes;
 using System.Threading;
+using BepInEx.Logging;
+using Logger = BepInEx.Logger;
+using CustomPipes;
+using System.Text;
 
 namespace PluginLibrary
 {
     static class PluginPipe
     {
-        static bool stopThread = false;
-        static Thread pipeThread;
-
         public static void StartClient(string pipeName, Action<MsgObject, string> msgAction)
         {
-            pipeThread = new Thread(ClientThread);
+            var pipeThread = new Thread(() => PipeThread(pipeName));
             pipeThread.IsBackground = true;
             pipeThread.Start();
-            Console.WriteLine("[CardOrganizer] StartClient end");
         }
 
-        public static void StopClient()
+        static void PipeThread(string pipeName)
         {
-            stopThread = false;
-        }
-
-        public static void SetId(string id)
-        {
-
-        }
-
-        static void ClientThread()
-        {
-            Console.WriteLine("[CardOrganizer] Connecting to server...");
-            var client = new NamedPipeClientStream("");
-            client.Connect();
-
-            if(client.IsConnected)
+            try
             {
-                var reader = new StreamReader(client);
+                Console.WriteLine("Trying to connect to server...");
+                var stream = new NamedPipeStream($@"\\.\pipe\{pipeName}", FileAccess.ReadWrite);
+                var reader = new StreamReader(stream, Encoding.Unicode);
+                Console.WriteLine("Connected");
 
-                while(!stopThread)
+                while(true)
                 {
-                    Console.WriteLine(reader.ReadLine());
-                } 
+                    while(stream.DataAvailable)
+                    {
+                        string s = reader.ReadLine();
+                        if(s != null && s.Length > 0)
+                        {
+                            Console.WriteLine(s);
+                        }
+                    }
+
+                    Thread.Sleep(10);
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Log(LogLevel.Error, ex);
             }
         }
     }

@@ -80,6 +80,7 @@
   </ItemGroup>
   <Import Project="..\PluginLibrary\PluginLibrary.projitems" Label="Shared" />
   <Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
+  <Import Project="..\NamedPipes\NamedPipes.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
