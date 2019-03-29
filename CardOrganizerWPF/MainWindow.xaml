@@ -166,7 +166,7 @@
                             <DataTemplate>
                                 <controls:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
                                     <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
-                                                  ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
+                                                  ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">
@@ -216,7 +216,7 @@
                             <DataTemplate>
                                 <controls:ExtScrollViewer x:Name="scrollViewer" Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
                                     <ItemsControl x:Name="itemsControl" ItemContainerStyle="{StaticResource ImageMargin}"
-                                                  ItemsPanel="{StaticResource Flexbox}"  ItemsSource="{Binding Value.Images}" BorderThickness="0">
+                                                  ItemsPanel="{StaticResource Flexbox}" ItemsSource="{Binding Value.Images}" BorderThickness="0">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="Black" BorderThickness="3">

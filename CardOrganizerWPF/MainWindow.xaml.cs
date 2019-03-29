@@ -509,7 +509,12 @@ namespace CardOrganizerWPF
 
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(Keyboard.Modifiers == ModifierKeys.Control && markedTab != "" && markedTab != SelectedTab.GetSelectedCategory().Title)
+            if(Keyboard.IsKeyDown(Key.Delete))
+            {
+                var thumb = (Thumbnail)(e.Source as Image).DataContext;
+                SelectedTab.RemoveImage(thumb);
+            }
+            else if(Keyboard.Modifiers == ModifierKeys.Control && markedTab != "" && markedTab != SelectedTab.GetSelectedCategory().Title)
             {
                 var thumb = (Thumbnail)(e.Source as Image).DataContext;
                 SelectedTab.MoveImage(thumb, markedTab);
