@@ -29,7 +29,6 @@
             <MenuItem Header="Move All" Click="MenuItem_Click_MoveAll"/>
             <MenuItem Header="Add New" Click="MenuItem_Click_AddCategory"/>
             <MenuItem Header="Remove" Click="MenuItem_Click_RemoveCategory"/>
-            <MenuItem Header="Sort" Click="MenuItem_Click_SortCategory"/>
         </ContextMenu>
 
         <DataTemplate x:Key="CategoryName">

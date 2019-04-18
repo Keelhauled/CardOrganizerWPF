@@ -45,5 +45,5 @@ namespace CardOrganizerWPF.Utils
                 Move(IndexOf(item), sortedItemsList.IndexOf(item));
             }
         }
-    } 
+    }
 }

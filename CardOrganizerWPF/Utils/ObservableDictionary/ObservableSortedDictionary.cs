@@ -29,8 +29,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 
@@ -50,7 +50,7 @@ namespace DrWPF.Windows.Data
 
         public ObservableSortedDictionary(IDictionary<TKey, TValue> dictionary) : base(dictionary)
         {
-            
+
         }
 
         public ObservableSortedDictionary(IComparer<DictionaryEntry> comparer)
@@ -110,11 +110,11 @@ namespace DrWPF.Windows.Data
             bool keyExists = _keyedEntryCollection.Contains(key);
 
             // if identical key/value pair already exists, nothing to do
-            if (keyExists && value.Equals((TValue)_keyedEntryCollection[key].Value))
+            if(keyExists && value.Equals((TValue)_keyedEntryCollection[key].Value))
                 return false;
 
             // otherwise, remove the existing entry
-            if (keyExists)
+            if(keyExists)
                 _keyedEntryCollection.Remove(key);
 
             // add the new entry
@@ -131,15 +131,15 @@ namespace DrWPF.Windows.Data
 
         private int BinaryFindInsertionIndex(int first, int last, DictionaryEntry entry)
         {
-            if (last < first)
+            if(last < first)
                 return first;
             else
             {
                 int mid = first + (int)((last - first) / 2);
                 int result = _comparer.Compare(_keyedEntryCollection[mid], entry);
-                if (result == 0)
+                if(result == 0)
                     return mid;
-                else if (result < 0)
+                else if(result < 0)
                     return BinaryFindInsertionIndex(mid + 1, last, entry);
                 else
                     return BinaryFindInsertionIndex(first, mid - 1, entry);
@@ -156,12 +156,12 @@ namespace DrWPF.Windows.Data
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if (info == null)
+            if(info == null)
             {
                 throw new ArgumentNullException("info");
             }
 
-            if (!_comparer.GetType().IsSerializable)
+            if(!_comparer.GetType().IsSerializable)
             {
                 throw new NotSupportedException("The supplied Comparer is not serializable.");
             }
@@ -176,7 +176,7 @@ namespace DrWPF.Windows.Data
 
         public override void OnDeserialization(object sender)
         {
-            if (_siInfo != null)
+            if(_siInfo != null)
             {
                 _comparer = (IComparer<DictionaryEntry>)_siInfo.GetValue("_comparer", typeof(IComparer<DictionaryEntry>));
             }
@@ -195,7 +195,7 @@ namespace DrWPF.Windows.Data
         private SerializationInfo _siInfo = null;
 
         #endregion fields
-        
+
         private class KeyComparer : IComparer<DictionaryEntry>
         {
             public int Compare(DictionaryEntry entry1, DictionaryEntry entry2)

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using MessagePack;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using MessagePack;
 
 namespace CardOrganizerWPF
 {
     public class CardDataManager
     {
-        private CardData cardData = new CardData();
-        private string dataFileName = "CardOrganizerData.bin";
-        private bool fileFound = false;
+        CardData cardData = new CardData();
+        string dataFileName = "CardOrganizerData.bin";
+        bool fileFound = false;
 
         public List<CardData.CategoryData> GetCategories()
         {
@@ -28,7 +28,7 @@ namespace CardOrganizerWPF
             {
                 fileFound = true;
                 var data = File.ReadAllBytes(Path.Combine(path, dataFileName));
-                cardData = MessagePackSerializer.Deserialize<CardData>(data); 
+                cardData = MessagePackSerializer.Deserialize<CardData>(data);
             }
         }
 

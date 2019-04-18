@@ -29,11 +29,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace DrWPF.Windows.Data
 {
@@ -63,7 +63,7 @@ namespace DrWPF.Windows.Data
         {
             _keyedEntryCollection = new KeyedDictionaryEntryCollection<TKey>();
 
-            foreach (KeyValuePair<TKey, TValue> entry in dictionary)
+            foreach(KeyValuePair<TKey, TValue> entry in dictionary)
                 DoAddEntry((TKey)entry.Key, (TValue)entry.Value);
         }
 
@@ -76,7 +76,7 @@ namespace DrWPF.Windows.Data
         {
             _keyedEntryCollection = new KeyedDictionaryEntryCollection<TKey>(comparer);
 
-            foreach (KeyValuePair<TKey, TValue> entry in dictionary)
+            foreach(KeyValuePair<TKey, TValue> entry in dictionary)
                 DoAddEntry((TKey)entry.Key, (TValue)entry.Value);
         }
 
@@ -131,10 +131,10 @@ namespace DrWPF.Windows.Data
         {
             get
             {
-                if (_dictionaryCacheVersion != _version)
+                if(_dictionaryCacheVersion != _version)
                 {
                     _dictionaryCache.Clear();
-                    foreach (DictionaryEntry entry in _keyedEntryCollection)
+                    foreach(DictionaryEntry entry in _keyedEntryCollection)
                         _dictionaryCache.Add((TKey)entry.Key, (TValue)entry.Value);
                     _dictionaryCacheVersion = _version;
                 }
@@ -201,7 +201,7 @@ namespace DrWPF.Windows.Data
         {
             // check whether there are entries to clear
             bool result = (Count > 0);
-            if (result)
+            if(result)
             {
                 // if so, clear the dictionary
                 _keyedEntryCollection.Clear();
@@ -213,7 +213,7 @@ namespace DrWPF.Windows.Data
         {
             entry = new DictionaryEntry();
             int index = -1;
-            if (_keyedEntryCollection.Contains(key))
+            if(_keyedEntryCollection.Contains(key))
             {
                 entry = _keyedEntryCollection[key];
                 index = _keyedEntryCollection.IndexOf(entry);
@@ -223,13 +223,13 @@ namespace DrWPF.Windows.Data
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
-            if (CollectionChanged != null)
+            if(CollectionChanged != null)
                 CollectionChanged(this, args);
         }
 
         protected virtual void OnPropertyChanged(string name)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
@@ -244,11 +244,11 @@ namespace DrWPF.Windows.Data
             bool keyExists = _keyedEntryCollection.Contains(key);
 
             // if identical key/value pair already exists, nothing to do
-            if (keyExists && value.Equals((TValue)_keyedEntryCollection[key].Value))
+            if(keyExists && value.Equals((TValue)_keyedEntryCollection[key].Value))
                 return false;
 
             // otherwise, remove the existing entry
-            if (keyExists)
+            if(keyExists)
                 _keyedEntryCollection.Remove(key);
 
             // add the new entry
@@ -263,7 +263,7 @@ namespace DrWPF.Windows.Data
 
         private void DoAddEntry(TKey key, TValue value)
         {
-            if (AddEntry(key, value))
+            if(AddEntry(key, value))
             {
                 _version++;
 
@@ -275,7 +275,7 @@ namespace DrWPF.Windows.Data
 
         private void DoClearEntries()
         {
-            if (ClearEntries())
+            if(ClearEntries())
             {
                 _version++;
                 FireResetNotifications();
@@ -288,10 +288,10 @@ namespace DrWPF.Windows.Data
             int index = GetIndexAndEntryForKey(key, out entry);
 
             bool result = RemoveEntry(key);
-            if (result)
+            if(result)
             {
                 _version++;
-                if (index > -1)
+                if(index > -1)
                     FireEntryRemovedNotifications(entry, index);
             }
 
@@ -303,12 +303,12 @@ namespace DrWPF.Windows.Data
             DictionaryEntry entry;
             int index = GetIndexAndEntryForKey(key, out entry);
 
-            if (SetEntry(key, value))
+            if(SetEntry(key, value))
             {
                 _version++;
 
                 // if prior entry existed for this key, fire the removed notifications
-                if (index > -1)
+                if(index > -1)
                 {
                     FireEntryRemovedNotifications(entry, index);
 
@@ -328,7 +328,7 @@ namespace DrWPF.Windows.Data
             FirePropertyChangedNotifications();
 
             // fire CollectionChanged notification
-            if (index > -1)
+            if(index > -1)
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value), index));
             else
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -340,7 +340,7 @@ namespace DrWPF.Windows.Data
             FirePropertyChangedNotifications();
 
             // fire CollectionChanged notification
-            if (index > -1)
+            if(index > -1)
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value), index));
             else
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -348,7 +348,7 @@ namespace DrWPF.Windows.Data
 
         private void FirePropertyChangedNotifications()
         {
-            if (Count != _countCache)
+            if(Count != _countCache)
             {
                 _countCache = Count;
                 OnPropertyChanged("Count");
@@ -487,20 +487,20 @@ namespace DrWPF.Windows.Data
 
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
         {
-            if (array == null)
+            if(array == null)
             {
                 throw new ArgumentNullException("CopyTo() failed:  array parameter was null");
             }
-            if ((index < 0) || (index > array.Length))
+            if((index < 0) || (index > array.Length))
             {
                 throw new ArgumentOutOfRangeException("CopyTo() failed:  index parameter was outside the bounds of the supplied array");
             }
-            if ((array.Length - index) < _keyedEntryCollection.Count)
+            if((array.Length - index) < _keyedEntryCollection.Count)
             {
                 throw new ArgumentException("CopyTo() failed:  supplied array was too small");
             }
 
-            foreach (DictionaryEntry entry in _keyedEntryCollection)
+            foreach(DictionaryEntry entry in _keyedEntryCollection)
                 array[index++] = new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value);
         }
 
@@ -567,13 +567,13 @@ namespace DrWPF.Windows.Data
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if (info == null)
+            if(info == null)
             {
                 throw new ArgumentNullException("info");
             }
 
             Collection<DictionaryEntry> entries = new Collection<DictionaryEntry>();
-            foreach (DictionaryEntry entry in _keyedEntryCollection)
+            foreach(DictionaryEntry entry in _keyedEntryCollection)
                 entries.Add(entry);
             info.AddValue("entries", entries);
         }
@@ -584,11 +584,11 @@ namespace DrWPF.Windows.Data
 
         public virtual void OnDeserialization(object sender)
         {
-            if (_siInfo != null)
+            if(_siInfo != null)
             {
                 Collection<DictionaryEntry> entries = (Collection<DictionaryEntry>)
                     _siInfo.GetValue("entries", typeof(Collection<DictionaryEntry>));
-                foreach (DictionaryEntry entry in entries)
+                foreach(DictionaryEntry entry in entries)
                     AddEntry((TKey)entry.Key, (TValue)entry.Value);
             }
         }
@@ -706,7 +706,7 @@ namespace DrWPF.Windows.Data
             {
                 ValidateVersion();
                 _index++;
-                if (_index < _dictionary._keyedEntryCollection.Count)
+                if(_index < _dictionary._keyedEntryCollection.Count)
                 {
                     _current = new KeyValuePair<TKey, TValue>((TKey)_dictionary._keyedEntryCollection[_index].Key, (TValue)_dictionary._keyedEntryCollection[_index].Value);
                     return true;
@@ -722,11 +722,11 @@ namespace DrWPF.Windows.Data
 
             private void ValidateCurrent()
             {
-                if (_index == -1)
+                if(_index == -1)
                 {
                     throw new InvalidOperationException("The enumerator has not been started.");
                 }
-                else if (_index == -2)
+                else if(_index == -2)
                 {
                     throw new InvalidOperationException("The enumerator has reached the end of the collection.");
                 }
@@ -734,7 +734,7 @@ namespace DrWPF.Windows.Data
 
             private void ValidateVersion()
             {
-                if (_version != _dictionary._version)
+                if(_version != _dictionary._version)
                 {
                     throw new InvalidOperationException("The enumerator is not valid because the dictionary changed.");
                 }
@@ -751,7 +751,7 @@ namespace DrWPF.Windows.Data
                 get
                 {
                     ValidateCurrent();
-                    if (_isDictionaryEntryEnumerator)
+                    if(_isDictionaryEntryEnumerator)
                     {
                         return new DictionaryEntry(_current.Key, _current.Value);
                     }

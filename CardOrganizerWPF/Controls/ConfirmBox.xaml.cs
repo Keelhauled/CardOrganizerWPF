@@ -13,19 +13,19 @@ namespace CardOrganizerWPF.Controls
         {
             InitializeComponent();
             DataContext = this;
-            
+
             EscKeyCommand = new DelegateCommand((x) => DialogResult = false);
 
             TitleText = titleText;
             InfoText = infoText;
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+        void OKButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }

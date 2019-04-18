@@ -115,7 +115,7 @@ namespace PluginLibrary
                     Outfit_Replace(message);
                     break;
 
-                    
+
                 case MsgObject.Action.PoseSave:
                     Pose_Save(message);
                     break;
@@ -125,29 +125,29 @@ namespace PluginLibrary
                     break;
             }
         }
-        
-        public virtual void Scene_Save(MsgObject message){}
-        public virtual void Scene_Load(MsgObject message){}
-        public virtual void Scene_ImportAll(MsgObject message){}
-        public virtual void Scene_ImportChara(MsgObject message){}
 
-        public virtual void Character_Save(MsgObject message){}
-        public virtual void Character_LoadFemale(MsgObject message){}
-        public virtual void Character_LoadMale(MsgObject message){}
-        public virtual void Character_LoadSpecial(MsgObject message){}
-        public virtual void Character_ReplaceAll(MsgObject message){}
-        public virtual void Character_ReplaceFace(MsgObject message){}
-        public virtual void Character_ReplaceBody(MsgObject message){}
-        public virtual void Character_ReplaceHair(MsgObject message){}
-        public virtual void Character_ReplaceOutfit(MsgObject message){}
+        public virtual void Scene_Save(MsgObject message) { }
+        public virtual void Scene_Load(MsgObject message) { }
+        public virtual void Scene_ImportAll(MsgObject message) { }
+        public virtual void Scene_ImportChara(MsgObject message) { }
 
-        public virtual void Outfit_Save(MsgObject message){}
-        public virtual void Outfit_Load(MsgObject message){}
-        public virtual void Outfit_LoadAccOnly(MsgObject message){}
-        public virtual void Outfit_LoadClothOnly(MsgObject message){}
-        public virtual void Outfit_Replace(MsgObject message){}
+        public virtual void Character_Save(MsgObject message) { }
+        public virtual void Character_LoadFemale(MsgObject message) { }
+        public virtual void Character_LoadMale(MsgObject message) { }
+        public virtual void Character_LoadSpecial(MsgObject message) { }
+        public virtual void Character_ReplaceAll(MsgObject message) { }
+        public virtual void Character_ReplaceFace(MsgObject message) { }
+        public virtual void Character_ReplaceBody(MsgObject message) { }
+        public virtual void Character_ReplaceHair(MsgObject message) { }
+        public virtual void Character_ReplaceOutfit(MsgObject message) { }
 
-        public virtual void Pose_Save(MsgObject message){}
-        public virtual void Pose_Load(MsgObject message){}
+        public virtual void Outfit_Save(MsgObject message) { }
+        public virtual void Outfit_Load(MsgObject message) { }
+        public virtual void Outfit_LoadAccOnly(MsgObject message) { }
+        public virtual void Outfit_LoadClothOnly(MsgObject message) { }
+        public virtual void Outfit_Replace(MsgObject message) { }
+
+        public virtual void Pose_Save(MsgObject message) { }
+        public virtual void Pose_Load(MsgObject message) { }
     }
 }

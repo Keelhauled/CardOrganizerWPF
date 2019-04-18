@@ -28,7 +28,7 @@ namespace CardOrganizerWPF.Controls
             InfoText = infoText;
         }
 
-        private void CheckResponse()
+        void CheckResponse()
         {
             if(!string.IsNullOrWhiteSpace(ResponseText))
             {
@@ -36,12 +36,12 @@ namespace CardOrganizerWPF.Controls
             }
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+        void OKButton_Click(object sender, RoutedEventArgs e)
         {
             CheckResponse();
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }

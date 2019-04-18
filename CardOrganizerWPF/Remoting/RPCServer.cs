@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Runtime.Remoting.Channels.Tcp;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting;
 using System.Collections;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Serialization.Formatters;
 
 namespace CardOrganizerWPF.Remoting
@@ -13,7 +13,7 @@ namespace CardOrganizerWPF.Remoting
 
         public static void Start(string name, int port)
         {
-            var serverProv = new BinaryServerFormatterSinkProvider{ TypeFilterLevel = TypeFilterLevel.Full };
+            var serverProv = new BinaryServerFormatterSinkProvider { TypeFilterLevel = TypeFilterLevel.Full };
             //RemotingConfiguration.CustomErrorsMode = CustomErrorsModes.Off;
 
             var properties = new Hashtable();

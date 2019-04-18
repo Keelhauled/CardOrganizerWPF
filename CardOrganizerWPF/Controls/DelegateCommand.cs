@@ -5,8 +5,8 @@ namespace CardOrganizerWPF.Controls
 {
     public class DelegateCommand : ICommand
     {
-        private readonly Predicate<object> _canExecute;
-        private readonly Action<object> _execute;
+        readonly Predicate<object> _canExecute;
+        readonly Action<object> _execute;
 
         public event EventHandler CanExecuteChanged;
 
@@ -39,5 +39,5 @@ namespace CardOrganizerWPF.Controls
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
-    } 
+    }
 }

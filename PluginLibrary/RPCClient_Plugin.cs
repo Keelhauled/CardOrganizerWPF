@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MessagePack;
+using System;
 using System.Threading;
-using MessagePack;
 
 namespace PluginLibrary
 {

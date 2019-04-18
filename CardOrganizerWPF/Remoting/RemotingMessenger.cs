@@ -5,7 +5,7 @@ namespace CardOrganizerWPF.Remoting
 {
     class RemotingMessenger : MarshalByRefObject, IMessenger
     {
-        private static Object lockObj = new Object();
+        private static object lockObj = new object();
         private Dictionary<string, Queue<byte[]>> messages;
 
         public RemotingMessenger()
