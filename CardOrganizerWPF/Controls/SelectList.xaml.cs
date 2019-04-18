@@ -26,7 +26,7 @@ namespace CardOrganizerWPF.Controls
             ItemList = new List<string>(itemList);
         }
 
-        private void CheckResult()
+        void CheckResult()
         {
             if(listBox.SelectedItem != null)
             {
@@ -34,12 +34,12 @@ namespace CardOrganizerWPF.Controls
             }
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+        void OKButton_Click(object sender, RoutedEventArgs e)
         {
             CheckResult();
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }

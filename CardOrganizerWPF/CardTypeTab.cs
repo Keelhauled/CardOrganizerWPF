@@ -1,4 +1,8 @@
-﻿using System;
+﻿using CardOrganizerWPF.Controls;
+using CardOrganizerWPF.Remoting;
+using CardOrganizerWPF.Utils;
+using DrWPF.Windows.Data;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -6,10 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using CardOrganizerWPF.Controls;
-using CardOrganizerWPF.Remoting;
-using CardOrganizerWPF.Utils;
-using DrWPF.Windows.Data;
 
 namespace CardOrganizerWPF
 {
@@ -26,15 +26,15 @@ namespace CardOrganizerWPF
         public Prop<double> ImageHeight { get; set; } = new Prop<double>();
         public double ImageMultiplier { get; set; }
 
-        private string folderPath;
-        private CardDataManager dataManager;
-        private TabControl tabControl;
-        private MsgObject.Action saveMsg;
-        private FileSystemWatcher watcher;
-        private SynchronizationContext uiContext;
-        private Settings.Category catData;
-        private bool initialized = false;
-        private volatile bool stopThread = false;
+        string folderPath;
+        CardDataManager dataManager;
+        TabControl tabControl;
+        MsgObject.Action saveMsg;
+        FileSystemWatcher watcher;
+        SynchronizationContext uiContext;
+        Settings.Category catData;
+        bool initialized = false;
+        volatile bool stopThread = false;
 
         public CardTypeTab(TabControl tabControl, MsgObject.Action saveMsg)
         {
@@ -64,7 +64,7 @@ namespace CardOrganizerWPF
                 initialized = true;
                 return;
             }
-            
+
             this.catData = catData;
             Enabled.Value = Visibility.Visible;
             Header.Value = catData.Header;
@@ -77,7 +77,7 @@ namespace CardOrganizerWPF
                 initialized = true;
                 ProgressVal.Value = 0;
                 SavedCategory.Value = catData.SavedCat != -1 ? catData.SavedCat : 0;
-                
+
                 watcher.Path = folderPath;
                 watcher.Created += FileCreated;
                 watcher.EnableRaisingEvents = true;
@@ -133,7 +133,7 @@ namespace CardOrganizerWPF
                 stopThread = true;
         }
 
-        private void GetCategoriesFromData(Action callback)
+        void GetCategoriesFromData(Action callback)
         {
             var thread = new Thread(() =>
             {
@@ -197,7 +197,7 @@ namespace CardOrganizerWPF
                         }
 
                         callback();
-                    }, null); 
+                    }, null);
                 }
 
                 stopThread = false;
@@ -252,8 +252,8 @@ namespace CardOrganizerWPF
         }
 
         #region Scrolling Methods
-        private ExtScrollViewer _scrollViewer;
-        private ExtScrollViewer ScrollViewer
+        ExtScrollViewer _scrollViewer;
+        ExtScrollViewer ScrollViewer
         {
             get
             {
@@ -516,24 +516,16 @@ namespace CardOrganizerWPF
         public void AddImageFirst(Thumbnail thumb)
         {
             Images.Insert(0, thumb);
-            //Console.WriteLine($"Adding {thumb.Path} to category {Title}");
         }
 
         public void AddImage(Thumbnail thumb)
         {
             Images.Add(thumb);
-            //Console.WriteLine($"Adding {thumb.Path} to category {Title}");
         }
 
         public void RemoveImage(Thumbnail thumb)
         {
             Images.Remove(thumb);
-            //Console.WriteLine($"Removing {thumb.Path} from category {Title}");
-        }
-
-        public void SortImagesByDate()
-        {
-            
         }
     }
 

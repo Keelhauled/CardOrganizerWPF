@@ -8,8 +8,8 @@ namespace CardOrganizerWPF.Controls
 {
     public class ExtScrollViewer : ScrollViewer
     {
-        private double scrollSpeed = Settings.data.ScrollSpeed;
-        private ScrollBar verticalScrollbar;
+        double scrollSpeed = Settings.data.ScrollSpeed;
+        ScrollBar verticalScrollbar;
 
         public override void OnApplyTemplate()
         {
@@ -38,5 +38,5 @@ namespace CardOrganizerWPF.Controls
                 }
             }
         }
-    } 
+    }
 }

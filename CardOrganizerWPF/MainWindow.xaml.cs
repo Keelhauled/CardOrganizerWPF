@@ -1,18 +1,17 @@
-﻿using System;
+﻿using CardOrganizerWPF.Controls;
+using CardOrganizerWPF.Remoting;
+using CardOrganizerWPF.Utils;
+using Ookii.Dialogs.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Ookii.Dialogs.Wpf;
-using CardOrganizerWPF.Remoting;
-using CardOrganizerWPF.Controls;
-using CardOrganizerWPF.Utils;
-using System.ComponentModel;
 
 namespace CardOrganizerWPF
 {
@@ -39,7 +38,7 @@ namespace CardOrganizerWPF
         public CardTypeTab TabOutfit1 { get; set; }
         public CardTypeTab TabOutfit2 { get; set; }
 
-        private CardTypeTab SelectedTab
+        CardTypeTab SelectedTab
         {
             get
             {
@@ -52,31 +51,29 @@ namespace CardOrganizerWPF
                         case 2: return TabChara2;
                         case 3: return TabOutfit1;
                         case 4: return TabOutfit2;
-                    } 
+                    }
                 }
 
                 return null;
             }
         }
 
-        private string Id
+        string Id
         {
             get { return $"{gameData.Server}_{currentTarget}"; }
         }
-        
-        private string serverName = "CardOrganizerServer";
-        private int serverPort = 9125;
-        private string defaultTitle = "CardOrganizer";
-        private string currentTarget = "";
-        private string markedTab = "";
-        private SynchronizationContext uiContext;
-        private Settings.GameData gameData;
+
+        string serverName = "CardOrganizerServer";
+        int serverPort = 9125;
+        string defaultTitle = "CardOrganizer";
+        string currentTarget = "";
+        string markedTab = "";
+        Settings.GameData gameData;
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
-            uiContext = SynchronizationContext.Current;
             WindowTitle.Value = defaultTitle;
 
             Settings.LoadData();
@@ -106,13 +103,13 @@ namespace CardOrganizerWPF
             }
         }
 
-        private void Window_Closing(object sender, CancelEventArgs e)
+        void Window_Closing(object sender, CancelEventArgs e)
         {
             SaveSettings(true);
             SaveCardData();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if(!string.IsNullOrWhiteSpace(Settings.data.LastProfile))
             {
@@ -171,14 +168,14 @@ namespace CardOrganizerWPF
 
                     Closing += Window_Closing;
 
-                    return; 
+                    return;
                 }
             }
 
             Close();
         }
 
-        private void ProfileSwitch(object sender)
+        void ProfileSwitch(object sender)
         {
             string newProfile = sender.ToString();
             SaveSettings(false);
@@ -232,7 +229,7 @@ namespace CardOrganizerWPF
             }
         }
 
-        private void TargetSwitch(object sender)
+        void TargetSwitch(object sender)
         {
             currentTarget = sender.ToString();
             WindowTitle.Value = $"{defaultTitle} - {gameData.Name} - {currentTarget}";
@@ -242,7 +239,7 @@ namespace CardOrganizerWPF
             SaveSettings(false);
         }
 
-        private void SettingsLoad()
+        void SettingsLoad()
         {
             var data = Settings.data;
             Top = data.Window.Top;
@@ -253,7 +250,7 @@ namespace CardOrganizerWPF
                 WindowState = WindowState.Maximized;
         }
 
-        private void SaveSettings(bool saveFile)
+        void SaveSettings(bool saveFile)
         {
             var data = Settings.data;
 
@@ -288,7 +285,7 @@ namespace CardOrganizerWPF
                 Settings.Save();
         }
 
-        private void SaveCardData()
+        void SaveCardData()
         {
             TabScene.SaveCardData();
             TabChara1.SaveCardData();
@@ -297,7 +294,7 @@ namespace CardOrganizerWPF
             TabOutfit2.SaveCardData();
         }
 
-        private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
+        void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             switch(e.Key)
             {
@@ -315,100 +312,100 @@ namespace CardOrganizerWPF
         #endregion
 
         #region Card Methods
-        private void Button_Click_Save(object sender, RoutedEventArgs e)
+        void Button_Click_Save(object sender, RoutedEventArgs e)
         {
             SelectedTab.SaveCard(Id);
         }
 
-        private void Scenes_MenuItem_Click_Load(object sender, RoutedEventArgs e)
+        void Scenes_MenuItem_Click_Load(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.SceneLoad);
         }
 
-        private void Scenes_MenuItem_Click_Import(object sender, RoutedEventArgs e)
+        void Scenes_MenuItem_Click_Import(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.SceneImportAll);
         }
 
-        private void Scenes_MenuItem_Click_ImportCharaOnly(object sender, RoutedEventArgs e)
+        void Scenes_MenuItem_Click_ImportCharaOnly(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.SceneImportChara);
         }
 
-        private void Characters_MenuItem_Click_LoadF(object sender, RoutedEventArgs e)
+        void Characters_MenuItem_Click_LoadF(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaLoadFemale);
         }
 
-        private void Characters_MenuItem_Click_LoadM(object sender, RoutedEventArgs e)
+        void Characters_MenuItem_Click_LoadM(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaLoadMale);
         }
 
-        private void Characters_MenuItem_Click_LoadSpecial(object sender, RoutedEventArgs e)
+        void Characters_MenuItem_Click_LoadSpecial(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaLoadSpecial);
         }
 
-        private void Characters_MenuItem_Click_Replace(object sender, RoutedEventArgs e)
+        void Characters_MenuItem_Click_Replace(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaReplaceAll);
         }
 
-        private void Characters_MenuItem_Click_ReplaceFace(object sender, RoutedEventArgs e)
+        void Characters_MenuItem_Click_ReplaceFace(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaReplaceFace);
         }
 
-        private void Characters_MenuItem_Click_ReplaceBody(object sender, RoutedEventArgs e)
+        void Characters_MenuItem_Click_ReplaceBody(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaReplaceBody);
         }
 
-        private void Characters_MenuItem_Click_ReplaceHair(object sender, RoutedEventArgs e)
+        void Characters_MenuItem_Click_ReplaceHair(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaReplaceHair);
         }
 
-        private void Characters_MenuItem_Click_ReplaceOutfit(object sender, RoutedEventArgs e)
+        void Characters_MenuItem_Click_ReplaceOutfit(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.CharaReplaceOutfit);
         }
 
-        private void Outfits_MenuItem_Click_Load(object sender, RoutedEventArgs e)
+        void Outfits_MenuItem_Click_Load(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.OutfitLoad);
         }
 
-        private void Outfits_MenuItem_Click_LoadAccOnly(object sender, RoutedEventArgs e)
+        void Outfits_MenuItem_Click_LoadAccOnly(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.OutfitLoadAccOnly);
         }
 
-        private void Outfits_MenuItem_Click_LoadClothOnly(object sender, RoutedEventArgs e)
+        void Outfits_MenuItem_Click_LoadClothOnly(object sender, RoutedEventArgs e)
         {
             UseCard(e, MsgObject.Action.OutfitLoadClothOnly);
         }
 
-        private void UseCard(RoutedEventArgs e, MsgObject.Action action)
+        void UseCard(RoutedEventArgs e, MsgObject.Action action)
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
             RPCClient_UI.SendMessage(MsgObject.Create(action, Id, thumb.Path));
         }
 
-        private void MenuItem_Click_Delete(object sender, RoutedEventArgs e)
+        void MenuItem_Click_Delete(object sender, RoutedEventArgs e)
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
             SelectedTab.RemoveImage(thumb);
         }
 
-        private void MenuItem_Click_Explorer(object sender, RoutedEventArgs e)
+        void MenuItem_Click_Explorer(object sender, RoutedEventArgs e)
         {
             var thumb = (Thumbnail)(e.Source as MenuItem).DataContext;
 
             if(!File.Exists(thumb.Path))
             {
-                Console.WriteLine($"File does not exist ({thumb.Path})");
+                Debug.WriteLine($"File does not exist ({thumb.Path})");
                 return;
             }
 
@@ -418,14 +415,14 @@ namespace CardOrganizerWPF
             Process.Start("explorer.exe", argument);
         }
 
-        private void ImageSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        void ImageSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SelectedTab?.SetImageSize(e.NewValue);
         }
         #endregion
 
         #region Category Methods
-        private void CategoryTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void CategoryTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(e.OriginalSource == e.Source)
             {
@@ -434,80 +431,64 @@ namespace CardOrganizerWPF
             }
         }
 
-        private void CategoryTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        void CategoryTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if(e.LeftButton == MouseButtonState.Pressed)
             {
-                dynamic src = e.OriginalSource;
-
-                if(!(src is ExtScrollViewer))
+                if(!(e.OriginalSource is ExtScrollViewer) && e.OriginalSource is FrameworkElement src)
                 {
-                    dynamic context = src.DataContext;
-
-                    if(context is KeyValuePair<string, Category> data)
+                    if(src.DataContext is KeyValuePair<string, Category> data)
                     {
                         if(Keyboard.Modifiers == ModifierKeys.Control)
                         {
                             e.Handled = true;
                             markedTab = data.Key;
-                            Console.WriteLine($"{markedTab} was marked");
+                            Debug.WriteLine($"{markedTab} was marked");
                         }
                         else
                         {
                             SelectedTab.SaveScrollPosition();
                         }
-                    } 
+                    }
                 }
             }
         }
 
-        private void MenuItem_Click_AddCategory(object sender, RoutedEventArgs e)
+        void MenuItem_Click_AddCategory(object sender, RoutedEventArgs e)
         {
             var inputBox = new InputBox("New category", "Name the new category");
             if(inputBox.ShowDialog() == true)
                 SelectedTab.AddCategory(inputBox.ResponseText);
         }
 
-        private void MenuItem_Click_RemoveCategory(object sender, RoutedEventArgs e)
+        void MenuItem_Click_RemoveCategory(object sender, RoutedEventArgs e)
         {
             var target = GetPlacementTarget(e);
             SelectedTab.RemoveCategory(target.Text);
         }
 
-        private void MenuItem_Click_MarkCategory(object sender, RoutedEventArgs e)
+        void MenuItem_Click_MarkCategory(object sender, RoutedEventArgs e)
         {
             var target = GetPlacementTarget(e);
             markedTab = target.Text;
-            Console.WriteLine($"{markedTab} was marked");
+            Debug.WriteLine($"{markedTab} was marked");
         }
 
-        private void MenuItem_Click_RenameCategory(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private TextBlock GetPlacementTarget(RoutedEventArgs e)
+        TextBlock GetPlacementTarget(RoutedEventArgs e)
         {
             var menuItem = e.OriginalSource as MenuItem;
             var contextMenu = menuItem.Parent as ContextMenu;
             return contextMenu.PlacementTarget as TextBlock;
         }
 
-        private void MenuItem_Click_MoveAll(object sender, RoutedEventArgs e)
+        void MenuItem_Click_MoveAll(object sender, RoutedEventArgs e)
         {
             var target = GetPlacementTarget(e).Text;
             if(target != SelectedTab.GetSelectedCategory().Title)
-            {
                 SelectedTab.MoveImageAll(target);
-            }
         }
 
-        private void MenuItem_Click_SortCategory(object sender, RoutedEventArgs e)
-        {
-            SelectedTab.GetSelectedCategory().SortImagesByDate();
-        }
-
-        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if(Keyboard.IsKeyDown(Key.Delete))
             {
@@ -521,26 +502,24 @@ namespace CardOrganizerWPF
             }
         }
 
-        private void TabControlMain_SelectionChanged(object sender, RoutedEventArgs e)
+        void TabControlMain_SelectionChanged(object sender, RoutedEventArgs e)
         {
             markedTab = "";
             ImageMultiplier.Value = SelectedTab.ImageMultiplier;
         }
 
-        private void TabControl_Drop(object sender, DragEventArgs e)
+        void TabControl_Drop(object sender, DragEventArgs e)
         {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
             if(files.Length > 0)
             {
-                bool move = Keyboard.Modifiers == ModifierKeys.Shift;
-                string process = move ? "Move" : "Copy";
+                var move = Keyboard.Modifiers == ModifierKeys.Shift;
+                var process = move ? "Move" : "Copy";
                 var confirmBox = new ConfirmBox($"{process} file", $"Move already existing cards\nto the current category (if any)?");
                 var reorganize = confirmBox.ShowDialog().Value;
 
                 foreach(var file in files)
-                {
                     SelectedTab.AddImageFromOutside(file, move, reorganize);
-                }
             }
         }
         #endregion

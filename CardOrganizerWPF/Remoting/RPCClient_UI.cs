@@ -1,5 +1,5 @@
-﻿using System;
-using MessagePack;
+﻿using MessagePack;
+using System;
 
 namespace CardOrganizerWPF.Remoting
 {
